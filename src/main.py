@@ -1,10 +1,10 @@
 import canvas as cs
-import os
-from dotenv import load_dotenv
 
-API_KEY = os.getenv("API_KEY")
-load_dotenv()
+PAGINATION_PAGE_NUMBER = 1
+PAGINATION_PER_PAGE = 20
+
 
 if __name__ == "__main__":
     print("Hello")
-    print(cs.get_current_courses_name(api_key=API_KEY, page_number=1, per_page=20))
+    courses = cs.get_current_courses_name(per_page=PAGINATION_PER_PAGE, page_number=PAGINATION_PAGE_NUMBER)
+    print(cs.get_assignments(per_page=PAGINATION_PER_PAGE, page_number=PAGINATION_PAGE_NUMBER))
