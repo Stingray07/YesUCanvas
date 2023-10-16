@@ -1,4 +1,4 @@
-import json
+from helper import format_data
 import os
 import requests
 from decorators import handle_req_errors
@@ -29,14 +29,12 @@ def get_current_courses_name(page_number, per_page):
     data = response.json()
 
     for item in data:
-        # format_data(item)
-        course_name = item.get('name')
-        course_id = item.get('id')
-        original_name = item.get('original_name')
+        course_name = item.get('name', None)
+        course_id = item.get('id', None)
+        original_name = item.get('original_name', None)
 
         if course_name.isupper():
-            # gets real shortened course code
-            orig_course_code = item.get('course_code')
+            orig_course_code = item.get('course_code', None)
             course_code = get_course_code(orig_course_code)
 
             courses[course_code] = {
@@ -51,7 +49,6 @@ def get_current_courses_name(page_number, per_page):
 @handle_req_errors
 def get_latest_announcement(course):
     context_code = f'course_{course["course_id"]}'
-    print(context_code)
     params = {
         'context_codes[]': [context_code],
         'latest_only': True
@@ -60,9 +57,9 @@ def get_latest_announcement(course):
     response = requests.get(ANNOUNCEMENTS_URL, headers=HEADERS, params=params)
     response.raise_for_status()
     data = response.json()
-    html_message = data[0]['message']
+    markdown_message = data[0]['message']
 
-    return html_message
+    return markdown_message
 
 
 @handle_req_errors
@@ -79,20 +76,22 @@ def get_pending_assignments(course):
     response.raise_for_status()
     data = response.json()
 
+    course_name = course['course_name']
+    pending_assignments['course'] = course_name
+
     for assignment in data:
-        assignment_due = assignment['due_at']
-        assignment_description = assignment['description']
-        assignment_points = assignment['points_possible']
-        assignment_name = assignment['name']
+        due = assignment['due_at']
+        description = assignment['description']
+        points = assignment['points_possible']
+        name = assignment['name']
         assignment_id = assignment['id']
-        assignment_status = assignment['submission']['submitted_at']
-        if not assignment_status:
+        status = assignment['submission']['submitted_at']
+        if not status:
             pending_assignments[assignment_id] = {
-                'assignment_name': assignment_name,
-                'assignment_points': assignment_points,
-                'assignment_description': assignment_description,
-                'assignment_due': assignment_due,
-                'assignment_subject': course['course_name']
+                'name': name,
+                'points': points,
+                'description': description,
+                'due': due,
             }
 
     return pending_assignments
@@ -119,6 +118,7 @@ def get_teacher(course):
 def get_module(course):
     course_id = course['course_id']
     MODULES_URL = f"{COURSES_URL}/{course_id}/modules"
+    modules = {}
 
     params = {
         'include[]': ['items']
@@ -128,7 +128,26 @@ def get_module(course):
     response.raise_for_status()
     data = response.json()
 
-    format_data(data)
+    items_list = []
+    course_name = course['course_name']
+    modules['course'] = course_name
+
+    for module in data:
+        name = module['name']
+        module_id = module['id']
+        items = module['items']
+
+        for item in items:
+            item_name = item['title']
+            items_list.append(item_name)
+
+        modules[module_id] = {
+            'name': name,
+            'items': items_list,
+        }
+        items_list = []
+
+    return modules
 
 
 def get_all_pending_assignments(courses):
@@ -137,10 +156,6 @@ def get_all_pending_assignments(courses):
         assignments[course_name] = get_pending_assignments(course_id)
 
     return assignments
-
-
-def format_data(data):
-    print(json.dumps(data, indent=4))
 
 
 def get_course_code(orig_course_code):

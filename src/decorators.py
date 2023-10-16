@@ -11,3 +11,11 @@ def handle_req_errors(func):
             print(f"Request Failed: {e}")
         return None
     return wrapper
+
+
+class CourseNotFound(Exception):
+
+    def __init__(self, identifier):
+        self.identifier = identifier
+        message = f"Course {identifier} not found "
+        super().__init__(message)
