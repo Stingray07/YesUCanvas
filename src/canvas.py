@@ -3,16 +3,30 @@ import os
 import requests
 from decorators import handle_req_errors
 from dotenv import load_dotenv
+from consts import COURSES_URL, ANNOUNCEMENTS_URL, ACTIVE_ENROLLMENT_STATE
+from datetime import datetime
+
 
 load_dotenv()
-COURSES_URL = 'https://uc-bcf.instructure.com/api/v1/courses'
-ANNOUNCEMENTS_URL = 'https://uc-bcf.instructure.com/api/v1/announcements'
-CALENDAR_URL = 'https://uc-bcf.instructure.com/api/v1/calendar_events'
-ACTIVE_ENROLLMENT_STATE = 'active'
 API_KEY = os.getenv("API_KEY")
 HEADERS = {
     "Authorization": f"Bearer {API_KEY}"
 }
+PAGINATION_PAGE_NUMBER = 1
+PAGINATION_PER_PAGE = 20
+
+
+@handle_req_errors
+def get_current_courses():
+    courses = get_current_courses_name(page_number=PAGINATION_PAGE_NUMBER, per_page=PAGINATION_PER_PAGE)
+    for course_key in courses:
+        course = courses[course_key]
+        course['latest_announcement'] = get_latest_announcement(courses, course_key)
+        course['pending_assignments'] = get_pending_assignments(courses, course_key)
+        course['teacher'] = get_teacher(courses, course_key)
+        course['module'] = get_module(courses, course_key)
+
+    return courses
 
 
 @handle_req_errors
@@ -47,8 +61,8 @@ def get_current_courses_name(page_number, per_page):
 
 
 @handle_req_errors
-def get_latest_announcement(course):
-    context_code = f'course_{course["course_id"]}'
+def get_latest_announcement(courses, course_key):
+    context_code = f'course_{courses[course_key]["course_id"]}'
     params = {
         'context_codes[]': [context_code],
         'latest_only': True
@@ -63,8 +77,8 @@ def get_latest_announcement(course):
 
 
 @handle_req_errors
-def get_pending_assignments(course):
-    course_id = course['course_id']
+def get_pending_assignments(courses, course_key):
+    course_id = courses[course_key]['course_id']
     ASSIGNMENT_URL = f'{COURSES_URL}/{course_id}/assignments'
     pending_assignments = {}
 
@@ -75,9 +89,6 @@ def get_pending_assignments(course):
     response = requests.get(ASSIGNMENT_URL, headers=HEADERS, params=params)
     response.raise_for_status()
     data = response.json()
-
-    course_name = course['course_name']
-    pending_assignments['course'] = course_name
 
     for assignment in data:
         due = assignment['due_at']
@@ -91,15 +102,15 @@ def get_pending_assignments(course):
                 'name': name,
                 'points': points,
                 'description': description,
-                'due': due,
+                'due': to_readable_date(due),
             }
 
     return pending_assignments
 
 
 @handle_req_errors
-def get_teacher(course):
-    course_id = course['course_id']
+def get_teacher(courses, course_key):
+    course_id = courses[course_key]['course_id']
     USER_URL = f'{COURSES_URL}/{course_id}/users'
 
     params = {
@@ -115,8 +126,8 @@ def get_teacher(course):
 
 
 @handle_req_errors
-def get_module(course):
-    course_id = course['course_id']
+def get_module(courses, course_key):
+    course_id = courses[course_key]['course_id']
     MODULES_URL = f"{COURSES_URL}/{course_id}/modules"
     modules = {}
 
@@ -129,8 +140,6 @@ def get_module(course):
     data = response.json()
 
     items_list = []
-    course_name = course['course_name']
-    modules['course'] = course_name
 
     for module in data:
         name = module['name']
@@ -162,3 +171,13 @@ def get_course_code(orig_course_code):
     separator_index = orig_course_code.index("|")
     orig_course_code = orig_course_code[:separator_index-1]
     return orig_course_code
+
+
+def to_readable_date(date_str):
+    if not date_str:
+        return None
+
+    date_object = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%SZ")
+    readable_date = date_object.strftime("%B %d, %Y %I:%M %p")
+
+    return readable_date
