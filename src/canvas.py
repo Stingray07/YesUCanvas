@@ -5,6 +5,7 @@ from decorators import handle_req_errors
 from dotenv import load_dotenv
 from consts import COURSES_URL, ANNOUNCEMENTS_URL, ACTIVE_ENROLLMENT_STATE
 from datetime import datetime
+from course_functions import get_course_code
 
 
 load_dotenv()
@@ -75,7 +76,7 @@ def get_latest_announcement(courses, course_key):
 
     return markdown_message
 
-
+check assignment if scored then dont  add to assignment list
 @handle_req_errors
 def get_pending_assignments(courses, course_key):
     course_id = courses[course_key]['course_id']
@@ -159,20 +160,6 @@ def get_module(courses, course_key):
     return modules
 
 
-def get_all_pending_assignments(courses):
-    assignments = {}
-    for course_name, course_id in courses.items():
-        assignments[course_name] = get_pending_assignments(course_id)
-
-    return assignments
-
-
-def get_course_code(orig_course_code):
-    separator_index = orig_course_code.index("|")
-    orig_course_code = orig_course_code[:separator_index-1]
-    return orig_course_code
-
-
 def to_readable_date(date_str):
     if not date_str:
         return None
@@ -181,3 +168,7 @@ def to_readable_date(date_str):
     readable_date = date_object.strftime("%B %d, %Y %I:%M %p")
 
     return readable_date
+
+
+def refresh_courses():
+    return get_current_courses()
