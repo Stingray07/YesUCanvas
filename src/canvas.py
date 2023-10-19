@@ -76,7 +76,7 @@ def get_latest_announcement(courses, course_key):
 
     return markdown_message
 
-check assignment if scored then dont  add to assignment list
+
 @handle_req_errors
 def get_pending_assignments(courses, course_key):
     course_id = courses[course_key]['course_id']
@@ -97,8 +97,9 @@ def get_pending_assignments(courses, course_key):
         points = assignment['points_possible']
         name = assignment['name']
         assignment_id = assignment['id']
+        graded = assignment['submission']['grade']
         status = assignment['submission']['submitted_at']
-        if not status:
+        if not graded and not status:
             pending_assignments[assignment_id] = {
                 'name': name,
                 'points': points,

@@ -6,6 +6,14 @@ def get_all_pending_assignments(courses):
     return assignments
 
 
+def get_all_course_names(courses):
+    names = []
+    for _, course_value in courses.items():
+        names.append(course_value['course_name'])
+
+    return names
+
+
 def get_course_code(orig_course_code):
     separator_index = orig_course_code.index("|")
     orig_course_code = orig_course_code[:separator_index-1]
