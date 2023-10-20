@@ -18,8 +18,8 @@ PAGINATION_PER_PAGE = 20
 
 
 @handle_req_errors
-def get_current_courses():
-    courses = get_current_courses_name(page_number=PAGINATION_PAGE_NUMBER, per_page=PAGINATION_PER_PAGE)
+def initialize_courses():
+    courses = get_current_courses(page_number=PAGINATION_PAGE_NUMBER, per_page=PAGINATION_PER_PAGE)
     for course_key in courses:
         course = courses[course_key]
         course['latest_announcement'] = get_latest_announcement(courses, course_key)
@@ -31,7 +31,7 @@ def get_current_courses():
 
 
 @handle_req_errors
-def get_current_courses_name(page_number, per_page):
+def get_current_courses(page_number, per_page):
     params = {
         'enrollment_state': ACTIVE_ENROLLMENT_STATE,
         'page': page_number,
@@ -42,6 +42,9 @@ def get_current_courses_name(page_number, per_page):
     response = requests.get(COURSES_URL, headers=HEADERS, params=params)
     response.raise_for_status()
     data = response.json()
+
+    if not data:
+        return {}
 
     for item in data:
         course_name = item.get('name', None)
@@ -72,6 +75,10 @@ def get_latest_announcement(courses, course_key):
     response = requests.get(ANNOUNCEMENTS_URL, headers=HEADERS, params=params)
     response.raise_for_status()
     data = response.json()
+
+    if not data:
+        return ""
+
     markdown_message = data[0]['message']
 
     return markdown_message
@@ -90,6 +97,9 @@ def get_pending_assignments(courses, course_key):
     response = requests.get(ASSIGNMENT_URL, headers=HEADERS, params=params)
     response.raise_for_status()
     data = response.json()
+
+    if not data:
+        return {}
 
     for assignment in data:
         due = assignment['due_at']
@@ -122,6 +132,10 @@ def get_teacher(courses, course_key):
     response = requests.get(USER_URL, headers=HEADERS, params=params)
     response.raise_for_status()
     data = response.json()
+
+    if not data:
+        return ""
+
     teacher = data[0]['name']
 
     return teacher
@@ -140,6 +154,9 @@ def get_module(courses, course_key):
     response = requests.get(MODULES_URL, headers=HEADERS, params=params)
     response.raise_for_status()
     data = response.json()
+
+    if not data:
+        return {}
 
     items_list = []
 
@@ -172,4 +189,4 @@ def to_readable_date(date_str):
 
 
 def refresh_courses():
-    return get_current_courses()
+    return initialize_courses

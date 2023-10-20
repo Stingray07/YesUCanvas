@@ -6,6 +6,20 @@ def get_all_pending_assignments(courses):
     return assignments
 
 
+def get_announcement(courses, course_key):
+    if course_key not in courses:
+        return None
+
+    return courses[course_key]['latest_announcement']
+
+
+def get_teacher(courses, course_key):
+    if course_key not in courses:
+        return None
+
+    return courses[course_key]['teacher']
+
+
 def get_all_course_names(courses):
     names = []
     for _, course_value in courses.items():

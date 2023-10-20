@@ -1,7 +1,9 @@
 import discord
 import os
 import time
-from canvas import get_current_courses, format_data
+from html2text import html2text
+from canvas import initialize_courses, format_data
+from helper import mock
 import course_functions as cf
 from dotenv import load_dotenv
 
@@ -11,7 +13,7 @@ API_KEY = os.getenv("API_KEY")
 
 def run_bot():
     print("REQUESTING COURSES FROM CANVAS API...")
-    courses = get_current_courses()
+    courses = mock
     format_data(courses)
     BOT_TOKEN = os.getenv('DISCORD_TOKEN')
     intents = discord.Intents.default()
@@ -31,6 +33,8 @@ def run_bot():
         await listen_to_type(message)
         await listen_to_courses(message=message, courses=courses)
         await listen_to_assignments(message=message, courses=courses)
+        await listen_to_teacher(message=message, courses=courses)
+        await listen_to_announcement(message=message, courses=courses)
 
     bot.run(BOT_TOKEN)
 
@@ -59,10 +63,43 @@ async def listen_to_courses(message, courses):
 async def listen_to_assignments(message, courses):
     if message.content.startswith('!all_assignments'):
         await message.channel.typing()
-        pending_assignments = cf.get_all_pending_assignments(courses=courses)
-        format_data(pending_assignments)
-        for course, assignments in pending_assignments.items():
-            await message.channel.typing()
-            for assignment_id, value in assignments.items():
-                await message.channel.send(f"• {pending_assignments[course][assignment_id]['name']} ({course})")
+        pending_assignments = cf.get_all_pending_assignments(courses)
+        await send_assignment_messages(message, pending_assignments)
 
+
+async def listen_to_teacher(message, courses):
+    if message.content.startswith('!teacher '):
+        await message.channel.typing()
+        course_key = message.content[9:].upper()
+        teacher = cf.get_teacher(courses=courses, course_key=course_key)
+
+        if not teacher:
+            message_str = "Course Not Found"
+        else:
+            message_str = f"{teacher}"
+
+        await message.channel.send(message_str)
+
+
+async def listen_to_announcement(message, courses):
+    if message.content.startswith('!anm '):
+        await message.channel.typing()
+        course_key = message.content[5:].upper()
+        announcement = cf.get_announcement(courses=courses, course_key=course_key)
+
+        if not announcement:
+            message_str = "Course Not Found"
+        else:
+            announcement = html2text(announcement)
+            message_str = f"{announcement}"
+
+        await message.channel.send(message_str)
+
+
+async def send_assignment_messages(message, pending_assignments):
+    for course, assignments in pending_assignments.items():
+        await message.channel.typing()
+        for assignment_id, assignment_info in assignments.items():
+            assignment_name = assignment_info['name']
+            message_str = f"• {assignment_name} ({course})"
+            await message.channel.send(message_str)

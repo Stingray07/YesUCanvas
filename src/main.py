@@ -1,5 +1,3 @@
-import canvas as cs
-from course_functions import get_all_pending_assignments
 from bot import run_bot
 
 
