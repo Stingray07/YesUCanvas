@@ -32,3 +32,24 @@ def get_course_code(orig_course_code):
     separator_index = orig_course_code.index("|")
     orig_course_code = orig_course_code[:separator_index-1]
     return orig_course_code
+
+
+def get_section(courses, course_key):
+    if course_key not in courses:
+        return None
+
+    sep_found = False
+    section = ''
+    for c in courses[course_key]['original_name']:
+        if c == '|' and not section:
+            sep_found = True
+            continue
+        elif c == '|' and section:
+            return section
+
+        if sep_found:
+            section += c
+
+    return section
+
+

@@ -1,11 +1,12 @@
 from helper import format_data
+from datetime import datetime
 import os
 import requests
 from decorators import handle_req_errors
 from dotenv import load_dotenv
 from consts import COURSES_URL, ANNOUNCEMENTS_URL, ACTIVE_ENROLLMENT_STATE
 from datetime import datetime
-from course_functions import get_course_code
+from course_functions import get_course_code, get_section
 
 
 load_dotenv()
@@ -103,6 +104,7 @@ def get_pending_assignments(courses, course_key):
 
     for assignment in data:
         due = assignment['due_at']
+        due_today = is_today(due)
         description = assignment['description']
         points = assignment['points_possible']
         name = assignment['name']
@@ -115,6 +117,7 @@ def get_pending_assignments(courses, course_key):
                 'points': points,
                 'description': description,
                 'due': to_readable_date(due),
+                'due_today': due_today
             }
 
     return pending_assignments
@@ -190,3 +193,16 @@ def to_readable_date(date_str):
 
 def refresh_courses():
     return initialize_courses
+
+
+test is_today function
+
+def is_today(time):
+    time = str(time)
+    try:
+        given_time = datetime.fromisoformat(time)
+        current_date = datetime.now().date()
+        return given_time.date() == current_date
+
+    except ValueError:
+        return False

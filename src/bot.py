@@ -13,7 +13,7 @@ API_KEY = os.getenv("API_KEY")
 
 def run_bot():
     print("REQUESTING COURSES FROM CANVAS API...")
-    courses = mock
+    courses = initialize_courses()
     format_data(courses)
     BOT_TOKEN = os.getenv('DISCORD_TOKEN')
     intents = discord.Intents.default()
@@ -35,6 +35,7 @@ def run_bot():
         await listen_to_assignments(message=message, courses=courses)
         await listen_to_teacher(message=message, courses=courses)
         await listen_to_announcement(message=message, courses=courses)
+        await listen_to_section(message=message, courses=courses)
 
     bot.run(BOT_TOKEN)
 
@@ -94,6 +95,23 @@ async def listen_to_announcement(message, courses):
             message_str = f"{announcement}"
 
         await message.channel.send(message_str)
+
+
+async def listen_to_section(message, courses):
+    if message.content.startswith('!section '):
+        await message.channel.typing()
+        course_key = message.content[9:].upper()
+        section = cf.get_section(courses=courses, course_key=course_key)
+
+        if not section:
+            message_str = "Section Not Found"
+        else:
+            message_str = f"{section}"
+
+        await message.channel.send(message_str)
+
+
+# async def listen_to_due_today(message, )
 
 
 async def send_assignment_messages(message, pending_assignments):
