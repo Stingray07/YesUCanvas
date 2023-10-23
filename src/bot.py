@@ -9,12 +9,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
+all_courses_cache = []
+assignments_cache = []
 
 
 def run_bot():
     print("REQUESTING COURSES FROM CANVAS API...")
-    courses = initialize_courses()
-    format_data(courses)
+    courses = mock
+    # format_data(courses)
     BOT_TOKEN = os.getenv('DISCORD_TOKEN')
     intents = discord.Intents.default()
     intents.message_content = True
@@ -26,16 +28,20 @@ def run_bot():
 
     @bot.event
     async def on_message(message):
+        global all_courses_cache
+        global assignments_cache
+
         if message.author == bot.user:
             return
 
         await listen_to_hello(message)
         await listen_to_type(message)
-        await listen_to_courses(message=message, courses=courses)
-        await listen_to_assignments(message=message, courses=courses)
+        all_courses_cache = await listen_to_courses(message=message, courses=courses, cache=all_courses_cache)
+        assignments_cache = await listen_to_assignments(message=message, courses=courses, cache=assignments_cache)
         await listen_to_teacher(message=message, courses=courses)
         await listen_to_announcement(message=message, courses=courses)
         await listen_to_section(message=message, courses=courses)
+        await listen_to_due_today(message=message)
 
     bot.run(BOT_TOKEN)
 
@@ -52,16 +58,22 @@ async def listen_to_type(message):
         await message.channel.send('Typed')
 
 
-async def listen_to_courses(message, courses):
+async def listen_to_courses(message, courses, cache):
     if message.content.startswith('!courses'):
         await message.channel.typing()
-        names = cf.get_all_course_names(courses=courses)
-        for name in names:
+        if not cache:
+            cache = cf.get_all_course_names(courses=courses)
+            print(all_courses_cache)
+            print('cached')
+
+        for course in cache:
             await message.channel.typing()
-            await message.channel.send(name)
+            await message.channel.send(course)
+
+        return cache
 
 
-async def listen_to_assignments(message, courses):
+async def listen_to_assignments(message, courses, cache):
     if message.content.startswith('!all_assignments'):
         await message.channel.typing()
         pending_assignments = cf.get_all_pending_assignments(courses)
@@ -111,7 +123,10 @@ async def listen_to_section(message, courses):
         await message.channel.send(message_str)
 
 
-# async def listen_to_due_today(message, )
+async def listen_to_due_today(message):
+    if message.content.startswith('!due_today'):
+        await message.channel.typing()
+        course_key = message.cha
 
 
 async def send_assignment_messages(message, pending_assignments):
