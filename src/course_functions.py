@@ -1,9 +1,43 @@
+from helper import format_data
+
+
 def get_all_pending_assignments(courses):
+    if not courses:
+        return None
+
     assignments = {}
     for course_key, course_value in courses.items():
         assignments[course_value['course_name']] = course_value['pending_assignments']
 
     return assignments
+
+
+def get_all_due_today(assignments):
+    if not assignments:
+        return None
+
+    due_today = {}
+
+    for course_key, course_value in assignments.items():
+        if not course_value:
+            continue
+
+        for assignment_id, assignment_value in course_value.items():
+            if assignments[course_key][assignment_id]['due_today']:
+                due_today[assignment_id] = assignment_value
+
+    return due_today
+
+
+def get_all_course_names(courses):
+    if not courses:
+        return None
+
+    names = []
+    for _, course_value in courses.items():
+        names.append(course_value['course_name'])
+
+    return names
 
 
 def get_announcement(courses, course_key):
@@ -18,14 +52,6 @@ def get_teacher(courses, course_key):
         return None
 
     return courses[course_key]['teacher']
-
-
-def get_all_course_names(courses):
-    names = []
-    for _, course_value in courses.items():
-        names.append(course_value['course_name'])
-
-    return names
 
 
 def get_course_code(orig_course_code):

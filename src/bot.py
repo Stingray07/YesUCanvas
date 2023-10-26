@@ -10,7 +10,8 @@ from dotenv import load_dotenv
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 all_courses_cache = []
-assignments_cache = []
+assignments_cache = {}
+due_today_cache = {}
 
 
 def run_bot():
@@ -30,6 +31,7 @@ def run_bot():
     async def on_message(message):
         global all_courses_cache
         global assignments_cache
+        global due_today_cache
 
         if message.author == bot.user:
             return
@@ -39,7 +41,10 @@ def run_bot():
         await listen_to_teacher(message=message, courses=courses)
         await listen_to_announcement(message=message, courses=courses)
         await listen_to_section(message=message, courses=courses)
-        # await listen_to_due_today(message=message)
+        due_today_cache = await listen_to_due_today(message=message,
+                                                    courses=courses,
+                                                    pending_assignments=assignments_cache,
+                                                    cache=due_today_cache)
 
     bot.run(BOT_TOKEN)
 
@@ -51,7 +56,7 @@ async def listen_to_courses(message, courses, cache):
             all_courses = cf.get_all_course_names(courses=courses)
             for course in all_courses:
                 cache.append(course)
-            print('Courses cached')
+            print('Cached Courses from courses listener')
 
         for course in cache:
             await message.channel.typing()
@@ -59,14 +64,13 @@ async def listen_to_courses(message, courses, cache):
 
     return cache
 
-# cache assignments
 
 async def listen_to_assignments(message, courses, cache):
     if message.content.startswith('!all_assignments'):
         await message.channel.typing()
         if not cache:
             cache = cf.get_all_pending_assignments(courses=courses)
-            print('Assignments cached')
+            print('Cached Assignments from assignments listener')
 
         await send_assignment_messages(message=message, pending_assignments=cache)
 
@@ -116,16 +120,39 @@ async def listen_to_section(message, courses):
         await message.channel.send(message_str)
 
 
-# async def listen_to_due_today(message):
-#     if message.content.startswith('!due_today'):
-#         await message.channel.typing()
-#         course_key = message.cha
+async def listen_to_due_today(message, pending_assignments, courses, cache):
+    if message.content.startswith('!due_today'):
+        await message.channel.typing()
 
+        if not pending_assignments:
+            pending_assignments = cf.get_all_pending_assignments(courses=courses)
+            print("Cached Assignments from due_today listener")
+            format_data(pending_assignments)
+
+        if not cache:
+            cache = cf.get_all_due_today(pending_assignments)
+            print('Cached Due Today from due_today listener')
+            if not cache:
+                await message.channel.send('No Due Today')
+                return
+
+        for assignment in cache:
+            await message.channel.typing()
+            message_str = f"• {assignment['name']}"
+            await message.channel.send(message_str)
+
+    return cache
+
+#
+# async def listen_to_module(message, courses):
+#     if message.content.startswith('!module '):
+#         await message.channel.typing()
+#
+#         if not
 
 async def send_assignment_messages(message, pending_assignments):
     for course, assignments in pending_assignments.items():
         await message.channel.typing()
         for assignment_id, assignment_info in assignments.items():
-            assignment_name = assignment_info['name']
-            message_str = f"• {assignment_name} ({course})"
+            message_str = f"• {assignment_info['name']} ({course})"
             await message.channel.send(message_str)
