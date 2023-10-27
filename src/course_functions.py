@@ -35,13 +35,17 @@ def get_all_course_names(courses):
 
     names = []
     for _, course_value in courses.items():
-        names.append(course_value['course_name'])
+        if course_value.get('course_name'):
+            names.append(course_value['course_name'])
 
     return names
 
 
 def get_announcement(courses, course_key):
     if course_key not in courses:
+        return None
+
+    if not courses[course_key].get('latest_announcement'):
         return None
 
     return courses[course_key]['latest_announcement']
@@ -51,13 +55,19 @@ def get_teacher(courses, course_key):
     if course_key not in courses:
         return None
 
+    if not courses[course_key].get('teacher'):
+        return None
+
     return courses[course_key]['teacher']
 
 
 def get_course_code(orig_course_code):
+    if not orig_course_code:
+        return None
+
     separator_index = orig_course_code.index("|")
     orig_course_code = orig_course_code[:separator_index-1]
-    return orig_course_code
+    return orig_course_code.upper()
 
 
 def get_section(courses, course_key):

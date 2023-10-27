@@ -1,6 +1,5 @@
 import discord
 import os
-import time
 from html2text import html2text
 from canvas import initialize_courses, format_data
 from helper import mock
@@ -143,12 +142,6 @@ async def listen_to_due_today(message, pending_assignments, courses, cache):
 
     return cache
 
-#
-# async def listen_to_module(message, courses):
-#     if message.content.startswith('!module '):
-#         await message.channel.typing()
-#
-#         if not
 
 async def send_assignment_messages(message, pending_assignments):
     for course, assignments in pending_assignments.items():

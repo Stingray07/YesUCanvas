@@ -1,5 +1,4 @@
 from helper import format_data
-from datetime import datetime
 import os
 import requests
 from decorators import handle_req_errors
