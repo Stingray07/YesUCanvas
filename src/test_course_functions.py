@@ -1,5 +1,73 @@
 import unittest
+from unittest.mock import patch
 import course_functions as cf
+
+
+class TestGetAllPendingAnnouncements(unittest.TestCase):
+    def test_null_courses(self):
+        courses = {}
+        func_result = cf.get_all_pending_assignments(courses=courses)
+        test_result = None
+        self.assertEqual(func_result, test_result)
+
+    def test_get_one_pending_announcements(self):
+        courses = {
+            'Test Key': {
+                'course_name': 'Test Course Name',
+                'pending_assignments': {
+                    'Assignment ID': {
+                        'name': 'Assignment 1',
+                        'points': 50,
+                        'description': 'Test description',
+                        'due': 'October 17, 2023',
+                        'due_today': False
+                    }
+                }
+            }
+        }
+        func_result = cf.get_all_pending_assignments(courses=courses)
+        test_result = {
+            'Test Course Name': {
+                'Assignment ID': {
+                    'name': 'Assignment 1',
+                    'points': 50,
+                    'description': 'Test description',
+                    'due': 'October 17, 2023',
+                    'due_today': False
+                }
+            }
+        }
+        self.assertEqual(func_result, test_result)
+
+    def test_empty_course_name(self):
+        courses = {
+            'Test Key': {
+                'course_name': None,
+                'pending_assignments': {
+                    'Assignment ID': {
+                        'name': 'Assignment 1',
+                        'points': 50,
+                        'description': 'Test description',
+                        'due': 'October 17, 2023',
+                        'due_today': False
+                    }
+                }
+            }
+        }
+        func_result = cf.get_all_pending_assignments(courses=courses)
+        test_result = {
+            'Course Not Found': {
+                'Assignment ID': {
+                    'name': 'Assignment 1',
+                    'points': 50,
+                    'description': 'Test description',
+                    'due': 'October 17, 2023',
+                    'due_today': False
+                }
+            }
+        }
+
+        self.assertEqual(func_result, test_result)
 
 
 class TestGetAllCoursesNames(unittest.TestCase):
@@ -9,7 +77,7 @@ class TestGetAllCoursesNames(unittest.TestCase):
         test_result = None
         self.assertEqual(func_result, test_result)
 
-    def test_get_all_course(self):
+    def test_get_one_course(self):
         courses = {
             'test': {
                 'course_name': 'Course 1'
@@ -189,6 +257,27 @@ class TestGetSection(unittest.TestCase):
         func_result = cf.get_section(courses=courses, course_key=course_key)
         test_result = 'Section'
         self.assertEqual(func_result, test_result)
+
+    def test_empty_value(self):
+        courses = {
+            'Test Key': {}
+        }
+        course_key = 'Test Key'
+        func_result = cf.get_section(courses=courses, course_key=course_key)
+        test_result = None
+        self.assertEqual(func_result, test_result)
+
+    def test_empty_name_value(self):
+        courses = {
+            'Test Key': {
+                'original_name': None
+            }
+        }
+        course_key = 'Test Key'
+        func_result = cf.get_section(courses=courses, course_key=course_key)
+        test_result = None
+        self.assertEqual(func_result, test_result)
+
 
 if __name__ == '__main__':
     unittest.main()

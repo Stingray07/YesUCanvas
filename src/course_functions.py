@@ -7,7 +7,11 @@ def get_all_pending_assignments(courses):
 
     assignments = {}
     for course_key, course_value in courses.items():
-        assignments[course_value['course_name']] = course_value['pending_assignments']
+        if courses[course_key].get('course_name'):
+            assignments[course_value['course_name']] = course_value['pending_assignments']
+        else:
+            for assignment_id, assignment_value in course_value['pending_assignments'].items():
+                assignments['Course Not Found'] =
 
     return assignments
 
@@ -74,6 +78,9 @@ def get_section(courses, course_key):
     if course_key not in courses:
         return None
 
+    if not courses[course_key].get('original_name'):
+        return None
+
     sep_found = False
     section = ''
     for c in courses[course_key]['original_name']:
@@ -83,9 +90,7 @@ def get_section(courses, course_key):
         elif c == '|' and section:
             return section
 
-        if sep_found:
+        if sep_found and c != ' ':
             section += c
 
     return section
-
-

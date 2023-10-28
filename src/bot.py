@@ -70,6 +70,7 @@ async def listen_to_assignments(message, courses, cache):
         if not cache:
             cache = cf.get_all_pending_assignments(courses=courses)
             print('Cached Assignments from assignments listener')
+            format_data(cache)
 
         await send_assignment_messages(message=message, pending_assignments=cache)
 
