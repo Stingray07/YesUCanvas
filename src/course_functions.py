@@ -10,8 +10,10 @@ def get_all_pending_assignments(courses):
         if courses[course_key].get('course_name'):
             assignments[course_value['course_name']] = course_value['pending_assignments']
         else:
+            if not assignments.get('Course Not Found'):
+                assignments['Course Not Found'] = {}
             for assignment_id, assignment_value in course_value['pending_assignments'].items():
-                assignments['Course Not Found'] =
+                assignments['Course Not Found'][assignment_id] = assignment_value
 
     return assignments
 
@@ -27,7 +29,7 @@ def get_all_due_today(assignments):
             continue
 
         for assignment_id, assignment_value in course_value.items():
-            if assignments[course_key][assignment_id]['due_today']:
+            if assignments[course_key][assignment_id].get('due_today'):
                 due_today[assignment_id] = assignment_value
 
     return due_today

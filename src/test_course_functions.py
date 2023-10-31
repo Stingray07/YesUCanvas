@@ -3,12 +3,12 @@ from unittest.mock import patch
 import course_functions as cf
 
 
-class TestGetAllPendingAnnouncements(unittest.TestCase):
+class TestGetAllPendingAssignments(unittest.TestCase):
     def test_null_courses(self):
         courses = {}
-        func_result = cf.get_all_pending_assignments(courses=courses)
-        test_result = None
-        self.assertEqual(func_result, test_result)
+        actual = cf.get_all_pending_assignments(courses=courses)
+        expected = None
+        self.assertEqual(actual, expected)
 
     def test_get_one_pending_announcements(self):
         courses = {
@@ -23,10 +23,10 @@ class TestGetAllPendingAnnouncements(unittest.TestCase):
                         'due_today': False
                     }
                 }
-            }
+            },
         }
-        func_result = cf.get_all_pending_assignments(courses=courses)
-        test_result = {
+        actual = cf.get_all_pending_assignments(courses=courses)
+        expected = {
             'Test Course Name': {
                 'Assignment ID': {
                     'name': 'Assignment 1',
@@ -37,7 +37,7 @@ class TestGetAllPendingAnnouncements(unittest.TestCase):
                 }
             }
         }
-        self.assertEqual(func_result, test_result)
+        self.assertEqual(actual, expected)
 
     def test_empty_course_name(self):
         courses = {
@@ -54,8 +54,8 @@ class TestGetAllPendingAnnouncements(unittest.TestCase):
                 }
             }
         }
-        func_result = cf.get_all_pending_assignments(courses=courses)
-        test_result = {
+        actual = cf.get_all_pending_assignments(courses=courses)
+        expected = {
             'Course Not Found': {
                 'Assignment ID': {
                     'name': 'Assignment 1',
@@ -67,6 +67,289 @@ class TestGetAllPendingAnnouncements(unittest.TestCase):
             }
         }
 
+        self.assertEqual(actual, expected)
+
+    def test_multiple_empty_course_name(self):
+        courses = {
+            'Test Key': {
+                'course_name': None,
+                'pending_assignments': {
+                    'Assignment ID': {
+                        'name': 'Assignment 1',
+                        'points': 50,
+                        'description': 'Test description',
+                        'due': 'October 17, 2023',
+                        'due_today': False
+                    }
+                }
+            },
+            'Test Key 2': {
+                'course_name': None,
+                'pending_assignments': {
+                    'Assignment ID 2': {
+                        'name': 'Assignment 2',
+                        'points': 50,
+                        'description': ' Test description 2',
+                        'due': 'November 10, 2025',
+                        'due_today': False
+                    }
+                }
+            }
+        }
+        actual = cf.get_all_pending_assignments(courses=courses)
+        expected = {
+            'Course Not Found': {
+                'Assignment ID': {
+                    'name': 'Assignment 1',
+                    'points': 50,
+                    'description': 'Test description',
+                    'due': 'October 17, 2023',
+                    'due_today': False
+                },
+                'Assignment ID 2': {
+                    'name': 'Assignment 2',
+                    'points': 50,
+                    'description': ' Test description 2',
+                    'due': 'November 10, 2025',
+                    'due_today': False
+                }
+            }
+        }
+
+        self.assertEqual(actual, expected)
+
+    def test_multiple_one_course_name_empty(self):
+        courses = {
+            'Test Key': {
+                'course_name': None,
+                'pending_assignments': {
+                    'Assignment ID': {
+                        'name': 'Assignment 1',
+                        'points': 50,
+                        'description': 'Test description',
+                        'due': 'October 17, 2023',
+                        'due_today': False
+                    }
+                }
+            },
+            'Test Key 2': {
+                'course_name': 'Course 2',
+                'pending_assignments': {
+                    'Assignment ID 2': {
+                        'name': 'Assignment 2',
+                        'points': 50,
+                        'description': ' Test description 2',
+                        'due': 'November 10, 2025',
+                        'due_today': False
+                    }
+                }
+            }
+        }
+        actual = cf.get_all_pending_assignments(courses=courses)
+        expected = {
+            'Course Not Found': {
+                'Assignment ID': {
+                    'name': 'Assignment 1',
+                    'points': 50,
+                    'description': 'Test description',
+                    'due': 'October 17, 2023',
+                    'due_today': False
+                }
+            },
+            'Course 2': {
+                'Assignment ID 2': {
+                    'name': 'Assignment 2',
+                    'points': 50,
+                    'description': ' Test description 2',
+                    'due': 'November 10, 2025',
+                    'due_today': False
+                }
+            }
+        }
+
+        self.assertEqual(actual, expected)
+
+
+class TestGetAllDueToday(unittest.TestCase):
+    def test_null_assignments(self):
+        assignments = {}
+        actual = cf.get_all_due_today(assignments=assignments)
+        expected = None
+        self.assertEqual(actual, expected)
+
+    def test_get_one_due_today_false(self):
+        assignments = {
+            'Test Course': {
+                '452465': {
+                    "name": "Assignment 1",
+                    "points": 50.0,
+                    "description": 'Assignment 1 description',
+                    "due": "November 04, 2023 03:59 PM",
+                    "due_today": False
+                }
+            }
+        }
+        actual = cf.get_all_due_today(assignments=assignments)
+        expected = {}
+        self.assertEqual(actual, expected)
+
+    def test_get_one_due_today_true(self):
+        assignments = {
+            'Test Course': {
+                '452465': {
+                    "name": "Assignment 1",
+                    "points": 50.0,
+                    "description": 'Assignment 1 description',
+                    "due": "November 04, 2023 03:59 PM",
+                    "due_today": True
+                }
+            }
+        }
+        actual = cf.get_all_due_today(assignments=assignments)
+        expected = {
+            '452465': {
+                "name": "Assignment 1",
+                "points": 50.0,
+                "description": 'Assignment 1 description',
+                "due": "November 04, 2023 03:59 PM",
+                "due_today": True
+            }
+        }
+        self.assertEqual(actual, expected)
+
+    def test_empty_course_value(self):
+        assignments = {
+            'Test Course': {}
+        }
+        actual = cf.get_all_due_today(assignments=assignments)
+        expected = {}
+        self.assertEqual(actual, expected)
+
+    def test_multiple_true_one_course(self):
+        assignments = {
+            'Test Course': {
+                '452465': {
+                    "name": "Assignment 1",
+                    "points": 50.0,
+                    "description": 'Assignment 1 description',
+                    "due": "November 04, 2023 03:59 PM",
+                    "due_today": True
+                },
+                '2': {
+                    "name": "Assignment 2",
+                    "points": 10.0,
+                    "description": 'Assignment 2 description',
+                    "due": "November 25, 2029 9:00 PM",
+                    "due_today": True
+                }
+            }
+        }
+        actual = cf.get_all_due_today(assignments=assignments)
+        expected = {
+            '452465': {
+                "name": "Assignment 1",
+                "points": 50.0,
+                "description": 'Assignment 1 description',
+                "due": "November 04, 2023 03:59 PM",
+                "due_today": True
+            },
+            '2': {
+                "name": "Assignment 2",
+                "points": 10.0,
+                "description": 'Assignment 2 description',
+                "due": "November 25, 2029 9:00 PM",
+                "due_today": True
+            }
+        }
+        self.assertEqual(actual, expected)
+
+    def test_multiple_false_one_course(self):
+        assignments = {
+            'Test Course': {
+                '452465': {
+                    "name": "Assignment 1",
+                    "points": 50.0,
+                    "description": 'Assignment 1 description',
+                    "due": "November 04, 2023 03:59 PM",
+                    "due_today": False
+                },
+                '2': {
+                    "name": "Assignment 2",
+                    "points": 10.0,
+                    "description": 'Assignment 2 description',
+                    "due": "November 25, 2029 9:00 PM",
+                    "due_today": False
+                }
+            }
+        }
+        func_result = cf.get_all_due_today(assignments=assignments)
+        test_result = {}
+        self.assertEqual(func_result, test_result)
+        # refactor var names
+
+    def test_multiple_false_multiple_course(self):
+        assignments = {
+            'Test Course': {
+                '452465': {
+                    "name": "Assignment 1",
+                    "points": 50.0,
+                    "description": 'Assignment 1 description',
+                    "due": "November 04, 2023 03:59 PM",
+                    "due_today": False
+                }
+            },
+            'Test Course 2': {
+                '2': {
+                    "name": "Assignment 2",
+                    "points": 10.0,
+                    "description": 'Assignment 2 description',
+                    "due": "November 25, 2029 9:00 PM",
+                    "due_today": False
+                }
+            }
+        }
+        func_result = cf.get_all_due_today(assignments=assignments)
+        test_result = {}
+        self.assertEqual(func_result, test_result)
+
+    def test_multiple_true_multiple_course(self):
+        assignments = {
+            'Test Course': {
+                '452465': {
+                    "name": "Assignment 1",
+                    "points": 50.0,
+                    "description": 'Assignment 1 description',
+                    "due": "November 04, 2023 03:59 PM",
+                    "due_today": True
+                }
+            },
+            'Test Course 2': {
+                '2': {
+                    "name": "Assignment 2",
+                    "points": 10.0,
+                    "description": 'Assignment 2 description',
+                    "due": "November 25, 2029 9:00 PM",
+                    "due_today": True
+                }
+            }
+        }
+        func_result = cf.get_all_due_today(assignments=assignments)
+        test_result = {
+            '452465': {
+                "name": "Assignment 1",
+                "points": 50.0,
+                "description": 'Assignment 1 description',
+                "due": "November 04, 2023 03:59 PM",
+                "due_today": True
+            },
+            '2': {
+                "name": "Assignment 2",
+                "points": 10.0,
+                "description": 'Assignment 2 description',
+                "due": "November 25, 2029 9:00 PM",
+                "due_today": True
+            }
+        }
         self.assertEqual(func_result, test_result)
 
 
