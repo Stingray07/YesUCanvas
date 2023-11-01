@@ -85,14 +85,14 @@ def get_section(courses, course_key):
 
     sep_found = False
     section = ''
+
     for c in courses[course_key]['original_name']:
         if c == '|' and not section:
             sep_found = True
             continue
+
         elif c == '|' and section:
-            return section
+            return section.strip()
 
-        if sep_found and c != ' ':
+        if sep_found:
             section += c
-
-    return section

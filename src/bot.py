@@ -40,12 +40,28 @@ def run_bot():
         await listen_to_teacher(message=message, courses=courses)
         await listen_to_announcement(message=message, courses=courses)
         await listen_to_section(message=message, courses=courses)
+        await listen_to_help(message=message)
         due_today_cache = await listen_to_due_today(message=message,
                                                     courses=courses,
                                                     pending_assignments=assignments_cache,
                                                     cache=due_today_cache)
 
     bot.run(BOT_TOKEN)
+
+
+async def listen_to_help(message):
+    if message.content.startswith('!help'):
+        await message.channel.typing()
+        msg = '''**Available Commands:**
+                - `!courses`: Gives all current courses for the current trimester
+                - `!all_assignments`: Gives all unsubmitted assignments
+                - `!teacher <section>`: Gives the name of the teacher for the given section
+                - `!anm <section>`: Gives the latest announcement for the given section
+                - `!section <subject>`: Gives the section of the given subject
+                - `!due_today`: Gives all assignments currently due today'''
+
+        await message.channel.send(msg)
+# fix help message
 
 
 async def listen_to_courses(message, courses, cache):
