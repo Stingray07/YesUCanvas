@@ -199,8 +199,6 @@ def is_today(time):
     try:
         given_time = datetime.fromisoformat(time).date()
         current_date = datetime.now().date()
-        # print(f"given time = {given_time}")
-        # print(f"current_date = {current_date}")
         return given_time == current_date
 
     except ValueError:

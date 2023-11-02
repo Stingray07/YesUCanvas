@@ -1,5 +1,4 @@
 import unittest
-from unittest.mock import patch
 import course_functions as cf
 
 
