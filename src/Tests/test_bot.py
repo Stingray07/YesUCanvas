@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import AsyncMock, Mock
-from consts import help_message
-import bot
+from src.Canvas.consts import help_message
+from src.Bot import listeners as listen
 
 
 class TestListenToHelp(unittest.IsolatedAsyncioTestCase):
@@ -13,7 +13,7 @@ class TestListenToHelp(unittest.IsolatedAsyncioTestCase):
         message.channel.typing = AsyncMock()
         message.channel.send = AsyncMock()
 
-        await bot.listen_to_help(message=message)
+        await listen.listen_to_help(message=message)
 
         message.channel.typing.assert_awaited_once()
         message.channel.send.assert_awaited_once_with(help_message)
@@ -25,7 +25,7 @@ class TestListenToHelp(unittest.IsolatedAsyncioTestCase):
         message.channel.typing = AsyncMock()
         message.channel.send = AsyncMock()
 
-        await bot.listen_to_help(message=message)
+        await listen.listen_to_help(message=message)
 
         message.channel.typing.assert_not_awaited()
         message.channel.send.assert_not_awaited()
@@ -34,7 +34,7 @@ class TestListenToHelp(unittest.IsolatedAsyncioTestCase):
 class TestListenToCourses(unittest.IsolatedAsyncioTestCase):
 
     @staticmethod
-    async def listen_to_courses_never():
+    async def test_listen_to_courses_never():
         message = Mock()
         message.content = "!"
         message.channel.typing = AsyncMock()
@@ -46,12 +46,32 @@ class TestListenToCourses(unittest.IsolatedAsyncioTestCase):
         }
         cache = []
 
-        await bot.listen_to_courses(message=message, courses=courses, cache=cache)
+        await listen.listen_to_courses(message=message, courses=courses, cache=cache)
 
         message.channel.typing.assert_not_awaited()
         message.channel.send.assert_not_awaited()
 
-    # test listen to courses
+    @staticmethod
+    async def test_listen_to_courses_null_cache():
+        message = Mock()
+        message.content = "!courses"
+        message.channel.typing = AsyncMock()
+        message.channel.send = AsyncMock()
+
+        courses = {
+            'Course 1': {
+                'course_name': 'Course 1'
+            },
+            'Course 2': {
+                'course_name': 'Course 2'
+            }
+        }
+        cache = []
+
+        await listen.listen_to_courses(message=message, courses=courses, cache=cache)
+
+        message.channel.typing.assert_awaited()
+        message.channel.send.assert_awaited()
 
 
 if __name__ == '__main__':

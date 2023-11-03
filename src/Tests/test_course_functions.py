@@ -1,5 +1,5 @@
 import unittest
-import course_functions as cf
+from src.Canvas import course_functions as cf
 
 
 class TestGetAllPendingAssignments(unittest.TestCase):

@@ -17,6 +17,13 @@ mock = {
                 "description": "<h4><em><strong>Instructions for the Introduction:</strong></em></h4>\n<ul>\n<li><strong>Team Creation</strong>\n<ul>\n<li><strong>You are to work with your research teams that you have form for this subject.</strong><span> Make sure that all members are contributing to your output.</span></li>\n<li><strong>Teams should resolve internal problems on their own when possible.</strong><span>&nbsp;</span>In the event of significant problems regarding team composition in the future, all members shall be asked individually about their opinions on it. Afterwards, a resolution will be given.</li>\n<li><strong>Team members who are not participating in the group activities will be removed from the group and are expected to create an entirely new research output.<span>&nbsp;</span></strong>This individual cannot go to other teams or will not form teams with other students removed from their group.</li>\n</ul>\n</li>\n<li><strong>Data Gathering</strong>\n<ul>\n<li><strong>You are to create the introduction for your paper.&nbsp;</strong>This should include the key parts of the introduction, listed below:\n<ul>\n<li>Background of the study<br>\n<ul>\n<li><i>Introduction of the topic</i></li>\n<li><i>Research gaps</i></li>\n<li><i>Current body of knowledge</i></li>\n<li><i>How the study differs from other researches</i></li>\n</ul>\n</li>\n<li>Objectives<br>\n<ul>\n<li><em>General objectives</em></li>\n<li><em>Specific objectives</em></li>\n</ul>\n</li>\n<li>Significance of the study</li>\n</ul>\n</li>\n<li><strong>Include the references for the introduction. </strong><span>Ensure that you follow the modified APA format for the references and place your reference list at the end of the introduction</span>. You must also follow the in-text citation format of the ACM style.\n<ul>\n<li><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum <strong>[1]</strong>.</span></li>\n<li><span><strong>[1] Brunero, S., Cowan, D., and Fairbrother, G. 2015. Reducing emotional distress in nurses using cognitive behavioral therapy: A preliminary program evaluation. Journal of Nursing Science, 5(2), 109-115. doi:10.1080/10723023487216</strong><br></span></li>\n</ul>\n</li>\n<li><strong>Make sure to follow the attached template for your output of this activity.<span>&nbsp;</span></strong><span>Make sure you name the file according to the following format - CCS5_Introduction-Lastname1_Lastname2_Lastname3 (e.g. CCS5_Introduction-Hanbal_Malabanan_Valdez).</span></li>\n</ul>\n</li>\n</ul>",
                 "due": "November 04, 2023 03:59 PM",
                 "due_today": False
+            },
+            "465598": {
+                "name": "Module 5 - Quiz on Computer Instruction Cycles",
+                "points": 30.0,
+                "description": "<h4><em><strong>Instructions for this Quiz:</strong></em></h4>\n<ol>\n<li>This is a<span>&nbsp;</span><strong>multiple-choice</strong><span>&nbsp;</span>quiz.</li>\n<li><strong>Read and understand the question and then choose the best answer from the given choices.</strong></li>\n<li><strong>You are only given one attempt for this quiz.</strong><span>&nbsp;</span>Make sure you have selected the correct answers before submitting the quiz.</li>\n</ol>",
+                "due": "November 18, 2023 03:59 PM",
+                "due_today": False
             }
         },
         "teacher": "Ibrahim Hanbal",
@@ -84,6 +91,25 @@ mock = {
                     "Module 4 - Resources",
                     "4.0 - Computer Memory.pdf"
                 ]
+            },
+            "241436": {
+                "name": "Module 5 - Computer Instruction Cycles",
+                "items": [
+                    "Module 5 - Tasks",
+                    "Module 5 - Quiz on Computer Instruction Cycles",
+                    "Module 5 - Resources",
+                    "5.0 - Computer Instruction Cycles.pdf",
+                    "CCS5 - Module 5 Video Lecture"
+                ]
+            },
+            "243035": {
+                "name": "Module 6 - Computer Arithmetic",
+                "items": [
+                    "Module 6 - Tasks",
+                    "Module 6 - Quiz on Computer Arithmetic",
+                    "Module 6 - Resources",
+                    "6.0 - Computer Arithmetic.pdf"
+                ]
             }
         }
     },
@@ -96,8 +122,15 @@ mock = {
             "463899": {
                 "name": "Creating your Introduction - CCS2",
                 "points": 50.0,
-                "description": "<h4><em><strong>Instructions for the Introduction:</strong></em></h4>\n<ul>\n<li><strong>Team Creation</strong>\n<ul>\n<li><strong>You are to work with your research teams that you have form for this subject.</strong><span> Make sure that all members are contributing to your output.</span></li>\n<li><strong>Teams should resolve internal problems on their own when possible.</strong><span>&nbsp;</span>In the event of significant problems regarding team composition in the future, all members shall be asked individually about their opinions on it. Afterwards, a resolution will be given.</li>\n<li><strong>Team members who are not participating in the group activities will be removed from the group and are expected to create an entirely new research output.<span>&nbsp;</span></strong>This individual cannot go to other teams or will not form teams with other students removed from their group.</li>\n</ul>\n</li>\n<li><strong>Data Gathering</strong>\n<ul>\n<li><strong>You are to create the introduction for your paper.&nbsp;</strong>This should include the key parts of the introduction, listed below:\n<ul>\n<li>Background of the study<br>\n<ul>\n<li><i>Introduction of the topic</i></li>\n<li><i>Research gaps</i></li>\n<li><i>Current body of knowledge</i></li>\n<li><i>How the study differs from other researches</i></li>\n</ul>\n</li>\n<li>Objectives<br>\n<ul>\n<li><em>General objectives</em></li>\n<li><em>Specific objectives</em></li>\n</ul>\n</li>\n<li>Significance of the study</li>\n</ul>\n</li>\n<li><strong>Include the references for the introduction. </strong><span>Ensure that you follow the modified APA format for the references and place your reference list at the end of the introduction</span>. You must also follow the in-text citation format of the ACM style.\n<ul>\n<li><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum <strong>[1]</strong>.</span></li>\n<li><span><strong>[1] Brunero, S., Cowan, D., and Fairbrother, G. 2015. Reducing emotional distress in nurses using cognitive behavioral therapy: A preliminary program evaluation. Journal of Nursing Science, 5(2), 109-115. doi:10.1080/10723023487216</strong><br></span></li>\n</ul>\n</li>\n<li><strong>Make sure to follow the attached template for your output of this activity.<span>&nbsp;</span></strong><span>Make sure you name the file according to the following format - CCS2_Introduction-Lastname1_Lastname2_Lastname3 (e.g. CCS2_Introduction-Hanbal_Malabanan_Valdez).</span></li>\n</ul>\n</li>\n</ul>",
+                "description": "<h4><em><strong>Instructions for the Introduction:</strong></em></h4>\n<ul>\n<li><strong>Team Creation</strong>\n<ul>\n<li><strong>You are to work with your research teams that you have form for this subject.</strong><span> Make sure that all members are contributing to your output.</span></li>\n<li><strong>Teams should resolve internal problems on their own when possible.</strong><span>&nbsp;</span>In the event of significant problems regarding team composition in the future, all members shall be asked individually about their opinions on it. Afterwards, a resolution will be given.</li>\n<li><strong>Team members who are not participating in the group activities will be removed from the group and are expected to create an entirely new research output.<span>&nbsp;</span></strong>This individual cannot go to other teams or will not form teams with other students removed from their group.</li>\n</ul>\n</li>\n<li><strong>Writing the Introduction</strong>\n<ul>\n<li><strong>You are to choose a minimum of two (2) algorithms to focus on for your study.&nbsp;</strong>Take note that for the two algorithms chosen, you will be doing an in-depth analysis of the features, characteristics, and performance of the chosen algorithms, focusing on the performance of the chosen algorithms. Make sure to not only compare the raw performance of the algorithms (e.g. time and space efficiency) but also the performance of the algorithms in different contexts (e.g. time efficiency in Java compared to Python).</li>\n<li><strong>You are to create the introduction for your paper.&nbsp;</strong>This should include the key parts of the introduction, listed below:\n<ul>\n<li>Background of the study<br>\n<ul>\n<li><i>Introduction of the topic</i></li>\n<li><i>Research gaps</i></li>\n<li><i>Current body of knowledge</i></li>\n<li><i>How the study differs from other researches</i></li>\n</ul>\n</li>\n<li>Objectives<br>\n<ul>\n<li><em>General objectives</em></li>\n<li><em>Specific objectives</em></li>\n</ul>\n</li>\n<li>Significance of the study</li>\n</ul>\n</li>\n<li><strong><span>When writing your introduction, focus on the </span>algorithm(s) that you will be analyzing and their performance metrics, as well as different comparisons of their performance metrics in different scenarios<span>, such as when the algorithm is implemented in one programming language compared to another programming language. </span></strong>You can check the possible avenues of comparing the performance of an algorithm by checking the slides in Module 3.&nbsp;Make sure that you are able to utilize your chosen performance metrics in order to analyze the performance of your chosen algorithms.</li>\n<li><strong>Include the references for the introduction. </strong><span>Ensure that you follow the modified APA format for the references and place your reference list at the end of the introduction</span>. You must also follow the in-text citation format of the ACM style.\n<ul>\n<li><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum <strong>[1]</strong>.</span></li>\n<li><span><strong>[1] Brunero, S., Cowan, D., and Fairbrother, G. 2015. Reducing emotional distress in nurses using cognitive behavioral therapy: A preliminary program evaluation. Journal of Nursing Science, 5(2), 109-115. doi:10.1080/10723023487216</strong><br></span></li>\n</ul>\n</li>\n<li><strong>Make sure to follow the attached template for your output of this activity.<span>&nbsp;</span></strong><span>Make sure you name the file according to the following format - CCS2_Introduction-Lastname1_Lastname2_Lastname3 (e.g. CCS2_Introduction-Hanbal_Malabanan_Valdez).</span></li>\n</ul>\n</li>\n</ul>",
                 "due": "November 04, 2023 03:59 PM",
+                "due_today": False
+            },
+            "465600": {
+                "name": "Module 5 - Quiz on Analysis of Recursive Algorithms",
+                "points": 100.0,
+                "description": "<h4><em><strong>Instructions for this Quiz:</strong></em></h4>\n<ol>\n<li>This is a<span>&nbsp;</span><strong>problem-solving</strong><span>&nbsp;</span>quiz.</li>\n<li><strong>Read and understand each question and solve for the data being asked for.</strong></li>\n<li><strong>Make sure to show your solutions for each question.</strong></li>\n<li><strong>You are only given one attempt for this quiz.</strong><span>&nbsp;</span>Make sure you have selected the correct answers before submitting the quiz.</li>\n</ol>",
+                "due": "November 18, 2023 03:59 PM",
                 "due_today": False
             }
         },
@@ -165,6 +198,16 @@ mock = {
                     "4.0 - Analysis of Non-Recursive Algorithms.pdf",
                     "4.0 - Analysis of Non-Recursive Algorithms Quiz - Answer Key.pdf"
                 ]
+            },
+            "242522": {
+                "name": "Module 5 - Analysis of Recursive Algorithms",
+                "items": [
+                    "Module 5 - Tasks",
+                    "Module 5 - Quiz on Analysis of Recursive Algorithms",
+                    "Module 5 - Resources",
+                    "5.0 - Analysis of Recursive Algorithms.pdf",
+                    "CCS2 - Module 5 Video Lecture"
+                ]
             }
         }
     },
@@ -172,7 +215,7 @@ mock = {
         "course_name": "ETHICS",
         "course_id": 32785,
         "original_name": "SOC SCI 101N | CITCS 2B Group A | ETHICS",
-        "latest_announcement": "<p>Good morning class.</p><p>We meet face to face today by 11:30am at U402.</p><p>Everyone is required to attend as I will be giving your midterm grades.</p><p>Thank you.</p>",
+        "latest_announcement": "<p>Good morning class.</p><p>We conduct our class today asynchronously. Everyone is instructed to watch the film Would You Rather. It is available under module 5.</p><p>Note of the ethical dilemmas presented in the film in relation to all the moral theories we have previously discussed. An activity will be given next week about the film.&nbsp;</p><p>The members of Reading 9 will be reciting this coming Monday (Nov. 6, 2023), so please be ready.</p><p>Thank you.</p>",
         "pending_assignments": {},
         "teacher": "Brylle Garnet Daniel",
         "module": {
@@ -224,7 +267,6 @@ mock = {
                     "R6. Kantianism.docx",
                     "Vid Lec -Utilitarianism.mp4",
                     "Vid Lec -Kantianism.mp4",
-                    "Film: Would You Rather-2",
                     "Learning Task(s)",
                     "Activity R5-R6. (MCQ + Modified T/F)"
                 ]
@@ -251,6 +293,7 @@ mock = {
                     "Learning Targets",
                     "Module 5: Learning Outcomes and Performance Indicators-2",
                     "Lessons",
+                    "Film: Would You Rather",
                     "R10. Applied Ethics - What Is Morality.docx",
                     "R11. Euthanasia.docx",
                     "R12. Death Penalty.docx",
@@ -284,23 +327,8 @@ mock = {
         "course_name": "GRAPHICS DESIGN",
         "course_id": 32705,
         "original_name": "CCS12 | CITCS 2B Group A | GRAPHICS DESIGN",
-        "latest_announcement": "<p>Good afternoon,</p><p>Apologies for the delay of this message, but please be informed of today's synchronous learning session at 2:10pm. It will just be a short session on the Unit 5 content.</p><p>Meeting details are still the same.</p><p>For your guidance. Please disseminate.</p>",
-        "pending_assignments": {
-            "459201": {
-                "name": "Lab Act 3: Organization Brochure",
-                "points": 150.0,
-                "description": "<h4>Individually or in pairs, design and print a brochure introducing your organization.</h4>\n<p><strong>Brochure</strong></p>\n<ul>\n<li>You are to create a tri-fold brochure that is meant to introduce your organization to your target customers.</li>\n<li>This introductory brochure may be posted at the front of your physical space, or if you are introducing your organization in a convention or exhibit.</li>\n</ul>\n<p><strong>Final Output</strong></p>\n<ul>\n<li>Please use the company and content created from the previous activities (i.e. brand book, etc.).</li>\n<li>Please include the following information:\n<ul>\n<li>About the company</li>\n<li>Products / services offered</li>\n<li>Frequently asked questions</li>\n<li>Contact information</li>\n<li>Other relevant content</li>\n</ul>\n</li>\n<li>For illustrations, please make sure that you are using photos that:\n<ul>\n<li>No need for credit: photos you have taken on your own, attribute-free photos</li>\n<li>With credit: photos that require attribution, photos that are royalty-free, photos under fair use or creative commons, AI-generated photos</li>\n</ul>\n</li>\n</ul>\n<p><strong>Technical Specifications</strong></p>\n<ul>\n<li>Image size: 8.27\" x 11.69\" (A4) or 8.5\" x 11\" (short)</li>\n<li>Resolution: 150dpi - 300dpi</li>\n<li>Bleed lines: 1/8\"</li>\n</ul>\n<p><strong>Output and Submission</strong></p>\n<ul>\n<li>You are to do this activity based on your original teams.</li>\n<li>You are to submit a printed version of your brochure.</li>\n</ul>",
-                "due": "October 18, 2023 06:10 AM",
-                "due_today": False
-            },
-            "462020": {
-                "name": "CCS12 Midterm Examination - Part 1",
-                "points": 50.0,
-                "description": "<p><span>Read and understand the questions regarding introduction to graphics design, branding, logo design, the graphic design environment, and printed materials. </span><span>Choose the BEST answer based on the choices given. (25 items, 50 pts.)</span></p>",
-                "due": "October 18, 2023 07:30 AM",
-                "due_today": False
-            }
-        },
+        "latest_announcement": "",
+        "pending_assignments": {},
         "teacher": "Lovely Jenn Reformado",
         "module": {
             "223389": {
@@ -399,7 +427,26 @@ mock = {
                 "name": "Midterm Examination (October 18, 2023)",
                 "items": [
                     "CCS12 Midterm Examination - Part 1",
-                    "CCS12 Midterm Examination - Part 2"
+                    "CCS12 Midterm Examination - Part 2",
+                    "CCS12 Midterm Grades - CITCS 2B"
+                ]
+            },
+            "241679": {
+                "name": "Module 6: Digital Materials",
+                "items": [
+                    "1. Digital Materials",
+                    "6.1.1: Introduction to Digital Materials",
+                    "6.1.2: Introduction to UI/UX Design",
+                    "6.1.3: Introduction to Website Design",
+                    "2. Class Standing",
+                    "6.2.1: Website Content",
+                    "6.2.2: Website Assets"
+                ]
+            },
+            "241684": {
+                "name": "Laboratory Activities - Finals",
+                "items": [
+                    "Lab Act 4: Organization Website"
                 ]
             }
         }
@@ -408,7 +455,7 @@ mock = {
         "course_name": "INFORMATION MANAGEMENT",
         "course_id": 32687,
         "original_name": "CC5 | CITCS 2B Group A | INFORMATION MANAGEMENT",
-        "latest_announcement": "<p data-sourcepos=\"3:1-3:29\"><strong>Good afternoon, everyone!</strong></p><p data-sourcepos=\"5:1-5:67\">Please note the following information for the upcoming examination:</p><p data-sourcepos=\"7:1-8:76\"><strong>Date:</strong> October 17, 2023 (Tuesday)</p><p data-sourcepos=\"7:1-8:76\"><strong>Room:</strong> Since you are Group A, you will be using the same rooms as before:</p><ul data-sourcepos=\"9:1-11:0\"><li data-sourcepos=\"9:1-9:31\">10:10 AM - 11:30 AM: M303 LAB</li><li data-sourcepos=\"10:1-11:0\">11:30 AM - 12:50 PM: U402 LEC</li></ul><p data-sourcepos=\"12:1-12:28\"><strong>Topic Learning Outcomes:</strong></p><ul data-sourcepos=\"14:1-18:0\"><li data-sourcepos=\"14:1-14:67\">Identify the history of databases and their major transformations</li><li data-sourcepos=\"15:1-15:64\">Identify and translate entity relationships and business rules</li><li data-sourcepos=\"16:1-16:42\">Analyze and simulate the concepts of SQL</li><li data-sourcepos=\"17:1-18:0\">Analyze scenarios to construct the appropriate SQL queries</li></ul><p data-sourcepos=\"19:1-19:17\"><strong>Type of Exam:</strong></p><ul data-sourcepos=\"21:1-25:0\"><li data-sourcepos=\"21:1-21:17\">Multiple choice</li><li data-sourcepos=\"22:1-22:71\">Simulation - drawing the result set or result table of SQL statements</li><li data-sourcepos=\"23:1-23:38\">Analysis - writing of SQL statements</li><li data-sourcepos=\"24:1-25:0\">Translation - ERD and business rules</li></ul><p data-sourcepos=\"26:1-26:157\">This exam is <strong>60-70 minutes</strong> long. It will start <strong>exactly at 10:10 AM</strong> and close <strong>exactly at 11:20 AM</strong>. <strong>Latecomers will not be given any extension.</strong></p><p data-sourcepos=\"26:1-26:157\"><strong>Kindly acknowledge this announcement.</strong></p><p data-sourcepos=\"28:1-28:10\">Thank you!</p>",
+        "latest_announcement": "Face to face quiz shall start by 10:15. Please dont be late.",
         "pending_assignments": {},
         "teacher": "Charity Chinalpan",
         "module": {
@@ -477,6 +524,7 @@ mock = {
                     "Tasks",
                     "1.1-Basic SQL Exercise",
                     "2.1- Creating Tables using Live SQL",
+                    "2.2 - Creating Table using Live SQL2",
                     "3.1-Midterm Project",
                     "1 - 3 . Quiz"
                 ]
@@ -486,6 +534,14 @@ mock = {
                 "items": [
                     "CC5 Midterm Exam "
                 ]
+            },
+            "242616": {
+                "name": "Module 5 - Transferability",
+                "items": [
+                    "Resources",
+                    "5.1-Transferability.pdf",
+                    "Tasks"
+                ]
             }
         }
     },
@@ -493,7 +549,7 @@ mock = {
         "course_name": "PE",
         "course_id": 32769,
         "original_name": "PE 4N | CITCS 2B Group A | PHYSICAL EDUCATION 4",
-        "latest_announcement": "<p><span>Good morning everyone! for those who did not yet took the exam, I will be opening the exam on Monday 730-830am only. Thank you and God bless.&nbsp;&nbsp;</span></p>",
+        "latest_announcement": "<p>Good morming everyone! Please be in your proper attire today. Mode of Learning will be F2F. See you! \u263a\ufe0f</p>",
         "pending_assignments": {},
         "teacher": "Hector Cajigan",
         "module": {
@@ -559,6 +615,15 @@ mock = {
                     "ILO m5",
                     "ACQUIRING KNOWLEDGE M5"
                 ]
+            },
+            "242558": {
+                "name": "Module 6: Running",
+                "items": [
+                    "Activate Prior Knowledge M6",
+                    "ILO M6",
+                    "Acquire new knowledge m6",
+                    "Application M6"
+                ]
             }
         }
     },
@@ -572,4 +637,3 @@ mock = {
         "module": {}
     }
 }
-

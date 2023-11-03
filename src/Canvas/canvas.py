@@ -1,11 +1,10 @@
-from helper import format_data
 import os
 import requests
-from decorators import handle_req_errors
+from src.Canvas.decorators import handle_req_errors
 from dotenv import load_dotenv
-from consts import COURSES_URL, ANNOUNCEMENTS_URL, ACTIVE_ENROLLMENT_STATE
+from src.Canvas.consts import COURSES_URL, ANNOUNCEMENTS_URL, ACTIVE_ENROLLMENT_STATE
 from datetime import datetime
-from course_functions import get_course_code
+from src.Canvas.course_functions import get_course_code
 
 
 load_dotenv()
