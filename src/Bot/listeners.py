@@ -34,9 +34,21 @@ async def listen_to_assignments(message, courses, cache):
             print('Cached Assignments from assignments listener')
             format_data(cache)
 
-        await send_assignment_messages(message=message, pending_assignments=cache)
+        await send_assignments_messages(message=message, pending_assignments=cache)
 
     return cache
+
+
+async def listen_to_assignment(message, cache):
+    if message.content.startswith('!asm '):
+        await message.channel.typing()
+        assignment_id = message.content[5:].upper()
+        assignment = cf.get_assignment(assignments=cache, assignment_id=assignment_id)
+
+        for key, value in assignment:
+            await message.channel.typing()
+            message_str = f"{key} = {value}"
+            await message.channel.send(message_str)
 
 
 async def listen_to_teacher(message, courses):
@@ -98,17 +110,18 @@ async def listen_to_due_today(message, pending_assignments, courses, cache):
                 await message.channel.send('No Due Today')
                 return
 
+        format_data(cache)
         for assignment in cache:
             await message.channel.typing()
-            message_str = f"• {assignment['name']}"
+            message_str = f"• {cache[assignment]['name']}. ID = {assignment}"
             await message.channel.send(message_str)
 
     return cache
 
 
-async def send_assignment_messages(message, pending_assignments):
+async def send_assignments_messages(message, pending_assignments):
     for course, assignments in pending_assignments.items():
         await message.channel.typing()
         for assignment_id, assignment_info in assignments.items():
-            message_str = f"• {assignment_info['name']} ({course})"
+            message_str = f"• {assignment_info['name']} ({course}). ID = {assignment_id}"
             await message.channel.send(message_str)

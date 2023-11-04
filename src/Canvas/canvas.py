@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from src.Canvas.consts import COURSES_URL, ANNOUNCEMENTS_URL, ACTIVE_ENROLLMENT_STATE
 from datetime import datetime
 from src.Canvas.course_functions import get_course_code
+from src.helper import format_data
 
 
 load_dotenv()
@@ -13,7 +14,7 @@ HEADERS = {
     "Authorization": f"Bearer {API_KEY}"
 }
 PAGINATION_PAGE_NUMBER = 1
-PAGINATION_PER_PAGE = 20
+PAGINATION_PER_PAGE = 50
 
 
 @handle_req_errors
@@ -97,6 +98,8 @@ def get_pending_assignments(courses, course_key):
     response.raise_for_status()
     data = response.json()
 
+    format_data(data)
+
     if not data:
         return {}
 
@@ -119,6 +122,8 @@ def get_pending_assignments(courses, course_key):
             }
 
     return pending_assignments
+
+    # not all pending assignments are appearing
 
 
 @handle_req_errors

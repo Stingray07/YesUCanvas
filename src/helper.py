@@ -27,6 +27,7 @@ mock = {
             }
         },
         "teacher": "Ibrahim Hanbal",
+
         "module": {
             "230624": {
                 "name": "Final Project - Research Paper for CCS5",

@@ -169,6 +169,60 @@ class TestGetAllPendingAssignments(unittest.TestCase):
         self.assertEqual(expected, actual)
 
 
+class TestGetAssignment(unittest.TestCase):
+    def test_null_assignments(self):
+        assignments = {}
+        assignment_id = 'Assignment ID 1'
+        actual = cf.get_assignment(assignments=assignments, assignment_id=assignment_id)
+        expected = None
+        self.assertEqual(expected, actual)
+
+    def test_null_assignment_id(self):
+        assignments = {
+            'Assignment ID': {
+                'name': 'Assignment 1',
+                'points': 50,
+                'description': 'Test description',
+                'due': 'October 17, 2023',
+                'due_today': False
+            }
+        }
+        assignment_id = None
+        actual = cf.get_assignment(assignments=assignments, assignment_id=assignment_id)
+        expected = None
+        self.assertEqual(expected, actual)
+
+    def test_get_assignment(self):
+        assignments = {
+            'Assignment ID': {
+                'name': 'Assignment 1',
+                'points': 50,
+                'description': 'Test description',
+                'due': 'October 17, 2023',
+                'due_today': False
+            }
+        }
+        assignment_id = 'Assignment ID'
+        actual = cf.get_assignment(assignments=assignments, assignment_id=assignment_id)
+        expected = {
+            'name': 'Assignment 1',
+            'points': 50,
+            'description': 'Test description',
+            'due': 'October 17, 2023',
+            'due_today': False
+        }
+        self.assertEqual(expected, actual)
+
+    def test_null_assignment_value(self):
+        assignments = {
+            'Assignment ID': {}
+        }
+        assignment_id = 'Assignment ID'
+        actual = cf.get_assignment(assignments=assignments, assignment_id=assignment_id)
+        expected = None
+        self.assertEqual(expected, actual)
+
+
 class TestGetAllDueToday(unittest.TestCase):
     def test_null_assignments(self):
         assignments = {}

@@ -15,6 +15,16 @@ def get_all_pending_assignments(courses):
     return assignments
 
 
+def get_assignment(assignments, assignment_id):
+    if assignment_id not in assignments:
+        return None
+
+    if not assignments[assignment_id]:
+        return None
+
+    return assignments[assignment_id]
+
+
 def get_all_due_today(assignments):
     if not assignments:
         return None

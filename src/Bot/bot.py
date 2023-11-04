@@ -14,7 +14,7 @@ due_today_cache = {}
 def run_bot():
     print("REQUESTING COURSES FROM CANVAS...")
     courses = initialize_courses()
-    format_data(courses)
+    # format_data(courses)
     BOT_TOKEN = os.getenv('DISCORD_TOKEN')
     intents = discord.Intents.default()
     intents.message_content = True
@@ -44,5 +44,6 @@ def run_bot():
         await listen.listen_to_announcement(message=message, courses=courses)
         await listen.listen_to_section(message=message, courses=courses)
         await listen.listen_to_help(message=message)
+        await listen.listen_to_assignment(message=message, cache=assignments_cache)
 
     bot.run(BOT_TOKEN)
