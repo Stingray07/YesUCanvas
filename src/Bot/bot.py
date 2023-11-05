@@ -4,6 +4,7 @@ from src.Canvas.canvas import initialize_courses
 from dotenv import load_dotenv
 from src.Bot import listeners as listen
 from src.helper import format_data
+from src.helper import mock
 
 load_dotenv()
 all_courses_cache = []
@@ -13,7 +14,8 @@ due_today_cache = {}
 
 def run_bot():
     print("REQUESTING COURSES FROM CANVAS...")
-    courses = initialize_courses()
+    courses = mock
+    # courses = initialize_courses()
     # format_data(courses)
     BOT_TOKEN = os.getenv('DISCORD_TOKEN')
     intents = discord.Intents.default()

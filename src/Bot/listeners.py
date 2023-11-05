@@ -42,10 +42,13 @@ async def listen_to_assignments(message, courses, cache):
 async def listen_to_assignment(message, cache):
     if message.content.startswith('!asm '):
         await message.channel.typing()
-        assignment_id = message.content[5:].upper()
+        assignment_id = message.content[5:]
         assignment = cf.get_assignment(assignments=cache, assignment_id=assignment_id)
 
-        for key, value in assignment:
+        print(assignment_id)
+        format_data(cache)
+
+        for key, value in assignment['assignment_id']:
             await message.channel.typing()
             message_str = f"{key} = {value}"
             await message.channel.send(message_str)
@@ -123,5 +126,5 @@ async def send_assignments_messages(message, pending_assignments):
     for course, assignments in pending_assignments.items():
         await message.channel.typing()
         for assignment_id, assignment_info in assignments.items():
-            message_str = f"• {assignment_info['name']} ({course}). ID = {assignment_id}"
+            message_str = f"• **{assignment_info['name']}** \n({course}). \nID = {assignment_id}"
             await message.channel.send(message_str)

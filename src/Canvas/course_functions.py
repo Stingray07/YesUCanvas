@@ -1,3 +1,5 @@
+from src.helper import format_data
+
 def get_all_pending_assignments(courses):
     if not courses:
         return None
@@ -16,13 +18,17 @@ def get_all_pending_assignments(courses):
 
 
 def get_assignment(assignments, assignment_id):
-    if assignment_id not in assignments:
-        return None
+    assignment = None
 
-    if not assignments[assignment_id]:
-        return None
+    for subject in assignments:
+        format_data(assignments[subject].get(assignment_id))
+        assignment = assignments[subject].get(assignment_id, None)
+        if assignment:
+            return assignment
 
-    return assignments[assignment_id]
+    return assignment
+
+# fix logic
 
 
 def get_all_due_today(assignments):

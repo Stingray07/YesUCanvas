@@ -91,14 +91,13 @@ def get_pending_assignments(courses, course_key):
     pending_assignments = {}
 
     params = {
-        'include[]': ['submission']
+        'include[]': ['submission'],
+        'bucket': 'unsubmitted',
     }
 
     response = requests.get(ASSIGNMENT_URL, headers=HEADERS, params=params)
     response.raise_for_status()
     data = response.json()
-
-    format_data(data)
 
     if not data:
         return {}
@@ -122,8 +121,6 @@ def get_pending_assignments(courses, course_key):
             }
 
     return pending_assignments
-
-    # not all pending assignments are appearing
 
 
 @handle_req_errors
