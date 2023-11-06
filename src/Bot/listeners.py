@@ -1,17 +1,19 @@
-from src.Canvas.consts import help_message
+import discord
+
+from src.Canvas import consts as const
 from src.Canvas import course_functions as cf
 from html2text import html2text
 from src.helper import format_data
 
 
 async def listen_to_help(message):
-    if message.content.startswith('!help'):
+    if message.content.startswith(const.HELP_COMMAND_PREFIX):
         await message.channel.typing()
-        await message.channel.send(help_message)
+        await message.channel.send(const.HELP_MESSAGE)
 
 
 async def listen_to_courses(message, courses, cache):
-    if message.content.startswith('!courses'):
+    if message.content.startswith(const.COURSES_COMMAND_PREFIX):
         await message.channel.typing()
         if not cache:
             all_courses = cf.get_all_course_names(courses=courses)
@@ -21,13 +23,13 @@ async def listen_to_courses(message, courses, cache):
 
         for course in cache:
             await message.channel.typing()
-            await message.channel.send(course)
+            await message.channel.send(f"• **{course}**")
 
     return cache
 
 
 async def listen_to_assignments(message, courses, cache):
-    if message.content.startswith('!all_assignments'):
+    if message.content.startswith(const.ASSIGNMENTS_COMMAND_PREFIX):
         await message.channel.typing()
         if not cache:
             cache = cf.get_all_pending_assignments(courses=courses)
@@ -40,22 +42,29 @@ async def listen_to_assignments(message, courses, cache):
 
 
 async def listen_to_assignment(message, cache):
-    if message.content.startswith('!asm '):
+    if message.content.startswith(const.ASSIGNMENT_COMMAND_PREFIX):
         await message.channel.typing()
         assignment_id = message.content[5:]
         assignment = cf.get_assignment(assignments=cache, assignment_id=assignment_id)
 
-        print(assignment_id)
-        format_data(cache)
-
-        for key, value in assignment['assignment_id']:
+        message_str = ''
+        nl = '\n'
+        for key, value in assignment.items():
             await message.channel.typing()
-            message_str = f"{key} = {value}"
-            await message.channel.send(message_str)
+            message_str += (key.upper() + ' : ' + str(value) + '\n')
+
+        # fix text appeareance
+
+        message_str = html2text(message_str)
+
+        embed = discord.Embed(
+            description=f"{message_str}"
+        )
+        await message.channel.send(embed=embed)
 
 
 async def listen_to_teacher(message, courses):
-    if message.content.startswith('!teacher '):
+    if message.content.startswith(const.TEACHER_COMMAND_PREFIX):
         await message.channel.typing()
         course_key = message.content[9:].upper()
         teacher = cf.get_teacher(courses=courses, course_key=course_key)
@@ -63,13 +72,13 @@ async def listen_to_teacher(message, courses):
         if not teacher:
             message_str = "Course Not Found"
         else:
-            message_str = f"{teacher}"
+            message_str = f"**{teacher}**"
 
         await message.channel.send(message_str)
 
 
 async def listen_to_announcement(message, courses):
-    if message.content.startswith('!anm '):
+    if message.content.startswith(const.ANNOUNCEMENT_COMMAND_PREFIX):
         await message.channel.typing()
         course_key = message.content[5:].upper()
         announcement = cf.get_announcement(courses=courses, course_key=course_key)
@@ -80,25 +89,29 @@ async def listen_to_announcement(message, courses):
             announcement = html2text(announcement)
             message_str = f"{announcement}"
 
-        await message.channel.send(message_str)
+        embed = discord.Embed(
+            description=f"{message_str}"
+        )
+
+        await message.channel.send(embed=embed)
 
 
 async def listen_to_section(message, courses):
-    if message.content.startswith('!section '):
+    if message.content.startswith(const.SECTION_COMMAND_PREFIX):
         await message.channel.typing()
         course_key = message.content[9:].upper()
         section = cf.get_section(courses=courses, course_key=course_key)
 
         if not section:
-            message_str = "Section Not Found"
+            message_str = "**Section Not Found**"
         else:
-            message_str = f"{section}"
+            message_str = f"**{section}**"
 
         await message.channel.send(message_str)
 
 
 async def listen_to_due_today(message, pending_assignments, courses, cache):
-    if message.content.startswith('!due_today'):
+    if message.content.startswith(const.DUE_TODAY_COMMAND_PREFIX):
         await message.channel.typing()
 
         if not pending_assignments:
@@ -116,7 +129,7 @@ async def listen_to_due_today(message, pending_assignments, courses, cache):
         format_data(cache)
         for assignment in cache:
             await message.channel.typing()
-            message_str = f"• {cache[assignment]['name']}. ID = {assignment}"
+            message_str = f"• **{cache[assignment]['name']}**. \nID = {assignment}"
             await message.channel.send(message_str)
 
     return cache

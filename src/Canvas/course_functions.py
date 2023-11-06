@@ -21,10 +21,10 @@ def get_assignment(assignments, assignment_id):
     assignment = None
 
     for subject in assignments:
-        format_data(assignments[subject].get(assignment_id))
-        assignment = assignments[subject].get(assignment_id, None)
-        if assignment:
-            return assignment
+        if not assignments[subject].get(assignment_id):
+            continue
+
+        assignment = assignments[subject].get(assignment_id)
 
     return assignment
 

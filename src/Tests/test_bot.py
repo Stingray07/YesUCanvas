@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import AsyncMock, Mock
-from src.Canvas.consts import help_message
+from src.Canvas.consts import HELP_MESSAGE
 from src.Bot import listeners as listen
 
 
@@ -16,7 +16,7 @@ class TestListenToHelp(unittest.IsolatedAsyncioTestCase):
         await listen.listen_to_help(message=message)
 
         message.channel.typing.assert_awaited_once()
-        message.channel.send.assert_awaited_once_with(help_message)
+        message.channel.send.assert_awaited_once_with(HELP_MESSAGE)
 
     @staticmethod
     async def test_listen_to_help_never():
