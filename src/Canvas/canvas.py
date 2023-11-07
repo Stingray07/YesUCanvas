@@ -115,9 +115,9 @@ def get_pending_assignments(courses, course_key):
             pending_assignments[assignment_id] = {
                 'name': name,
                 'points': points,
-                'description': description,
                 'due': to_readable_date(due),
-                'due_today': due_today
+                'due_today': due_today,
+                'description': description,
             }
 
     return pending_assignments

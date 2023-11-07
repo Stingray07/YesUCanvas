@@ -1,5 +1,6 @@
 from src.helper import format_data
 
+
 def get_all_pending_assignments(courses):
     if not courses:
         return None
@@ -27,8 +28,6 @@ def get_assignment(assignments, assignment_id):
         assignment = assignments[subject].get(assignment_id)
 
     return assignment
-
-# fix logic
 
 
 def get_all_due_today(assignments):

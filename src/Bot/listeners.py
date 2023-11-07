@@ -15,6 +15,10 @@ async def listen_to_help(message):
 async def listen_to_courses(message, courses, cache):
     if message.content.startswith(const.COURSES_COMMAND_PREFIX):
         await message.channel.typing()
+        if not courses:
+            await message.channel.send('COURSES NOT FOUND')
+            return []
+
         if not cache:
             all_courses = cf.get_all_course_names(courses=courses)
             for course in all_courses:
@@ -47,20 +51,24 @@ async def listen_to_assignment(message, cache):
         assignment_id = message.content[5:]
         assignment = cf.get_assignment(assignments=cache, assignment_id=assignment_id)
 
-        message_str = ''
-        nl = '\n'
+        if not assignment:
+            await message.channel.send('ID NOT FOUND')
+            return
+
+        description = None
+
         for key, value in assignment.items():
             await message.channel.typing()
-            message_str += (key.upper() + ' : ' + str(value) + '\n')
+            if key not in ['description', 'due_today']:
+                await message.channel.send(f"**{key.upper()}**: {value}")
 
-        # fix text appeareance
+            else:
+                description = discord.Embed(
+                    title='**DESCRIPTION**',
+                    description=html2text(assignment['description'])
+                )
 
-        message_str = html2text(message_str)
-
-        embed = discord.Embed(
-            description=f"{message_str}"
-        )
-        await message.channel.send(embed=embed)
+        await message.channel.send(embed=description)
 
 
 async def listen_to_teacher(message, courses):
