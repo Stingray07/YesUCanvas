@@ -11,7 +11,7 @@ class TestGetAllPendingAssignments(unittest.TestCase):
 
     def test_get_one_pending_announcements(self):
         courses = {
-            'Test Key': {
+            'Course ID 1': {
                 'course_name': 'Test Course Name',
                 'pending_assignments': {
                     'Assignment ID': {
@@ -40,7 +40,7 @@ class TestGetAllPendingAssignments(unittest.TestCase):
 
     def test_empty_course_name(self):
         courses = {
-            'Test Key': {
+            'Course ID 1': {
                 'course_name': None,
                 'pending_assignments': {
                     'Assignment ID': {
@@ -70,7 +70,7 @@ class TestGetAllPendingAssignments(unittest.TestCase):
 
     def test_multiple_empty_course_name(self):
         courses = {
-            'Test Key': {
+            'Course ID 1': {
                 'course_name': None,
                 'pending_assignments': {
                     'Assignment ID': {
@@ -82,7 +82,7 @@ class TestGetAllPendingAssignments(unittest.TestCase):
                     }
                 }
             },
-            'Test Key 2': {
+            'Course ID 2': {
                 'course_name': None,
                 'pending_assignments': {
                     'Assignment ID 2': {
@@ -119,7 +119,7 @@ class TestGetAllPendingAssignments(unittest.TestCase):
 
     def test_multiple_one_course_name_empty(self):
         courses = {
-            'Test Key': {
+            'Course ID 1': {
                 'course_name': None,
                 'pending_assignments': {
                     'Assignment ID': {
@@ -131,7 +131,7 @@ class TestGetAllPendingAssignments(unittest.TestCase):
                     }
                 }
             },
-            'Test Key 2': {
+            'Course ID 2': {
                 'course_name': 'Course 2',
                 'pending_assignments': {
                     'Assignment ID 2': {

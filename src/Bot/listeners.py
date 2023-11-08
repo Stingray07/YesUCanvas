@@ -7,14 +7,15 @@ from src.helper import format_data
 
 
 async def listen_to_help(message):
-    if message.content.startswith(const.HELP_COMMAND_PREFIX):
+    if message.content == const.HELP_COMMAND_PREFIX:
         await message.channel.typing()
         await message.channel.send(const.HELP_MESSAGE)
 
 
 async def listen_to_courses(message, courses, cache):
-    if message.content.startswith(const.COURSES_COMMAND_PREFIX):
+    if message.content == const.COURSES_COMMAND_PREFIX:
         await message.channel.typing()
+
         if not courses:
             await message.channel.send('COURSES NOT FOUND')
             return []
@@ -33,7 +34,7 @@ async def listen_to_courses(message, courses, cache):
 
 
 async def listen_to_assignments(message, courses, cache):
-    if message.content.startswith(const.ASSIGNMENTS_COMMAND_PREFIX):
+    if message.content == const.ASSIGNMENTS_COMMAND_PREFIX:
         await message.channel.typing()
         if not cache:
             cache = cf.get_all_pending_assignments(courses=courses)
@@ -119,7 +120,7 @@ async def listen_to_section(message, courses):
 
 
 async def listen_to_due_today(message, pending_assignments, courses, cache):
-    if message.content.startswith(const.DUE_TODAY_COMMAND_PREFIX):
+    if message.content == const.DUE_TODAY_COMMAND_PREFIX:
         await message.channel.typing()
 
         if not pending_assignments:
