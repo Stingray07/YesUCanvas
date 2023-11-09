@@ -9,7 +9,7 @@ class TestGetAllPendingAssignments(unittest.TestCase):
         expected = None
         self.assertEqual(expected, actual)
 
-    def test_get_one_pending_announcements(self):
+    def test_get_one_pending_assignments(self):
         courses = {
             'Course ID 1': {
                 'course_name': 'Test Course Name',

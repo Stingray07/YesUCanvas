@@ -49,6 +49,10 @@ async def listen_to_assignments(message, courses, cache):
 async def listen_to_assignment(message, cache):
     if message.content.startswith(const.ASSIGNMENT_COMMAND_PREFIX):
         await message.channel.typing()
+        if not cache:
+            await message.channel.send("Please call the !all_asm command first")
+            return
+
         assignment_id = message.content[5:]
         assignment = cf.get_assignment(assignments=cache, assignment_id=assignment_id)
 
