@@ -46,6 +46,6 @@ def run_bot():
         await listen.listen_to_announcement(message=message, courses=courses)
         await listen.listen_to_section(message=message, courses=courses)
         await listen.listen_to_help(message=message)
-        await listen.listen_to_assignment(message=message, cache=assignments_cache)
+        await listen.listen_to_assignment(message=message, cache=assignments_cache, courses=courses)
 
     bot.run(BOT_TOKEN)

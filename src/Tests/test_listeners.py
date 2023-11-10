@@ -1,4 +1,6 @@
 import unittest
+from discord import Embed
+from html2text import html2text
 from unittest.mock import AsyncMock, Mock
 from src.Canvas import consts as const
 from src.Tests import test_consts as test_const
@@ -133,7 +135,7 @@ class TestListenToAssignments(unittest.IsolatedAsyncioTestCase):
         message.channel.send.assert_awaited_with(expected_sent_message)
         self.assertEqual(expected_cache, actual_cache)
 
-    async def test_listen_to_assignments_null_cache_multiple(self):
+    async def test_listen_to_assignments_null_cache_multiple_course(self):
         message = initialize_message(const.ASSIGNMENTS_COMMAND_PREFIX)
         courses = test_const.course_4
         cache = {}
@@ -149,7 +151,7 @@ class TestListenToAssignments(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(expected_cache, actual_cache)
         self.assertEqual(expected_messages, sent_messages)
 
-    async def test_listen_to_assignments_with_cache_multiple(self):
+    async def test_listen_to_assignments_with_cache_multiple_course(self):
         message = initialize_message(const.ASSIGNMENTS_COMMAND_PREFIX)
         courses = {}
         cache = test_const.assignments_3
@@ -165,19 +167,79 @@ class TestListenToAssignments(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(expected_cache, actual_cache)
         self.assertEqual(expected_messages, sent_messages)
 
+    async def test_listen_to_assignments_null_cache_multiple_assignments_one_course(self):
+        message = initialize_message(const.ASSIGNMENTS_COMMAND_PREFIX)
+        courses = test_const.course_5
+        cache = {}
+
+        actual_cache = await listeners.listen_to_assignments(message=message, courses=courses, cache=cache)
+        expected_cache = test_const.assignments_4
+        expected_sent_message_1 = f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1"
+        expected_send_message_2 = f"• **Assignment Name 2** \n(Course Name 1). \nID = Assignment ID 2"
+        sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+        expected_messages = [expected_sent_message_1, expected_send_message_2]
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_cache, actual_cache)
+        self.assertEqual(expected_messages, sent_messages)
+
+    async def test_listen_to_assignments_with_cache_multiple_assignments_one_course(self):
+        message = initialize_message(const.ASSIGNMENTS_COMMAND_PREFIX)
+        courses = {}
+        cache = test_const.assignments_4
+
+        actual_cache = await listeners.listen_to_assignments(message=message, courses=courses, cache=cache)
+        expected_cache = test_const.assignments_4
+        expected_sent_message_1 = f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1"
+        expected_send_message_2 = f"• **Assignment Name 2** \n(Course Name 1). \nID = Assignment ID 2"
+        sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+        expected_messages = [expected_sent_message_1, expected_send_message_2]
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_cache, actual_cache)
+        self.assertEqual(expected_messages, sent_messages)
+
 
 class TestListenToAssignment(unittest.IsolatedAsyncioTestCase):
 
     async def test_listen_to_assignment_never(self):
         message = initialize_message("!")
+        courses = {}
         cache = {}
 
-        actual_cache = await listeners.listen_to_assignment(message=message, cache=cache)
+        actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
         expected_cache = None
 
         message.channel.typing.assert_not_awaited()
         message.channel.send.assert_not_awaited()
         self.assertEqual(expected_cache, actual_cache)
+
+    async def test_listen_to_assignment_bad_id(self):
+        message = initialize_message(const.ASSIGNMENT_COMMAND_PREFIX + '?')
+        courses = test_const.course_3
+        cache = {}
+
+        actual_cache = await listeners.listen_to_assignment(message=message, courses=courses, cache=cache)
+        expected_cache = test_const.assignments_2
+
+        message.channel.typing.assert_awaited()
+        message.channel.send.assert_awaited_once_with("ID NOT FOUND")
+        self.assertEqual(expected_cache, actual_cache)
+
+
+    # async def test_listen_to_assignment_null_cache(self):
+    #     assignment_id = 'Assignment ID 1'
+    #     message = initialize_message(const.ASSIGNMENT_COMMAND_PREFIX + assignment_id)
+    #     courses = test_const.course_3
+    #     cache = {}
+    #
+    #     actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
+    #     expected_cache = test_const.assignments_2
+    #     expected_sent_message_1 = f"**NAME**: Assignment Name 1"
+    #     expected_sent_message_2 = f"**POINTS**: 50"
+    #     expected_send_message_3 = f"**DUE**: October 17, 2023"
+    #     message.channel.typing.assert_awaited()
+    #     message.channel.send.assert
 
 
 if __name__ == '__main__':
