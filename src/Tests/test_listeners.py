@@ -1,7 +1,7 @@
 import unittest
-from discord import Embed
+import discord
 from html2text import html2text
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import AsyncMock, Mock, patch
 from src.Canvas import consts as const
 from src.Tests import test_consts as test_const
 from src.Bot import listeners
@@ -208,7 +208,7 @@ class TestListenToAssignment(unittest.IsolatedAsyncioTestCase):
         cache = {}
 
         actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
-        expected_cache = None
+        expected_cache = {}
 
         message.channel.typing.assert_not_awaited()
         message.channel.send.assert_not_awaited()
@@ -226,20 +226,106 @@ class TestListenToAssignment(unittest.IsolatedAsyncioTestCase):
         message.channel.send.assert_awaited_once_with("ID NOT FOUND")
         self.assertEqual(expected_cache, actual_cache)
 
+    async def test_listen_to_assignment_null_cache(self):
+        assignment_id = 'Assignment ID 1'
+        message = initialize_message(const.ASSIGNMENT_COMMAND_PREFIX + assignment_id)
+        courses = test_const.course_3
+        cache = {}
 
-    # async def test_listen_to_assignment_null_cache(self):
-    #     assignment_id = 'Assignment ID 1'
-    #     message = initialize_message(const.ASSIGNMENT_COMMAND_PREFIX + assignment_id)
-    #     courses = test_const.course_3
-    #     cache = {}
-    #
-    #     actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
-    #     expected_cache = test_const.assignments_2
-    #     expected_sent_message_1 = f"**NAME**: Assignment Name 1"
-    #     expected_sent_message_2 = f"**POINTS**: 50"
-    #     expected_send_message_3 = f"**DUE**: October 17, 2023"
-    #     message.channel.typing.assert_awaited()
-    #     message.channel.send.assert
+        with patch.object(discord, 'Embed', Mock()) as mock_embed:
+            actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
+            expected_cache = test_const.assignments_2
+            expected_sent_message_1 = f"**NAME**: Assignment Name 1"
+            expected_sent_message_2 = f"**POINTS**: 50"
+            expected_sent_message_3 = f"**DUE**: October 17, 2023"
+
+            actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list if call.args]
+            expected_send_messages = [expected_sent_message_1, expected_sent_message_2, expected_sent_message_3]
+
+            message.channel.typing.assert_awaited()
+            mock_embed.assert_called_with(
+                title='**DESCRIPTION**',
+                description=html2text('Assignment Description 1')
+            )
+            self.assertEqual(expected_send_messages, actual_sent_messages)
+            self.assertEqual(expected_cache, actual_cache)
+
+    async def test_listen_to_assignment_with_cache(self):
+        assignment_id = 'Assignment ID 1'
+        message = initialize_message(const.ASSIGNMENT_COMMAND_PREFIX + assignment_id)
+        courses = {}
+        cache = test_const.assignments_2
+
+        with patch.object(discord, 'Embed', Mock()) as mock_embed:
+            actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
+            expected_cache = test_const.assignments_2
+            expected_sent_message_1 = f"**NAME**: Assignment Name 1"
+            expected_sent_message_2 = f"**POINTS**: 50"
+            expected_sent_message_3 = f"**DUE**: October 17, 2023"
+
+            actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list if call.args]
+            expected_sent_messages = [expected_sent_message_1, expected_sent_message_2, expected_sent_message_3]
+
+            message.channel.typing.assert_awaited()
+            mock_embed.assert_called_with(
+                title='**DESCRIPTION**',
+                description=html2text('Assignment Description 1')
+            )
+            self.assertEqual(expected_sent_messages, actual_sent_messages)
+            self.assertEqual(expected_cache, actual_cache)
+
+    async def test_listen_to_assignment_null_cache_multiple(self):
+        assignment_id = 'Assignment ID 2'
+        message = initialize_message(const.ASSIGNMENT_COMMAND_PREFIX + assignment_id)
+        courses = test_const.course_5
+        cache = {}
+
+        with patch.object(discord,  'Embed', Mock()) as mock_embed:
+            actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
+            expected_cache = test_const.assignments_4
+            expected_sent_message_1 = f"**NAME**: Assignment Name 2"
+            expected_sent_message_2 = f"**POINTS**: 100"
+            expected_sent_message_3 = f"**DUE**: October 18, 2023"
+
+            actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list if call.args]
+            expected_sent_messages = [expected_sent_message_1, expected_sent_message_2, expected_sent_message_3]
+
+            message.channel.typing.assert_awaited()
+            mock_embed.assert_called_with(
+                title='**DESCRIPTION**',
+                description=html2text('Assignment Description 2')
+            )
+            self.assertEqual(expected_sent_messages, actual_sent_messages)
+            self.assertEqual(expected_cache, actual_cache)
+
+    async def test_listen_to_assignment_with_cache_multiple(self):
+        assignment_id = 'Assignment ID 2'
+        message = initialize_message(const.ASSIGNMENT_COMMAND_PREFIX + assignment_id)
+        courses = {}
+        cache = test_const.assignments_4
+
+        with patch.object(discord, 'Embed', Mock()) as mock_embed:
+            actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
+            expected_cache = test_const.assignments_4
+            expected_sent_message_1 = f"**NAME**: Assignment Name 2"
+            expected_sent_message_2 = f"**POINTS**: 100"
+            expected_sent_message_3 = f"**DUE**: October 18, 2023"
+
+            actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list if call.args]
+            expected_sent_messages = [expected_sent_message_1, expected_sent_message_2, expected_sent_message_3]
+
+            message.channel.typing.assert_awaited()
+            mock_embed.assert_called_with(
+                title='**DESCRIPTION**',
+                description=html2text('Assignment Description 2')
+            )
+            self.assertEqual(expected_sent_messages, actual_sent_messages)
+            self.assertEqual(expected_cache, actual_cache)
+
+
+# class TestListenToTeacher(unittest.IsolatedAsyncioTestCase):
+#
+#     async def
 
 
 if __name__ == '__main__':

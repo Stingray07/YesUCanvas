@@ -18,8 +18,7 @@ async def listen_to_courses(message, courses, cache):
 
         if not courses:
             await message.channel.send('COURSES NOT FOUND')
-            return []
-
+            return cache
         if not cache:
             all_courses = cf.get_all_course_names(courses=courses)
             for course in all_courses:
@@ -54,18 +53,16 @@ async def listen_to_assignment(message, courses, cache):
 
         assignment_id = message.content[5:]
         assignment = cf.get_assignment(assignments=cache, assignment_id=assignment_id)
+        description = None
 
         if not assignment:
             await message.channel.send('ID NOT FOUND')
             return cache
 
-        description = None
-
         for key, value in assignment.items():
             await message.channel.typing()
             if key not in ['description', 'due_today']:
                 await message.channel.send(f"**{key.upper()}**: {value}")
-
             else:
                 description = discord.Embed(
                     title='**DESCRIPTION**',
@@ -73,6 +70,8 @@ async def listen_to_assignment(message, courses, cache):
                 )
 
         await message.channel.send(embed=description)
+
+    return cache
 
 
 async def listen_to_teacher(message, courses):
@@ -130,7 +129,6 @@ async def listen_to_due_today(message, pending_assignments, courses, cache):
             pending_assignments = cf.get_all_pending_assignments(courses=courses)
             print("Cached Assignments from due_today listener")
             format_data(pending_assignments)
-
         if not cache:
             cache = cf.get_all_due_today(pending_assignments)
             print('Cached Due Today from due_today listener')
