@@ -1,25 +1,39 @@
 # course consts
 
 course_0 = {
-    'Course ID 1': {},
-    'Course ID 2': {}
+    'COURSE KEY 1': {},
+    'COURSE KEY 2': {}
 }
 
 course_1 = {
-    'Course ID 1': {
-        'course_name': 'Course Name'
+    'COURSE KEY 1': {
+        'course_name': '',
+        'pending_assignments': {},
+        'teacher': '',
+        'latest_announcement': '',
+        'modules': {}
     }
 }
 
 course_2 = {
-    'Course ID 1': {
-        'course_name': 'Course Name 1',
-        'pending_assignments': {}
+    'COURSE KEY 1': {
+        'course_name': '',
+        'pending_assignments': {},
+        'teacher': '',
+        'latest_announcement': '',
+        'modules': {}
+    },
+    'COURSE KEY 2': {
+        'course_name': '',
+        'pending_assignments': {},
+        'teacher': '',
+        'latest_announcement': '',
+        'modules': {}
     }
 }
 
 course_3 = {
-    'Course ID 1': {
+    'COURSE KEY 1': {
         'course_name': 'Course Name 1',
         'pending_assignments': {
             'Assignment ID 1': {
@@ -29,12 +43,20 @@ course_3 = {
                 'due': 'October 17, 2023',
                 'due_today': False
             }
+        },
+        'teacher': 'Teacher 1',
+        'latest_announcement': 'Latest Announcement 1',
+        'modules': {
+            "Module ID 1": {
+                "name": "Module Name 1",
+                "items": ['Item 1', 'Item 2', 'Item 3']
+            }
         }
     }
 }
 
 course_4 = {
-    'Course ID 1': {
+    'COURSE KEY 1': {
         'course_name': 'Course Name 1',
         'pending_assignments': {
             'Assignment ID 1': {
@@ -44,9 +66,17 @@ course_4 = {
                 'due': 'October 17, 2023',
                 'due_today': True
             }
+        },
+        'teacher': 'Teacher 1',
+        'latest_announcement': 'Latest Announcement 1',
+        'modules': {
+            'Module ID 1': {
+                'name': 'Module Name 1',
+                'items': ['Item 1', 'Item 2', 'Item 3']
+            }
         }
     },
-    'Course ID 2': {
+    'COURSE KEY 2': {
         'course_name': 'Course Name 2',
         'pending_assignments': {
             'Assignment ID 2': {
@@ -56,12 +86,20 @@ course_4 = {
                 'due': 'October 18, 2023',
                 'due_today': False
             }
+        },
+        'teacher': 'Teacher 2',
+        'latest_announcement': 'Latest Announcement 2',
+        'modules': {
+            'Module ID 2': {
+                'name': 'Module Name 2',
+                'items': ['Item 4', 'Item 5', 'Item 6']
+            }
         }
     }
 }
 
 course_5 = {
-    'Course ID 1': {
+    'COURSE KEY 1': {
         'course_name': 'Course Name 1',
         'pending_assignments': {
             'Assignment ID 1': {
@@ -78,7 +116,19 @@ course_5 = {
                 'due': 'October 18, 2023',
                 'due_today': False
             }
-        }
+        },
+        'latest_announcement': 'Latest Announcement 1',
+        'modules': {
+            'Module ID 1': {
+                'name': ' Module Name 1',
+                'items': ['Item 1', 'Item 2', 'Item 3']
+            },
+            'Module ID 2': {
+                'name': 'Module Name 2',
+                'items': ['Item 4', 'Item 5', 'Item 6']
+            }
+        },
+        'teacher': 'Teacher 1'
     }
 }
 

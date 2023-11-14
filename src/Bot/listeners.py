@@ -38,7 +38,6 @@ async def listen_to_assignments(message, courses, cache):
         if not cache:
             cache = cf.get_all_pending_assignments(courses=courses)
             print('Cached Assignments from assignments listener')
-            format_data(cache)
 
         await send_assignments_messages(message=message, pending_assignments=cache)
 
@@ -81,7 +80,7 @@ async def listen_to_teacher(message, courses):
         teacher = cf.get_teacher(courses=courses, course_key=course_key)
 
         if not teacher:
-            message_str = "Course Not Found"
+            message_str = "Course Code Not Found"
         else:
             message_str = f"**{teacher}**"
 
@@ -95,7 +94,7 @@ async def listen_to_announcement(message, courses):
         announcement = cf.get_announcement(courses=courses, course_key=course_key)
 
         if not announcement:
-            message_str = "Course Not Found"
+            message_str = "Course Code Not Found"
         else:
             announcement = html2text(announcement)
             message_str = f"{announcement}"
@@ -128,7 +127,6 @@ async def listen_to_due_today(message, pending_assignments, courses, cache):
         if not pending_assignments:
             pending_assignments = cf.get_all_pending_assignments(courses=courses)
             print("Cached Assignments from due_today listener")
-            format_data(pending_assignments)
         if not cache:
             cache = cf.get_all_due_today(pending_assignments)
             print('Cached Due Today from due_today listener')
@@ -136,7 +134,6 @@ async def listen_to_due_today(message, pending_assignments, courses, cache):
                 await message.channel.send('No Due Today')
                 return
 
-        format_data(cache)
         for assignment in cache:
             await message.channel.typing()
             message_str = f"• **{cache[assignment]['name']}**. \nID = {assignment}"

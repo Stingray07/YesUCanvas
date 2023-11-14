@@ -323,10 +323,49 @@ class TestListenToAssignment(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(expected_cache, actual_cache)
 
 
-# class TestListenToTeacher(unittest.IsolatedAsyncioTestCase):
-#
-#     async def
+class TestListenToTeacher(unittest.IsolatedAsyncioTestCase):
+
+    async def test_listen_to_teacher_never(self):
+        message = initialize_message("!")
+        courses = {}
+
+        await listeners.listen_to_teacher(message=message, courses=courses)
+
+        message.channel.typing.assert_not_awaited()
+        message.channel.send.assert_not_awaited()
+
+    async def test_listen_to_teacher(self):
+        course_key = 'Course Key 1'
+        message = initialize_message(const.TEACHER_COMMAND_PREFIX + course_key)
+        courses = test_const.course_3
+
+        await listeners.listen_to_teacher(message=message, courses=courses)
+
+        message.channel.typing.assert_awaited_once()
+        message.channel.send.assert_awaited_once_with('**Teacher 1**')
+
+    async def test_listen_to_teacher_bad_key(self):
+        course_key = '?'
+        message = initialize_message(const.TEACHER_COMMAND_PREFIX + course_key)
+        courses = test_const.course_3
+
+        await listeners.listen_to_teacher(message=message, courses=courses)
+
+        message.channel.typing.assert_awaited_once()
+        message.channel.send.assert_awaited_once_with('Course Code Not Found')
+
+    async def test_listen_to_teacher_multiple(self):
+        course_key = 'Course Key 2'
+        message = initialize_message(const.TEACHER_COMMAND_PREFIX + course_key)
+        courses = test_const.course_4
+
+        await listeners.listen_to_teacher(message=message, courses=courses)
+
+        message.channel.typing.assert_awaited_once()
+        message.channel.send.assert_awaited_once_with('**Teacher 2**')
 
 
 if __name__ == '__main__':
     unittest.main()
+    
+#fix trim problem
