@@ -1,38 +1,41 @@
 # course consts
 
-course_0 = {
+COURSES_0 = {
     'COURSE KEY 1': {},
     'COURSE KEY 2': {}
 }
 
-course_1 = {
+COURSES_1 = {
     'COURSE KEY 1': {
         'course_name': '',
         'pending_assignments': {},
         'teacher': '',
         'latest_announcement': '',
-        'modules': {}
+        'modules': {},
+        'original_name': ''
     }
 }
 
-course_2 = {
+COURSES_2 = {
     'COURSE KEY 1': {
         'course_name': '',
         'pending_assignments': {},
         'teacher': '',
         'latest_announcement': '',
-        'modules': {}
+        'modules': {},
+        'original_name': ''
     },
     'COURSE KEY 2': {
         'course_name': '',
         'pending_assignments': {},
         'teacher': '',
         'latest_announcement': '',
-        'modules': {}
+        'modules': {},
+        'original_name': ''
     }
 }
 
-course_3 = {
+COURSES_3 = {
     'COURSE KEY 1': {
         'course_name': 'Course Name 1',
         'pending_assignments': {
@@ -51,11 +54,12 @@ course_3 = {
                 "name": "Module Name 1",
                 "items": ['Item 1', 'Item 2', 'Item 3']
             }
-        }
+        },
+        "original_name": "Course Key 1 | Section 1 | Course Name 1",
     }
 }
 
-course_4 = {
+COURSES_4 = {
     'COURSE KEY 1': {
         'course_name': 'Course Name 1',
         'pending_assignments': {
@@ -98,7 +102,7 @@ course_4 = {
     }
 }
 
-course_5 = {
+COURSES_5 = {
     'COURSE KEY 1': {
         'course_name': 'Course Name 1',
         'pending_assignments': {
@@ -136,18 +140,18 @@ course_5 = {
 # assignments consts
 
 
-assignments_0 = {
+ASSIGNMENTS_0 = {
     'Course Name 1': {},
     'Course Not Found': {}
 }
 
-assignments_1 = {
+ASSIGNMENTS_1 = {
     'Course Name 1': {
         'Assignment ID 1': {}
     }
 }
 
-assignments_2 = {
+ASSIGNMENTS_2 = {
     'Course Name 1': {
         'Assignment ID 1': {
             'name': 'Assignment Name 1',
@@ -159,7 +163,7 @@ assignments_2 = {
     }
 }
 
-assignments_3 = {
+ASSIGNMENTS_3 = {
     'Course Name 1': {
         'Assignment ID 1': {
             'name': 'Assignment Name 1',
@@ -180,7 +184,7 @@ assignments_3 = {
     }
 }
 
-assignments_4 = {
+ASSIGNMENTS_4 = {
     'Course Name 1': {
         'Assignment ID 1': {
             'name': 'Assignment Name 1',
@@ -198,3 +202,11 @@ assignments_4 = {
         }
     }
 }
+
+# expected messages consts
+
+EXPECTED_SENT_ASSIGNMENTS_1 = [f"**NAME**: Assignment Name 1", f"**POINTS**: 50", f"**DUE**: October 17, 2023"]
+EXPECTED_SENT_ASSIGNMENTS_2 = [f"**NAME**: Assignment Name 2", f"**POINTS**: 100", f"**DUE**: October 18, 2023"]
+EXPECTED_SENT_ANM_1 = 'Latest Announcement 1'
+EXPECTED_SENT_ANM_2 = 'Latest Announcement 2'
+EXPECTED_SENT_SECTION_1 = f'**Section 1**'

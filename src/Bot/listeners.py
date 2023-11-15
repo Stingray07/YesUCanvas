@@ -50,7 +50,7 @@ async def listen_to_assignment(message, courses, cache):
         if not cache:
             cache = cf.get_all_pending_assignments(courses=courses)
 
-        assignment_id = message.content[5:]
+        assignment_id = message.content[5:].strip()
         assignment = cf.get_assignment(assignments=cache, assignment_id=assignment_id)
         description = None
 
@@ -76,7 +76,7 @@ async def listen_to_assignment(message, courses, cache):
 async def listen_to_teacher(message, courses):
     if message.content.startswith(const.TEACHER_COMMAND_PREFIX):
         await message.channel.typing()
-        course_key = message.content[9:].upper()
+        course_key = message.content[9:].upper().strip()
         teacher = cf.get_teacher(courses=courses, course_key=course_key)
 
         if not teacher:
@@ -90,15 +90,15 @@ async def listen_to_teacher(message, courses):
 async def listen_to_announcement(message, courses):
     if message.content.startswith(const.ANNOUNCEMENT_COMMAND_PREFIX):
         await message.channel.typing()
-        course_key = message.content[5:].upper()
+        course_key = message.content[5:].upper().strip()
         announcement = cf.get_announcement(courses=courses, course_key=course_key)
 
         if not announcement:
             message_str = "Course Code Not Found"
         else:
-            announcement = html2text(announcement)
             message_str = f"{announcement}"
 
+        message_str = html2text(message_str)
         embed = discord.Embed(
             description=f"{message_str}"
         )
@@ -109,7 +109,7 @@ async def listen_to_announcement(message, courses):
 async def listen_to_section(message, courses):
     if message.content.startswith(const.SECTION_COMMAND_PREFIX):
         await message.channel.typing()
-        course_key = message.content[9:].upper()
+        course_key = message.content[9:].upper().strip()
         section = cf.get_section(courses=courses, course_key=course_key)
 
         if not section:
