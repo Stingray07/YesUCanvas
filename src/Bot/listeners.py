@@ -120,26 +120,26 @@ async def listen_to_section(message, courses):
         await message.channel.send(message_str)
 
 
-async def listen_to_due_today(message, pending_assignments, courses, cache):
+async def listen_to_due_today(message, assignments_cache, courses, due_today_cache):
     if message.content == const.DUE_TODAY_COMMAND_PREFIX:
         await message.channel.typing()
 
-        if not pending_assignments:
-            pending_assignments = cf.get_all_pending_assignments(courses=courses)
+        if not assignments_cache:
+            assignments_cache = cf.get_all_pending_assignments(courses=courses)
             print("Cached Assignments from due_today listener")
-        if not cache:
-            cache = cf.get_all_due_today(pending_assignments)
+        if not due_today_cache:
+            due_today_cache = cf.get_all_due_today(assignments_cache)
             print('Cached Due Today from due_today listener')
-            if not cache:
+            if not due_today_cache:
                 await message.channel.send('No Due Today')
-                return
+                return due_today_cache
 
-        for assignment in cache:
+        for assignment in due_today_cache:
             await message.channel.typing()
-            message_str = f"• **{cache[assignment]['name']}**. \nID = {assignment}"
+            message_str = f"• **{due_today_cache[assignment]['name']}**. \nID = {assignment}"
             await message.channel.send(message_str)
 
-    return cache
+    return due_today_cache
 
 
 async def send_assignments_messages(message, pending_assignments):

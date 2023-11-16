@@ -3,7 +3,6 @@ import os
 from src.Canvas.canvas import initialize_courses
 from dotenv import load_dotenv
 from src.Bot import listeners as listen
-from src.helper import format_data
 from src.helper import mock
 
 load_dotenv()
@@ -40,8 +39,8 @@ def run_bot():
                                                                cache=assignments_cache)
         due_today_cache = await listen.listen_to_due_today(message=message,
                                                            courses=courses,
-                                                           pending_assignments=assignments_cache,
-                                                           cache=due_today_cache)
+                                                           assignments_cache=assignments_cache,
+                                                           due_today_cache=due_today_cache)
         await listen.listen_to_teacher(message=message, courses=courses)
         await listen.listen_to_announcement(message=message, courses=courses)
         await listen.listen_to_section(message=message, courses=courses)

@@ -78,7 +78,8 @@ COURSES_4 = {
                 'name': 'Module Name 1',
                 'items': ['Item 1', 'Item 2', 'Item 3']
             }
-        }
+        },
+        "original_name": "Course Key 1 | Section 1 | Course Name 1"
     },
     'COURSE KEY 2': {
         'course_name': 'Course Name 2',
@@ -98,7 +99,8 @@ COURSES_4 = {
                 'name': 'Module Name 2',
                 'items': ['Item 4', 'Item 5', 'Item 6']
             }
-        }
+        },
+        "original_name": "Course Key 2 | Section 2 | Course Name 2"
     }
 }
 
@@ -121,6 +123,7 @@ COURSES_5 = {
                 'due_today': False
             }
         },
+        'teacher': 'Teacher 1',
         'latest_announcement': 'Latest Announcement 1',
         'modules': {
             'Module ID 1': {
@@ -132,7 +135,73 @@ COURSES_5 = {
                 'items': ['Item 4', 'Item 5', 'Item 6']
             }
         },
-        'teacher': 'Teacher 1'
+    }
+}
+
+COURSES_6 = {
+    'COURSE KEY 1': {
+        'course_name': 'Course Name 1',
+        'pending_assignments': {
+            'Assignment ID 1': {
+                'name': 'Assignment Name 1',
+                'points': 50,
+                'description': 'Assignment Description 1',
+                'due': 'October 17, 2023',
+                'due_today': True
+            },
+            'Assignment ID 2': {
+                'name': 'Assignment Name 2',
+                'points': 100,
+                'description': 'Assignment Description 2',
+                'due': 'October 18, 2023',
+                'due_today': False
+            }
+        },
+        'teacher': 'Teacher 1',
+        'latest_announcement': 'Latest Announcement 1',
+        'modules': {
+            'Module ID 1': {
+                'name': ' Module Name 1',
+                'items': ['Item 1', 'Item 2', 'Item 3']
+            },
+            'Module ID 2': {
+                'name': 'Module Name 2',
+                'items': ['Item 4', 'Item 5', 'Item 6']
+            }
+        },
+        "original_name": "Course Key 1 | Section 1 | Course Name 1"
+    },
+    'COURSE KEY 2': {
+        'course_name': 'Course Name 2',
+        'pending_assignments': {
+            'Assignment ID 3': {
+                'name': 'Assignment Name 3',
+                'points': 150,
+                'description': 'Assignment Description 3',
+                'due': 'October 19, 2023',
+                'due_today': True
+            },
+            'Assignment ID 4': {
+                'name': 'Assignment Name 4',
+                'points': 200,
+                'description': 'Assignment Description 4',
+                'due': 'October 20, 2023',
+                'due_today': False
+            }
+        },
+        'teacher': 'Teacher 2',
+        'latest_announcement': 'Latest Announcement 2',
+        'modules': {
+            'Module ID 3': {
+                'name': ' Module Name 3',
+                'items': ['Item 1', 'Item 2', 'Item 3']
+            },
+            'Module ID 4': {
+                'name': 'Module Name 4',
+                'items': ['Item 4', 'Item 5', 'Item 6']
+            }
+        },
+        "original_name": "Course Key 2 | Section 2 | Course Name 2"
     }
 }
 
@@ -140,18 +209,18 @@ COURSES_5 = {
 # assignments consts
 
 
-ASSIGNMENTS_0 = {
+ASSIGNMENTS_CACHE_0 = {
     'Course Name 1': {},
     'Course Not Found': {}
 }
 
-ASSIGNMENTS_1 = {
+ASSIGNMENTS_CACHE_1 = {
     'Course Name 1': {
         'Assignment ID 1': {}
     }
 }
 
-ASSIGNMENTS_2 = {
+ASSIGNMENTS_CACHE_2 = {
     'Course Name 1': {
         'Assignment ID 1': {
             'name': 'Assignment Name 1',
@@ -163,7 +232,7 @@ ASSIGNMENTS_2 = {
     }
 }
 
-ASSIGNMENTS_3 = {
+ASSIGNMENTS_CACHE_3 = {
     'Course Name 1': {
         'Assignment ID 1': {
             'name': 'Assignment Name 1',
@@ -184,7 +253,7 @@ ASSIGNMENTS_3 = {
     }
 }
 
-ASSIGNMENTS_4 = {
+ASSIGNMENTS_CACHE_4 = {
     'Course Name 1': {
         'Assignment ID 1': {
             'name': 'Assignment Name 1',
@@ -203,10 +272,59 @@ ASSIGNMENTS_4 = {
     }
 }
 
+ASSIGNMENTS_CACHE_5 = {
+    'Course Name 1': {
+        'Assignment ID 1': {
+            'name': 'Assignment Name 1',
+            'points': 50,
+            'description': 'Assignment Description 1',
+            'due': 'October 17, 2023',
+            'due_today': True
+        },
+        'Assignment ID 2': {
+            'name': 'Assignment Name 2',
+            'points': 100,
+            'description': 'Assignment Description 2',
+            'due': 'October 18, 2023',
+            'due_today': False
+        }
+    },
+    'Course Name 2': {
+        'Assignment ID 3': {
+            'name': 'Assignment Name 3',
+            'points': 150,
+            'description': 'Assignment Description 3',
+            'due': 'October 19, 2023',
+            'due_today': True
+            },
+        'Assignment ID 4': {
+            'name': 'Assignment Name 4',
+            'points': 200,
+            'description': 'Assignment Description 4',
+            'due': 'October 20, 2023',
+            'due_today': False
+            }
+    }
+}
+
 # expected messages consts
 
-EXPECTED_SENT_ASSIGNMENTS_1 = [f"**NAME**: Assignment Name 1", f"**POINTS**: 50", f"**DUE**: October 17, 2023"]
-EXPECTED_SENT_ASSIGNMENTS_2 = [f"**NAME**: Assignment Name 2", f"**POINTS**: 100", f"**DUE**: October 18, 2023"]
+EXPECTED_SENT_ASSIGNMENTS_0 = [f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1"]
+EXPECTED_SENT_ASSIGNMENTS_1 = [f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1",
+                               f"• **Assignment Name 2** \n(Course Name 1). \nID = Assignment ID 2"]
+EXPECTED_SENT_ASSIGNMENTS_2 = [f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1",
+                               f"• **Assignment Name 2** \n(Course Name 2). \nID = Assignment ID 2"]
+EXPECTED_SENT_ASSIGNMENTS_3 = [f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1",
+                               f"• **Assignment Name 2** \n(Course Name 1). \nID = Assignment ID 2",
+                               f"• **Assignment Name 3** \n(Course Name 2). \nID = Assignment ID 3",
+                               f"• **Assignment Name 4** \n(Course Name 2). \nID = Assignment ID 4"]
+
+
+EXPECTED_SENT_ASSIGNMENT_1 = [f"**NAME**: Assignment Name 1", f"**POINTS**: 50", f"**DUE**: October 17, 2023"]
+EXPECTED_SENT_ASSIGNMENT_2 = [f"**NAME**: Assignment Name 2", f"**POINTS**: 100", f"**DUE**: October 18, 2023"]
+
+
 EXPECTED_SENT_ANM_1 = 'Latest Announcement 1'
 EXPECTED_SENT_ANM_2 = 'Latest Announcement 2'
 EXPECTED_SENT_SECTION_1 = f'**Section 1**'
+EXPECTED_SENT_SECTION_2 = f'**Section 2**'

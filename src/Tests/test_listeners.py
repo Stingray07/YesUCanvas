@@ -115,8 +115,8 @@ class TestListenToAssignments(unittest.IsolatedAsyncioTestCase):
         cache = {}
 
         actual_cache = await listeners.listen_to_assignments(message=message, courses=courses, cache=cache)
-        expected_cache = test_const.ASSIGNMENTS_2
-        expected_sent_message = f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1"
+        expected_cache = test_const.ASSIGNMENTS_CACHE_2
+        expected_sent_message = test_const.EXPECTED_SENT_ASSIGNMENTS_0[0]
 
         message.channel.typing.assert_awaited()
         message.channel.send.assert_awaited_with(expected_sent_message)
@@ -125,11 +125,11 @@ class TestListenToAssignments(unittest.IsolatedAsyncioTestCase):
     async def test_listen_to_assignments_with_cache(self):
         message = initialize_message(const.ASSIGNMENTS_COMMAND_PREFIX)
         courses = {}
-        cache = test_const.ASSIGNMENTS_2
+        cache = test_const.ASSIGNMENTS_CACHE_2
 
         actual_cache = await listeners.listen_to_assignments(message=message, courses=courses, cache=cache)
-        expected_cache = test_const.ASSIGNMENTS_2
-        expected_sent_message = f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1"
+        expected_cache = test_const.ASSIGNMENTS_CACHE_2
+        expected_sent_message = test_const.EXPECTED_SENT_ASSIGNMENTS_0[0]
 
         message.channel.typing.assert_awaited()
         message.channel.send.assert_awaited_with(expected_sent_message)
@@ -141,11 +141,9 @@ class TestListenToAssignments(unittest.IsolatedAsyncioTestCase):
         cache = {}
 
         actual_cache = await listeners.listen_to_assignments(message=message, courses=courses, cache=cache)
-        expected_cache = test_const.ASSIGNMENTS_3
-        expected_sent_message_1 = f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1"
-        expected_sent_message_2 = f"• **Assignment Name 2** \n(Course Name 2). \nID = Assignment ID 2"
+        expected_cache = test_const.ASSIGNMENTS_CACHE_3
         sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
-        expected_messages = [expected_sent_message_1, expected_sent_message_2]
+        expected_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_2
 
         message.channel.typing.assert_awaited()
         self.assertEqual(expected_cache, actual_cache)
@@ -154,14 +152,12 @@ class TestListenToAssignments(unittest.IsolatedAsyncioTestCase):
     async def test_listen_to_assignments_with_cache_multiple_course(self):
         message = initialize_message(const.ASSIGNMENTS_COMMAND_PREFIX)
         courses = {}
-        cache = test_const.ASSIGNMENTS_3
+        cache = test_const.ASSIGNMENTS_CACHE_3
 
         actual_cache = await listeners.listen_to_assignments(message=message, courses=courses, cache=cache)
-        expected_cache = test_const.ASSIGNMENTS_3
-        expected_sent_message_1 = f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1"
-        expected_sent_message_2 = f"• **Assignment Name 2** \n(Course Name 2). \nID = Assignment ID 2"
+        expected_cache = test_const.ASSIGNMENTS_CACHE_3
         sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
-        expected_messages = [expected_sent_message_1, expected_sent_message_2]
+        expected_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_2
 
         message.channel.typing.assert_awaited()
         self.assertEqual(expected_cache, actual_cache)
@@ -173,11 +169,9 @@ class TestListenToAssignments(unittest.IsolatedAsyncioTestCase):
         cache = {}
 
         actual_cache = await listeners.listen_to_assignments(message=message, courses=courses, cache=cache)
-        expected_cache = test_const.ASSIGNMENTS_4
-        expected_sent_message_1 = f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1"
-        expected_send_message_2 = f"• **Assignment Name 2** \n(Course Name 1). \nID = Assignment ID 2"
+        expected_cache = test_const.ASSIGNMENTS_CACHE_4
         sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
-        expected_messages = [expected_sent_message_1, expected_send_message_2]
+        expected_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_1
 
         message.channel.typing.assert_awaited()
         self.assertEqual(expected_cache, actual_cache)
@@ -186,14 +180,40 @@ class TestListenToAssignments(unittest.IsolatedAsyncioTestCase):
     async def test_listen_to_assignments_with_cache_multiple_assignments_one_course(self):
         message = initialize_message(const.ASSIGNMENTS_COMMAND_PREFIX)
         courses = {}
-        cache = test_const.ASSIGNMENTS_4
+        cache = test_const.ASSIGNMENTS_CACHE_4
 
         actual_cache = await listeners.listen_to_assignments(message=message, courses=courses, cache=cache)
-        expected_cache = test_const.ASSIGNMENTS_4
-        expected_sent_message_1 = f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1"
-        expected_send_message_2 = f"• **Assignment Name 2** \n(Course Name 1). \nID = Assignment ID 2"
+        expected_cache = test_const.ASSIGNMENTS_CACHE_4
         sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
-        expected_messages = [expected_sent_message_1, expected_send_message_2]
+        expected_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_1
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_cache, actual_cache)
+        self.assertEqual(expected_messages, sent_messages)
+
+    async def test_listen_to_assignments_null_cache_multiple_assignments_multiple_course(self):
+        message = initialize_message(const.ASSIGNMENTS_COMMAND_PREFIX)
+        courses = test_const.COURSES_6
+        cache = {}
+
+        actual_cache = await listeners.listen_to_assignments(message=message, courses=courses, cache=cache)
+        expected_cache = test_const.ASSIGNMENTS_CACHE_5
+        sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+        expected_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_3
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_cache, actual_cache)
+        self.assertEqual(expected_messages, sent_messages)
+
+    async def test_listen_to_assignments_with_cache_multiple_assignments_multiple_course(self):
+        message = initialize_message(const.ASSIGNMENTS_COMMAND_PREFIX)
+        courses = {}
+        cache = test_const.ASSIGNMENTS_CACHE_5
+
+        actual_cache = await listeners.listen_to_assignments(message=message, courses=courses, cache=cache)
+        expected_cache = test_const.ASSIGNMENTS_CACHE_5
+        sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+        expected_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_3
 
         message.channel.typing.assert_awaited()
         self.assertEqual(expected_cache, actual_cache)
@@ -220,7 +240,7 @@ class TestListenToAssignment(unittest.IsolatedAsyncioTestCase):
         cache = {}
 
         actual_cache = await listeners.listen_to_assignment(message=message, courses=courses, cache=cache)
-        expected_cache = test_const.ASSIGNMENTS_2
+        expected_cache = test_const.ASSIGNMENTS_CACHE_2
 
         message.channel.typing.assert_awaited()
         message.channel.send.assert_awaited_once_with("ID NOT FOUND")
@@ -234,10 +254,10 @@ class TestListenToAssignment(unittest.IsolatedAsyncioTestCase):
 
         with patch.object(discord, 'Embed', Mock()) as mock_embed:
             actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
-            expected_cache = test_const.ASSIGNMENTS_2
+            expected_cache = test_const.ASSIGNMENTS_CACHE_2
 
             actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list if call.args]
-            expected_sent_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_1
+            expected_sent_messages = test_const.EXPECTED_SENT_ASSIGNMENT_1
 
             message.channel.typing.assert_awaited()
             mock_embed.assert_called_with(
@@ -251,14 +271,14 @@ class TestListenToAssignment(unittest.IsolatedAsyncioTestCase):
         assignment_id = '      Assignment ID 1'
         message = initialize_message(const.ASSIGNMENT_COMMAND_PREFIX + assignment_id)
         courses = {}
-        cache = test_const.ASSIGNMENTS_2
+        cache = test_const.ASSIGNMENTS_CACHE_2
 
         with patch.object(discord, 'Embed', Mock()) as mock_embed:
             actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
-            expected_cache = test_const.ASSIGNMENTS_2
+            expected_cache = test_const.ASSIGNMENTS_CACHE_2
 
             actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list if call.args]
-            expected_sent_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_1
+            expected_sent_messages = test_const.EXPECTED_SENT_ASSIGNMENT_1
 
             message.channel.typing.assert_awaited()
             mock_embed.assert_called_with(
@@ -276,10 +296,10 @@ class TestListenToAssignment(unittest.IsolatedAsyncioTestCase):
 
         with patch.object(discord, 'Embed', Mock()) as mock_embed:
             actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
-            expected_cache = test_const.ASSIGNMENTS_2
+            expected_cache = test_const.ASSIGNMENTS_CACHE_2
 
             actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list if call.args]
-            expected_send_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_1
+            expected_send_messages = test_const.EXPECTED_SENT_ASSIGNMENT_1
 
             message.channel.typing.assert_awaited()
             mock_embed.assert_called_with(
@@ -293,14 +313,14 @@ class TestListenToAssignment(unittest.IsolatedAsyncioTestCase):
         assignment_id = 'Assignment ID 1'
         message = initialize_message(const.ASSIGNMENT_COMMAND_PREFIX + assignment_id)
         courses = {}
-        cache = test_const.ASSIGNMENTS_2
+        cache = test_const.ASSIGNMENTS_CACHE_2
 
         with patch.object(discord, 'Embed', Mock()) as mock_embed:
             actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
-            expected_cache = test_const.ASSIGNMENTS_2
+            expected_cache = test_const.ASSIGNMENTS_CACHE_2
 
             actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list if call.args]
-            expected_sent_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_1
+            expected_sent_messages = test_const.EXPECTED_SENT_ASSIGNMENT_1
 
             message.channel.typing.assert_awaited()
             mock_embed.assert_called_with(
@@ -318,10 +338,10 @@ class TestListenToAssignment(unittest.IsolatedAsyncioTestCase):
 
         with patch.object(discord,  'Embed', Mock()) as mock_embed:
             actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
-            expected_cache = test_const.ASSIGNMENTS_4
+            expected_cache = test_const.ASSIGNMENTS_CACHE_4
 
             actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list if call.args]
-            expected_sent_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_2
+            expected_sent_messages = test_const.EXPECTED_SENT_ASSIGNMENT_2
 
             message.channel.typing.assert_awaited()
             mock_embed.assert_called_with(
@@ -335,14 +355,14 @@ class TestListenToAssignment(unittest.IsolatedAsyncioTestCase):
         assignment_id = 'Assignment ID 2'
         message = initialize_message(const.ASSIGNMENT_COMMAND_PREFIX + assignment_id)
         courses = {}
-        cache = test_const.ASSIGNMENTS_4
+        cache = test_const.ASSIGNMENTS_CACHE_4
 
         with patch.object(discord, 'Embed', Mock()) as mock_embed:
             actual_cache = await listeners.listen_to_assignment(message=message, cache=cache, courses=courses)
-            expected_cache = test_const.ASSIGNMENTS_4
+            expected_cache = test_const.ASSIGNMENTS_CACHE_4
 
             actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list if call.args]
-            expected_sent_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_2
+            expected_sent_messages = test_const.EXPECTED_SENT_ASSIGNMENT_2
 
             message.channel.typing.assert_awaited()
             mock_embed.assert_called_with(
@@ -486,6 +506,81 @@ class TestListenToSection(unittest.IsolatedAsyncioTestCase):
 
         message.channel.typing.assert_awaited_once()
         message.channel.send.assert_awaited_once_with(expected_sent_message)
+
+    async def test_listen_to_section_prefix_spaces(self):
+        course_key = '    Course Key 1'
+        message = initialize_message(const.SECTION_COMMAND_PREFIX + course_key)
+        courses = test_const.COURSES_3
+
+        await listeners.listen_to_section(message=message, courses=courses)
+        expected_sent_message = test_const.EXPECTED_SENT_SECTION_1
+
+        message.channel.typing.assert_awaited_once()
+        message.channel.send.assert_awaited_once_with(expected_sent_message)
+
+    async def test_listen_to_section_bad_key(self):
+        course_key = '?'
+        message = initialize_message(const.SECTION_COMMAND_PREFIX + course_key)
+        courses = test_const.COURSES_3
+
+        await listeners.listen_to_section(message=message, courses=courses)
+        expected_sent_message = '**Section Not Found**'
+
+        message.channel.typing.assert_awaited_once()
+        message.channel.send.assert_awaited_once_with(expected_sent_message)
+
+    async def test_listen_to_section_multiple(self):
+        course_key = 'Course Key 2'
+        message = initialize_message(const.SECTION_COMMAND_PREFIX + course_key)
+        courses = test_const.COURSES_4
+
+        await listeners.listen_to_section(message=message, courses=courses)
+        expected_sent_message = test_const.EXPECTED_SENT_SECTION_2
+
+        message.channel.typing.assert_awaited_once()
+        message.channel.send.assert_awaited_once_with(expected_sent_message)
+
+
+class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
+
+    async def test_listen_to_due_today_never(self):
+        message = initialize_message("!")
+        courses = {}
+        due_today_cache = {}
+        assignments_cache = {}
+
+        actual_cache = await listeners.listen_to_due_today(message=message, courses=courses,
+                                                           due_today_cache=due_today_cache,
+                                                           assignments_cache=assignments_cache)
+        expected_cache = {}
+
+        message.channel.typing.assert_not_awaited()
+        message.channel.send.assert_not_awaited()
+        self.assertEqual(expected_cache, actual_cache)
+
+    async def test_listen_to_assignments_null_due_today_cache(self):
+        pass
+
+    async def test_listen_to_assignments_with_due_today_cache(self):
+        pass
+
+    async def test_listen_to_assignments_null_cache_multiple_course(self):
+        pass
+
+    async def test_listen_to_assignments_with_cache_multiple_course(self):
+        pass
+
+    async def test_listen_to_assignments_null_cache_multiple_assignment_one_course(self):
+        pass
+
+    async def test_listen_to_assignments_with_cache_multiple_assignment_one_course(self):
+        pass
+
+    async def test_listen_to_assignments_null_cache_multiple_assignment_multiple_course(self):
+        pass
+
+    async def test_listen_to_assignments_with_cache_multiple_assignment_multiple_course(self):
+        pass
 
 
 if __name__ == '__main__':
