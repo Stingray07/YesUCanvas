@@ -1,3 +1,6 @@
+# courses cache consts
+COURSES_CACHE_1 = ['Course Name 1', 'Course Name 2']
+
 # course consts
 
 COURSES_0 = {
@@ -308,6 +311,7 @@ ASSIGNMENTS_CACHE_5 = {
 }
 
 # expected messages consts
+EXPECTED_SENT_COURSES_1 = [f'• **Course Name 1**', f'• **Course Name 2**']
 
 EXPECTED_SENT_ASSIGNMENTS_0 = [f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1"]
 EXPECTED_SENT_ASSIGNMENTS_1 = [f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1",

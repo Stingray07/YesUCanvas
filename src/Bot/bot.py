@@ -8,7 +8,6 @@ from src.helper import mock
 load_dotenv()
 all_courses_cache = []
 assignments_cache = {}
-due_today_cache = {}
 
 
 def run_bot():
@@ -29,18 +28,22 @@ def run_bot():
     async def on_message(message):
         global all_courses_cache
         global assignments_cache
-        global due_today_cache
 
         if message.author == bot.user:
             return
 
-        all_courses_cache = await listen.listen_to_courses(message=message, courses=courses, cache=all_courses_cache)
-        assignments_cache = await listen.listen_to_assignments(message=message, courses=courses,
-                                                               cache=assignments_cache)
-        due_today_cache = await listen.listen_to_due_today(message=message,
+        all_courses_cache = await listen.listen_to_courses(message=message,
                                                            courses=courses,
-                                                           assignments_cache=assignments_cache,
-                                                           due_today_cache=due_today_cache)
+                                                           cache=all_courses_cache)
+
+        assignments_cache = await listen.listen_to_assignments(message=message,
+                                                               courses=courses,
+                                                               cache=assignments_cache)
+
+        assignments_cache = await listen.listen_to_due_today(message=message,
+                                                             courses=courses,
+                                                             cache=assignments_cache)
+
         await listen.listen_to_teacher(message=message, courses=courses)
         await listen.listen_to_announcement(message=message, courses=courses)
         await listen.listen_to_section(message=message, courses=courses)

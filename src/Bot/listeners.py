@@ -120,26 +120,20 @@ async def listen_to_section(message, courses):
         await message.channel.send(message_str)
 
 
-async def listen_to_due_today(message, assignments_cache, courses, due_today_cache):
+async def listen_to_due_today(message, cache, courses):
     if message.content == const.DUE_TODAY_COMMAND_PREFIX:
         await message.channel.typing()
 
-        if not assignments_cache:
-            assignments_cache = cf.get_all_pending_assignments(courses=courses)
+        if not cache:
+            cache = cf.get_all_pending_assignments(courses=courses)
             print("Cached Assignments from due_today listener")
-        if not due_today_cache:
-            due_today_cache = cf.get_all_due_today(assignments_cache)
-            print('Cached Due Today from due_today listener')
-            if not due_today_cache:
-                await message.channel.send('No Due Today')
-                return due_today_cache
 
-        for assignment in due_today_cache:
-            await message.channel.typing()
-            message_str = f"• **{due_today_cache[assignment]['name']}**. \nID = {assignment}"
-            await message.channel.send(message_str)
+        no_due_today = await send_assignments_messages_due_today(message=message, pending_assignments=cache)
 
-    return due_today_cache
+        if no_due_today:
+            await message.channel.send('No Due Today')
+
+    return cache
 
 
 async def send_assignments_messages(message, pending_assignments):
@@ -148,3 +142,17 @@ async def send_assignments_messages(message, pending_assignments):
         for assignment_id, assignment_info in assignments.items():
             message_str = f"• **{assignment_info['name']}** \n({course}). \nID = {assignment_id}"
             await message.channel.send(message_str)
+
+
+async def send_assignments_messages_due_today(message, pending_assignments):
+    no_due_today = True
+
+    for course, assignments in pending_assignments.items():
+        await message.channel.typing()
+        for assignment_id, assignment_info in assignments.items():
+            if assignment_info.get('due_today'):
+                no_due_today = False
+                message_str = f"• **{assignment_info['name']}** \n({course}). \nID = {assignment_id}"
+                await message.channel.send(message_str)
+
+    return no_due_today
