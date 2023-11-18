@@ -541,6 +541,17 @@ class TestListenToSection(unittest.IsolatedAsyncioTestCase):
         message.channel.send.assert_awaited_once_with(expected_sent_message)
 
 
+def convert_all_due_today_to_true(data, is_courses):
+    if is_courses:
+        for course_key, course_info in data.items():
+            for assignment_id, assignment_info in course_info['pending_assignments'].items():
+                assignment_info['due_today'] = True
+    else:
+        for course, course_assignments in data.items():
+            print(course_assignments.items())
+            # for assignment_id, assignment_info in course_assignments.items():
+
+
 class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
 
     async def test_listen_to_due_today_never(self):
@@ -558,12 +569,13 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
     async def test_listen_to_assignments_null_cache_due_today(self):
         message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
         courses = test_const.COURSES_3
-        courses['COURSE KEY 1']['pending_assignments']['Assignment ID 1']['due_today'] = True
+        convert_all_due_today_to_true(data=courses, is_courses=True)
+
         assignments_cache = {}
 
         actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
         expected_cache = test_const.ASSIGNMENTS_CACHE_2
-        expected_cache['Course Name 1']['Assignment ID 1']['due_today'] = True
+        convert_all_due_today_to_true(data=courses, is_courses=False)
         expected_message = test_const.EXPECTED_SENT_ASSIGNMENTS_0[0]
 
         message.channel.typing.assert_awaited()
@@ -585,7 +597,7 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
         message.channel.send.assert_awaited_once_with(expected_message)
         self.assertEqual(expected_cache, actual_cache)
 
-    async def test_listen_to_assignments_with_cache(self):
+    async def test_listen_to_assignments_with_cache_due_today(self):
         message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
         courses = {}
         assignments_cache = test_const.ASSIGNMENTS_CACHE_2
@@ -600,24 +612,136 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
         message.channel.send.assert_awaited_once_with(expected_message)
         self.assertEqual(expected_cache, actual_cache)
 
+    async def test_listen_to_assignments_with_cache_not_due_today(self):
+        message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
+        courses = {}
+        assignments_cache = test_const.ASSIGNMENTS_CACHE_2
+        assignments_cache['Course Name 1']['Assignment ID 1']['due_today'] = False
+
+        actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
+        expected_cache = test_const.ASSIGNMENTS_CACHE_2
+        expected_cache['Course Name 1']['Assignment ID 1']['due_today'] = False
+        expected_message = 'No Due Today'
+
+        message.channel.typing.assert_awaited()
+        message.channel.send.assert_awaited_once_with(expected_message)
+        self.assertEqual(expected_cache, actual_cache)
+
     async def test_listen_to_assignments_null_cache_multiple_course(self):
-        pass
+        message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
+        courses = test_const.COURSES_4
+        courses['COURSE KEY 1']['pending_assignments']['Assignment ID 1']['due_today'] = True
+        courses['COURSE KEY 2']['pending_assignments']['Assignment ID 2']['due_today'] = True
+        assignments_cache = {}
+
+        actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
+        expected_cache = test_const.ASSIGNMENTS_CACHE_3
+        expected_cache['Course Name 1']['Assignment ID 1']['due_today'] = True
+        expected_cache['Course Name 2']['Assignment ID 2']['due_today'] = True
+        sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+        expected_message = test_const.EXPECTED_SENT_ASSIGNMENTS_2
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_message, sent_messages)
+        self.assertEqual(expected_cache, actual_cache)
 
     async def test_listen_to_assignments_with_cache_multiple_course(self):
-        pass
+        message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
+        courses = {}
+        assignments_cache = test_const.ASSIGNMENTS_CACHE_3
+        assignments_cache['Course Name 1']['Assignment ID 1']['due_today'] = True
+        assignments_cache['Course Name 2']['Assignment ID 2']['due_today'] = True
+
+        actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
+        expected_cache = test_const.ASSIGNMENTS_CACHE_3
+        expected_cache['Course Name 1']['Assignment ID 1']['due_today'] = True
+        expected_cache['Course Name 2']['Assignment ID 2']['due_today'] = True
+        sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+        expected_message = test_const.EXPECTED_SENT_ASSIGNMENTS_2
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_message, sent_messages)
+        self.assertEqual(expected_cache, actual_cache)
 
     async def test_listen_to_assignments_null_cache_multiple_assignment_one_course(self):
-        pass
+        message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
+        courses = test_const.COURSES_5
+        courses['COURSE KEY 1']['pending_assignments']['Assignment ID 1']['due_today'] = True
+        courses['COURSE KEY 1']['pending_assignments']['Assignment ID 2']['due_today'] = True
+        assignments_cache = {}
+
+        actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
+        expected_cache = test_const.ASSIGNMENTS_CACHE_4
+        expected_cache['Course Name 1']['Assignment ID 1']['due_today'] = True
+        expected_cache['Course Name 1']['Assignment ID 2']['due_today'] = True
+        sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+        expected_message = test_const.EXPECTED_SENT_ASSIGNMENTS_1
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_message, sent_messages)
+        self.assertEqual(expected_cache, actual_cache)
 
     async def test_listen_to_assignments_with_cache_multiple_assignment_one_course(self):
-        pass
+        message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
+        courses = {}
+        assignments_cache = test_const.ASSIGNMENTS_CACHE_4
+        assignments_cache['Course Name 1']['Assignment ID 1']['due_today'] = True
+        assignments_cache['Course Name 1']['Assignment ID 2']['due_today'] = True
+
+        actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
+        expected_cache = test_const.ASSIGNMENTS_CACHE_4
+        expected_cache['Course Name 1']['Assignment ID 1']['due_today'] = True
+        expected_cache['Course Name 1']['Assignment ID 2']['due_today'] = True
+        sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+        expected_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_1
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_messages, sent_messages)
+        self.assertEqual(expected_cache, actual_cache)
 
     async def test_listen_to_assignments_null_cache_multiple_assignment_multiple_course(self):
-        pass
+        message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
+        courses = test_const.COURSES_6
+        courses['COURSE KEY 1']['pending_assignments']['Assignment ID 1']['due_today'] = True
+        courses['COURSE KEY 1']['pending_assignments']['Assignment ID 2']['due_today'] = True
+        courses['COURSE KEY 2']['pending_assignments']['Assignment ID 3']['due_today'] = True
+        courses['COURSE KEY 2']['pending_assignments']['Assignment ID 4']['due_today'] = True
+        assignments_cache = {}
+
+        actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
+        expected_cache = test_const.ASSIGNMENTS_CACHE_5
+        expected_cache['Course Name 1']['Assignment ID 1']['due_today'] = True
+        expected_cache['Course Name 1']['Assignment ID 2']['due_today'] = True
+        expected_cache['Course Name 2']['Assignment ID 3']['due_today'] = True
+        expected_cache['Course Name 2']['Assignment ID 4']['due_today'] = True
+        sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+        expected_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_3
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_messages, sent_messages)
+        self.assertEqual(expected_cache, actual_cache)
 
     async def test_listen_to_assignments_with_cache_multiple_assignment_multiple_course(self):
-        pass
+        message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
+        courses = {}
+        assignments_cache = test_const.ASSIGNMENTS_CACHE_5
+        assignments_cache['Course Name 1']['Assignment ID 1']['due_today'] = True
+        assignments_cache['Course Name 1']['Assignment ID 2']['due_today'] = True
+        assignments_cache['Course Name 2']['Assignment ID 3']['due_today'] = True
+        assignments_cache['Course Name 2']['Assignment ID 4']['due_today'] = True
 
+        actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
+        expected_cache = test_const.ASSIGNMENTS_CACHE_5
+        expected_cache['Course Name 1']['Assignment ID 1']['due_today'] = True
+        expected_cache['Course Name 1']['Assignment ID 2']['due_today'] = True
+        expected_cache['Course Name 2']['Assignment ID 3']['due_today'] = True
+        expected_cache['Course Name 2']['Assignment ID 4']['due_today'] = True
+        sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+        expected_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_3
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_messages, sent_messages)
+        self.assertEqual(expected_cache, actual_cache)
 
 if __name__ == '__main__':
     unittest.main()
