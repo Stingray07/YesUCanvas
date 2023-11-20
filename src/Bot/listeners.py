@@ -3,7 +3,6 @@ import discord
 from src.Canvas import consts as const
 from src.Canvas import course_functions as cf
 from html2text import html2text
-from src.helper import format_data
 
 
 async def listen_to_help(message):

@@ -5,7 +5,8 @@ ACTIVE_ENROLLMENT_STATE = 'active'
 HELP_MESSAGE = '''**Available Commands:**
 
 `!courses`: Gives all current courses for the current trimester.\n
-`!all_assignments`: Gives all unsubmitted assignments.\n
+`!all_asm`: Gives all unsubmitted assignments.\n
+`!asm <assignment ID>`: Gives information for the assignment with the given ID\n
 `!teacher <section>`: Gives the name of the teacher for the given section.\n
 `!anm <section>`: Gives the latest announcement for the given section.\n
 `!section <subject>`: Gives the section of the given subject.\n

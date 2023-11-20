@@ -1,5 +1,6 @@
 import unittest
 from src.Canvas import course_functions as cf
+from src.Tests import test_consts as test_const
 
 
 class TestGetAllPendingAssignments(unittest.TestCase):
@@ -10,32 +11,9 @@ class TestGetAllPendingAssignments(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_get_one_pending_assignments(self):
-        courses = {
-            'Course ID 1': {
-                'course_name': 'Test Course Name',
-                'pending_assignments': {
-                    'Assignment ID': {
-                        'name': 'Assignment 1',
-                        'points': 50,
-                        'description': 'Test description',
-                        'due': 'October 17, 2023',
-                        'due_today': False
-                    }
-                }
-            },
-        }
+        courses = test_const.COURSES_3
         actual = cf.get_all_pending_assignments(courses=courses)
-        expected = {
-            'Test Course Name': {
-                'Assignment ID': {
-                    'name': 'Assignment 1',
-                    'points': 50,
-                    'description': 'Test description',
-                    'due': 'October 17, 2023',
-                    'due_today': False
-                }
-            }
-        }
+        expected = test_const.ASSIGNMENTS_2
         self.assertEqual(expected, actual)
 
     def test_empty_course_name(self):

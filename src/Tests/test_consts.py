@@ -212,18 +212,18 @@ COURSES_6 = {
 # assignments consts
 
 
-ASSIGNMENTS_CACHE_0 = {
+ASSIGNMENTS_0 = {
     'Course Name 1': {},
     'Course Not Found': {}
 }
 
-ASSIGNMENTS_CACHE_1 = {
+ASSIGNMENTS_1 = {
     'Course Name 1': {
         'Assignment ID 1': {}
     }
 }
 
-ASSIGNMENTS_CACHE_2 = {
+ASSIGNMENTS_2 = {
     'Course Name 1': {
         'Assignment ID 1': {
             'name': 'Assignment Name 1',
@@ -235,7 +235,7 @@ ASSIGNMENTS_CACHE_2 = {
     }
 }
 
-ASSIGNMENTS_CACHE_3 = {
+ASSIGNMENTS_3 = {
     'Course Name 1': {
         'Assignment ID 1': {
             'name': 'Assignment Name 1',
@@ -256,7 +256,7 @@ ASSIGNMENTS_CACHE_3 = {
     }
 }
 
-ASSIGNMENTS_CACHE_4 = {
+ASSIGNMENTS_4 = {
     'Course Name 1': {
         'Assignment ID 1': {
             'name': 'Assignment Name 1',
@@ -275,7 +275,7 @@ ASSIGNMENTS_CACHE_4 = {
     }
 }
 
-ASSIGNMENTS_CACHE_5 = {
+ASSIGNMENTS_5 = {
     'Course Name 1': {
         'Assignment ID 1': {
             'name': 'Assignment Name 1',

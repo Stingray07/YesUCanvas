@@ -7,7 +7,6 @@ from datetime import datetime
 from src.Canvas.course_functions import get_course_code
 from src.helper import format_data
 
-
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 HEADERS = {

@@ -16,7 +16,7 @@ mock = {
                 "points": 30.0,
                 "description": "<h4><em><strong>Instructions for this Quiz:</strong></em></h4>\n<ol>\n<li>This is a<span>&nbsp;</span><strong>multiple-choice</strong><span>&nbsp;</span>quiz.</li>\n<li><strong>Read and understand the question and then choose the best answer from the given choices.</strong></li>\n<li><strong>You are only given one attempt for this quiz.</strong><span>&nbsp;</span>Make sure you have selected the correct answers before submitting the quiz.</li>\n</ol>",
                 "due": "November 18, 2023 03:59 PM",
-                "due_today": True
+                "due_today": False
             },
             "466568": {
                 "name": "Module 6 - Quiz on Computer Arithmetic",
