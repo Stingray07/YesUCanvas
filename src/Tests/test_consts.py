@@ -47,7 +47,7 @@ COURSES_3 = {
                 'points': 50,
                 'description': 'Assignment Description 1',
                 'due': 'October 17, 2023',
-                'due_today': False
+                'due_today': True
             }
         },
         'teacher': 'Teacher 1',
@@ -92,7 +92,7 @@ COURSES_4 = {
                 'points': 100,
                 'description': 'Assignment Description 2',
                 'due': 'October 18, 2023',
-                'due_today': False
+                'due_today': True
             }
         },
         'teacher': 'Teacher 2',
@@ -123,7 +123,7 @@ COURSES_5 = {
                 'points': 100,
                 'description': 'Assignment Description 2',
                 'due': 'October 18, 2023',
-                'due_today': False
+                'due_today': True
             }
         },
         'teacher': 'Teacher 1',
@@ -157,7 +157,7 @@ COURSES_6 = {
                 'points': 100,
                 'description': 'Assignment Description 2',
                 'due': 'October 18, 2023',
-                'due_today': False
+                'due_today': True
             }
         },
         'teacher': 'Teacher 1',
@@ -189,7 +189,7 @@ COURSES_6 = {
                 'points': 200,
                 'description': 'Assignment Description 4',
                 'due': 'October 20, 2023',
-                'due_today': False
+                'due_today': True
             }
         },
         'teacher': 'Teacher 2',
@@ -213,8 +213,15 @@ COURSES_6 = {
 
 
 ASSIGNMENTS_0 = {
-    'Course Name 1': {},
-    'Course Not Found': {}
+    'Course Not Found': {
+        'Assignment ID 1': {
+            'name': 'Assignment Name 1',
+            'points': 50,
+            'description': 'Assignment Description 1',
+            'due': 'October 17, 2023',
+            'due_today': True
+        }
+    }
 }
 
 ASSIGNMENTS_1 = {
@@ -230,7 +237,7 @@ ASSIGNMENTS_2 = {
             'points': 50,
             'description': 'Assignment Description 1',
             'due': 'October 17, 2023',
-            'due_today': False
+            'due_today': True
         }
     }
 }
@@ -251,7 +258,7 @@ ASSIGNMENTS_3 = {
             'points': 100,
             'description': 'Assignment Description 2',
             'due': 'October 18, 2023',
-            'due_today': False
+            'due_today': True
         }
     }
 }
@@ -270,7 +277,7 @@ ASSIGNMENTS_4 = {
             'points': 100,
             'description': 'Assignment Description 2',
             'due': 'October 18, 2023',
-            'due_today': False
+            'due_today': True
         }
     }
 }
@@ -289,7 +296,7 @@ ASSIGNMENTS_5 = {
             'points': 100,
             'description': 'Assignment Description 2',
             'due': 'October 18, 2023',
-            'due_today': False
+            'due_today': True
         }
     },
     'Course Name 2': {
@@ -299,15 +306,88 @@ ASSIGNMENTS_5 = {
             'description': 'Assignment Description 3',
             'due': 'October 19, 2023',
             'due_today': True
-            },
+        },
         'Assignment ID 4': {
             'name': 'Assignment Name 4',
             'points': 200,
             'description': 'Assignment Description 4',
             'due': 'October 20, 2023',
-            'due_today': False
-            }
+            'due_today': True
+        }
     }
+}
+
+ASSIGNMENTS_6 = {
+    'Course Not Found': {
+        'Assignment ID 1': {
+            'name': 'Assignment Name 1',
+            'points': 50,
+            'description': 'Assignment Description 1',
+            'due': 'October 17, 2023',
+            'due_today': True
+        },
+        'Assignment ID 2': {
+            'name': 'Assignment Name 2',
+            'points': 100,
+            'description': 'Assignment Description 2',
+            'due': 'October 18, 2023',
+            'due_today': True
+        }
+    }
+}
+
+ASSIGNMENTS_7 = {
+    'Course Not Found': {
+        'Assignment ID 1': {
+            'name': 'Assignment Name 1',
+            'points': 50,
+            'description': 'Assignment Description 1',
+            'due': 'October 17, 2023',
+            'due_today': True
+        },
+    },
+    'Course Name 2': {
+        'Assignment ID 2': {
+            'name': 'Assignment Name 2',
+            'points': 100,
+            'description': 'Assignment Description 2',
+            'due': 'October 18, 2023',
+            'due_today': True
+        }
+    }
+}
+
+# ASSIGNMENT CONSTS
+ASSIGNMENT_1 = {
+    'name': 'Assignment Name 1',
+    'points': 50,
+    'description': 'Assignment Description 1',
+    'due': 'October 17, 2023',
+    'due_today': True
+}
+
+ASSIGNMENT_2 = {
+    'name': 'Assignment Name 2',
+    'points': 100,
+    'description': 'Assignment Description 2',
+    'due': 'October 18, 2023',
+    'due_today': True
+}
+
+ASSIGNMENT_3 = {
+    'name': 'Assignment Name 3',
+    'points': 150,
+    'description': 'Assignment Description 3',
+    'due': 'October 19, 2023',
+    'due_today': True
+}
+
+ASSIGNMENT_4 = {
+    'name': 'Assignment Name 4',
+    'points': 200,
+    'description': 'Assignment Description 4',
+    'due': 'October 20, 2023',
+    'due_today': True
 }
 
 # expected messages consts

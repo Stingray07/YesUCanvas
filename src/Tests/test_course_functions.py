@@ -1,4 +1,5 @@
 import unittest
+import copy
 from src.Canvas import course_functions as cf
 from src.Tests import test_consts as test_const
 
@@ -17,132 +18,27 @@ class TestGetAllPendingAssignments(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_empty_course_name(self):
-        courses = {
-            'Course ID 1': {
-                'course_name': None,
-                'pending_assignments': {
-                    'Assignment ID': {
-                        'name': 'Assignment 1',
-                        'points': 50,
-                        'description': 'Test description',
-                        'due': 'October 17, 2023',
-                        'due_today': False
-                    }
-                }
-            }
-        }
+        courses = copy.deepcopy(test_const.COURSES_3)
+        courses['COURSE KEY 1']['course_name'] = None
         actual = cf.get_all_pending_assignments(courses=courses)
-        expected = {
-            'Course Not Found': {
-                'Assignment ID': {
-                    'name': 'Assignment 1',
-                    'points': 50,
-                    'description': 'Test description',
-                    'due': 'October 17, 2023',
-                    'due_today': False
-                }
-            }
-        }
+        expected = test_const.ASSIGNMENTS_0
 
         self.assertEqual(expected, actual)
 
     def test_multiple_empty_course_name(self):
-        courses = {
-            'Course ID 1': {
-                'course_name': None,
-                'pending_assignments': {
-                    'Assignment ID': {
-                        'name': 'Assignment 1',
-                        'points': 50,
-                        'description': 'Test description',
-                        'due': 'October 17, 2023',
-                        'due_today': False
-                    }
-                }
-            },
-            'Course ID 2': {
-                'course_name': None,
-                'pending_assignments': {
-                    'Assignment ID 2': {
-                        'name': 'Assignment 2',
-                        'points': 50,
-                        'description': ' Test description 2',
-                        'due': 'November 10, 2025',
-                        'due_today': False
-                    }
-                }
-            }
-        }
+        courses = copy.deepcopy(test_const.COURSES_4)
+        courses['COURSE KEY 1']['course_name'] = None
+        courses['COURSE KEY 2']['course_name'] = None
         actual = cf.get_all_pending_assignments(courses=courses)
-        expected = {
-            'Course Not Found': {
-                'Assignment ID': {
-                    'name': 'Assignment 1',
-                    'points': 50,
-                    'description': 'Test description',
-                    'due': 'October 17, 2023',
-                    'due_today': False
-                },
-                'Assignment ID 2': {
-                    'name': 'Assignment 2',
-                    'points': 50,
-                    'description': ' Test description 2',
-                    'due': 'November 10, 2025',
-                    'due_today': False
-                }
-            }
-        }
+        expected = test_const.ASSIGNMENTS_6
 
         self.assertEqual(expected, actual)
 
     def test_multiple_one_course_name_empty(self):
-        courses = {
-            'Course ID 1': {
-                'course_name': None,
-                'pending_assignments': {
-                    'Assignment ID': {
-                        'name': 'Assignment 1',
-                        'points': 50,
-                        'description': 'Test description',
-                        'due': 'October 17, 2023',
-                        'due_today': False
-                    }
-                }
-            },
-            'Course ID 2': {
-                'course_name': 'Course 2',
-                'pending_assignments': {
-                    'Assignment ID 2': {
-                        'name': 'Assignment 2',
-                        'points': 50,
-                        'description': ' Test description 2',
-                        'due': 'November 10, 2025',
-                        'due_today': False
-                    }
-                }
-            }
-        }
+        courses = copy.deepcopy(test_const.COURSES_4)
+        courses['COURSE KEY 1']['course_name'] = None
         actual = cf.get_all_pending_assignments(courses=courses)
-        expected = {
-            'Course Not Found': {
-                'Assignment ID': {
-                    'name': 'Assignment 1',
-                    'points': 50,
-                    'description': 'Test description',
-                    'due': 'October 17, 2023',
-                    'due_today': False
-                }
-            },
-            'Course 2': {
-                'Assignment ID 2': {
-                    'name': 'Assignment 2',
-                    'points': 50,
-                    'description': ' Test description 2',
-                    'due': 'November 10, 2025',
-                    'due_today': False
-                }
-            }
-        }
+        expected = test_const.ASSIGNMENTS_7
 
         self.assertEqual(expected, actual)
 
@@ -156,92 +52,36 @@ class TestGetAssignment(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_null_assignment_id(self):
-        assignments = {
-            'Subject': {
-                'Assignment ID': {
-                    'name': 'Assignment 1',
-                    'points': 50,
-                    'description': 'Test description',
-                    'due': 'October 17, 2023',
-                    'due_today': False
-                }
-            }
-        }
+        assignments = test_const.ASSIGNMENTS_2
         assignment_id = None
         actual = cf.get_assignment(assignments=assignments, assignment_id=assignment_id)
         expected = None
         self.assertEqual(expected, actual)
 
     def test_get_assignment(self):
-        assignments = {
-            'Subject': {
-                'Assignment ID': {
-                    'name': 'Assignment 1',
-                    'points': 50,
-                    'description': 'Test description',
-                    'due': 'October 17, 2023',
-                    'due_today': False
-                }
-            }
-        }
-        assignment_id = 'Assignment ID'
+        assignments = test_const.ASSIGNMENTS_2
+        assignment_id = 'Assignment ID 1'
         actual = cf.get_assignment(assignments=assignments, assignment_id=assignment_id)
-        expected = {
-            'name': 'Assignment 1',
-            'points': 50,
-            'description': 'Test description',
-            'due': 'October 17, 2023',
-            'due_today': False
-        }
+        expected = test_const.ASSIGNMENT_1
         self.assertEqual(expected, actual)
 
     def test_get_assignment_multiple(self):
-        assignments = {
-            'Subject 1': {
-                'Assignment ID': {
-                    'name': 'Assignment 1',
-                    'points': 50,
-                    'description': 'Test description',
-                    'due': 'October 17, 2023',
-                    'due_today': False
-                }
-            },
-            'Subject 2': {
-                'Assignment ID 2': {
-                    'name': 'Assignment 2',
-                    'points': 500,
-                    'description': 'Test description',
-                    'due': 'October 17, 2013',
-                    'due_today': True
-                }
-            }
-        }
+        assignments = test_const.ASSIGNMENTS_3
         assignment_id = 'Assignment ID 2'
         actual = cf.get_assignment(assignments=assignments, assignment_id=assignment_id)
-        expected = {
-            'name': 'Assignment 2',
-            'points': 500,
-            'description': 'Test description',
-            'due': 'October 17, 2013',
-            'due_today': True
-        }
+        expected = test_const.ASSIGNMENT_2
         self.assertEqual(expected, actual)
 
     def test_null_assignment_value(self):
-        assignments = {
-            'Subject': {
-                'Assignment ID': {}
-            }
-        }
+        assignments = test_const.ASSIGNMENTS_1
         assignment_id = 'Assignment ID'
         actual = cf.get_assignment(assignments=assignments, assignment_id=assignment_id)
         expected = None
         self.assertEqual(expected, actual)
 
     def test_null_subject_value(self):
-        assignments = {
-            'Subject': {}
-        }
+        assignments = copy.deepcopy(test_const.ASSIGNMENTS_1)
+        assignments['Course Name 1'] = {}
         assignment_id = 'Assignment ID'
         actual = cf.get_assignment(assignments=assignments, assignment_id=assignment_id)
         expected = None
@@ -583,6 +423,12 @@ class TestGetCourseCode(unittest.TestCase):
 
     def test_get_course_code(self):
         orig_course_code = 'orig | Test Subject'
+        actual = cf.get_course_code(orig_course_code)
+        expected = 'ORIG'
+        self.assertEqual(expected, actual)
+
+    def test_get_course_code_2(self):
+        orig_course_code = 'orig | Test Subject | HAHAH'
         actual = cf.get_course_code(orig_course_code)
         expected = 'ORIG'
         self.assertEqual(expected, actual)

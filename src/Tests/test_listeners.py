@@ -1,10 +1,12 @@
 import unittest
 import discord
+import copy
 from html2text import html2text
 from unittest.mock import AsyncMock, Mock, patch
 from src.Canvas import consts as const
 from src.Tests import test_consts as test_const
 from src.Bot import listeners
+from src.helper import format_data
 
 # For some functions, I made it so that if the cache is not null, then I made its courses null.
 # This is to check if the data that is being sent is actually from the cache itself, not from courses
@@ -541,17 +543,6 @@ class TestListenToSection(unittest.IsolatedAsyncioTestCase):
         message.channel.send.assert_awaited_once_with(expected_sent_message)
 
 
-def convert_all_due_today_to_true(data, is_courses):
-    if is_courses:
-        for course_key, course_info in data.items():
-            for assignment_id, assignment_info in course_info['pending_assignments'].items():
-                assignment_info['due_today'] = True
-    else:
-        for course, course_assignments in data.items():
-            for assignment_id,  assignment_info in course_assignments.items():
-                assignment_info['due_today'] = True
-
-
 class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
 
     async def test_listen_to_due_today_never(self):
@@ -569,13 +560,11 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
     async def test_listen_to_assignments_null_cache_due_today(self):
         message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
         courses = test_const.COURSES_3
-        convert_all_due_today_to_true(data=courses, is_courses=True)
 
         assignments_cache = {}
 
         actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
         expected_cache = test_const.ASSIGNMENTS_2
-        convert_all_due_today_to_true(data=expected_cache, is_courses=False)
         expected_message = test_const.EXPECTED_SENT_ASSIGNMENTS_0[0]
 
         message.channel.typing.assert_awaited()
@@ -584,12 +573,12 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
 
     async def test_listen_to_assignments_null_cache_not_due_today(self):
         message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
-        courses = test_const.COURSES_3
+        courses = copy.deepcopy(test_const.COURSES_3)
         courses['COURSE KEY 1']['pending_assignments']['Assignment ID 1']['due_today'] = False
         assignments_cache = {}
 
         actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
-        expected_cache = test_const.ASSIGNMENTS_2
+        expected_cache = copy.deepcopy(test_const.ASSIGNMENTS_2)
         expected_cache['Course Name 1']['Assignment ID 1']['due_today'] = False
         expected_message = 'No Due Today'
 
@@ -601,11 +590,10 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
         message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
         courses = {}
         assignments_cache = test_const.ASSIGNMENTS_2
-        convert_all_due_today_to_true(data=assignments_cache, is_courses=False)
+        format_data(assignments_cache)
 
         actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
         expected_cache = test_const.ASSIGNMENTS_2
-        convert_all_due_today_to_true(data=expected_cache, is_courses=False)
         expected_message = test_const.EXPECTED_SENT_ASSIGNMENTS_0[0]
 
         message.channel.typing.assert_awaited()
@@ -615,11 +603,11 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
     async def test_listen_to_assignments_with_cache_not_due_today(self):
         message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
         courses = {}
-        assignments_cache = test_const.ASSIGNMENTS_2
+        assignments_cache = copy.deepcopy(test_const.ASSIGNMENTS_2)
         assignments_cache['Course Name 1']['Assignment ID 1']['due_today'] = False
 
         actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
-        expected_cache = test_const.ASSIGNMENTS_2
+        expected_cache = copy.deepcopy(test_const.ASSIGNMENTS_2)
         expected_cache['Course Name 1']['Assignment ID 1']['due_today'] = False
         expected_message = 'No Due Today'
 
@@ -630,12 +618,10 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
     async def test_listen_to_assignments_null_cache_multiple_course(self):
         message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
         courses = test_const.COURSES_4
-        convert_all_due_today_to_true(data=courses, is_courses=True)
         assignments_cache = {}
 
         actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
         expected_cache = test_const.ASSIGNMENTS_3
-        convert_all_due_today_to_true(data=expected_cache, is_courses=False)
         sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
         expected_message = test_const.EXPECTED_SENT_ASSIGNMENTS_2
 
@@ -647,11 +633,9 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
         message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
         courses = {}
         assignments_cache = test_const.ASSIGNMENTS_3
-        convert_all_due_today_to_true(data=assignments_cache, is_courses=False)
 
         actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
         expected_cache = test_const.ASSIGNMENTS_3
-        convert_all_due_today_to_true(data=expected_cache, is_courses=False)
         sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
         expected_message = test_const.EXPECTED_SENT_ASSIGNMENTS_2
 
@@ -662,12 +646,10 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
     async def test_listen_to_assignments_null_cache_multiple_assignment_one_course(self):
         message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
         courses = test_const.COURSES_5
-        convert_all_due_today_to_true(data=courses, is_courses=True)
         assignments_cache = {}
 
         actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
         expected_cache = test_const.ASSIGNMENTS_4
-        convert_all_due_today_to_true(data=expected_cache, is_courses=False)
         sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
         expected_message = test_const.EXPECTED_SENT_ASSIGNMENTS_1
 
@@ -679,11 +661,9 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
         message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
         courses = {}
         assignments_cache = test_const.ASSIGNMENTS_4
-        convert_all_due_today_to_true(data=assignments_cache, is_courses=False)
 
         actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
         expected_cache = test_const.ASSIGNMENTS_4
-        convert_all_due_today_to_true(data=expected_cache, is_courses=False)
         sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
         expected_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_1
 
@@ -694,12 +674,10 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
     async def test_listen_to_assignments_null_cache_multiple_assignment_multiple_course(self):
         message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
         courses = test_const.COURSES_6
-        convert_all_due_today_to_true(data=courses, is_courses=True)
         assignments_cache = {}
 
         actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
         expected_cache = test_const.ASSIGNMENTS_5
-        convert_all_due_today_to_true(data=expected_cache, is_courses=False)
         sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
         expected_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_3
 
@@ -710,12 +688,10 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
     async def test_listen_to_assignments_with_cache_multiple_assignment_multiple_course(self):
         message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
         courses = {}
-        assignments_cache = test_const.ASSIGNMENTS_5
-        convert_all_due_today_to_true(data=assignments_cache, is_courses=False)
+        assignments_cache = test_const.ASSIGNMENTS_5.copy()
 
         actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
         expected_cache = test_const.ASSIGNMENTS_5
-        convert_all_due_today_to_true(data=expected_cache, is_courses=False)
         sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
         expected_messages = test_const.EXPECTED_SENT_ASSIGNMENTS_3
 
