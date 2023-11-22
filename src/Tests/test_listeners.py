@@ -590,7 +590,6 @@ class TestListenToDueToday(unittest.IsolatedAsyncioTestCase):
         message = initialize_message(const.DUE_TODAY_COMMAND_PREFIX)
         courses = {}
         assignments_cache = test_const.ASSIGNMENTS_2
-        format_data(assignments_cache)
 
         actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
         expected_cache = test_const.ASSIGNMENTS_2
@@ -713,6 +712,30 @@ class TestListenToAllModules(unittest.IsolatedAsyncioTestCase):
         message.channel.typing.assert_not_awaited()
         message.channel.send.assert_not_awaited()
         self.assertEqual(expected_cache, actual_cache)
+
+    async def test_listen_to_modules_null_cache(self):
+        pass
+
+    async def test_listen_to_modules_with_cache(self):
+        pass
+
+    async def test_listen_to_modules_null_cache_multiple_course(self):
+        pass
+
+    async def test_listen_to_modules_with_cache_multiple_course(self):
+        pass
+
+    async def test_listen_to_modules_null_cache_multiple_assignments_one_course(self):
+        pass
+
+    async def test_listen_to_modules_with_cache_multiple_assignments_one_course(self):
+        pass
+
+    async def test_listen_to_modules_null_cache_multiple_assignments_multiple_course(self):
+        pass
+
+    async def test_listen_to_modules_with_cache_multiple_assignments_multiple_course(self):
+        pass
 
 
 if __name__ == '__main__':

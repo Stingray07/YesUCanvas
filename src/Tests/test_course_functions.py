@@ -96,177 +96,54 @@ class TestGetAllDueToday(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_get_one_due_today_false(self):
-        assignments = {
-            'Test Course': {
-                '452465': {
-                    "name": "Assignment 1",
-                    "points": 50.0,
-                    "description": 'Assignment 1 description',
-                    "due": "November 04, 2023 03:59 PM",
-                    "due_today": False
-                }
-            }
-        }
+        assignments = copy.deepcopy(test_const.ASSIGNMENTS_2)
+        assignments['Course Name 1']['Assignment ID 1']['due_today'] = False
         actual = cf.get_all_due_today(assignments=assignments)
         expected = {}
         self.assertEqual(expected, actual)
 
     def test_get_one_due_today_true(self):
-        assignments = {
-            'Test Course': {
-                '452465': {
-                    "name": "Assignment 1",
-                    "points": 50.0,
-                    "description": 'Assignment 1 description',
-                    "due": "November 04, 2023 03:59 PM",
-                    "due_today": True
-                }
-            }
-        }
+        assignments = test_const.ASSIGNMENTS_2
         actual = cf.get_all_due_today(assignments=assignments)
-        expected = {
-            '452465': {
-                "name": "Assignment 1",
-                "points": 50.0,
-                "description": 'Assignment 1 description',
-                "due": "November 04, 2023 03:59 PM",
-                "due_today": True
-            }
-        }
+        expected = {'Assignment ID 1': test_const.ASSIGNMENT_1}
         self.assertEqual(expected, actual)
 
     def test_empty_course_value(self):
         assignments = {
-            'Test Course': {}
+            'Course Name 1': {}
         }
         actual = cf.get_all_due_today(assignments=assignments)
         expected = {}
         self.assertEqual(expected, actual)
 
     def test_multiple_true_one_course(self):
-        assignments = {
-            'Test Course': {
-                '452465': {
-                    "name": "Assignment 1",
-                    "points": 50.0,
-                    "description": 'Assignment 1 description',
-                    "due": "November 04, 2023 03:59 PM",
-                    "due_today": True
-                },
-                '2': {
-                    "name": "Assignment 2",
-                    "points": 10.0,
-                    "description": 'Assignment 2 description',
-                    "due": "November 25, 2029 9:00 PM",
-                    "due_today": True
-                }
-            }
-        }
+        assignments = test_const.ASSIGNMENTS_4
         actual = cf.get_all_due_today(assignments=assignments)
-        expected = {
-            '452465': {
-                "name": "Assignment 1",
-                "points": 50.0,
-                "description": 'Assignment 1 description',
-                "due": "November 04, 2023 03:59 PM",
-                "due_today": True
-            },
-            '2': {
-                "name": "Assignment 2",
-                "points": 10.0,
-                "description": 'Assignment 2 description',
-                "due": "November 25, 2029 9:00 PM",
-                "due_today": True
-            }
-        }
+        expected = {'Assignment ID 1': test_const.ASSIGNMENT_1,
+                    'Assignment ID 2': test_const.ASSIGNMENT_2}
         self.assertEqual(expected, actual)
 
     def test_multiple_false_one_course(self):
-        assignments = {
-            'Test Course': {
-                '452465': {
-                    "name": "Assignment 1",
-                    "points": 50.0,
-                    "description": 'Assignment 1 description',
-                    "due": "November 04, 2023 03:59 PM",
-                    "due_today": False
-                },
-                '2': {
-                    "name": "Assignment 2",
-                    "points": 10.0,
-                    "description": 'Assignment 2 description',
-                    "due": "November 25, 2029 9:00 PM",
-                    "due_today": False
-                }
-            }
-        }
+        assignments = copy.deepcopy(test_const.ASSIGNMENTS_4)
+        assignments['Course Name 1']['Assignment ID 1']['due_today'] = False
+        assignments['Course Name 1']['Assignment ID 2']['due_today'] = False
         actual = cf.get_all_due_today(assignments=assignments)
         expected = {}
         self.assertEqual(expected, actual)
 
     def test_multiple_false_multiple_course(self):
-        assignments = {
-            'Test Course': {
-                '452465': {
-                    "name": "Assignment 1",
-                    "points": 50.0,
-                    "description": 'Assignment 1 description',
-                    "due": "November 04, 2023 03:59 PM",
-                    "due_today": False
-                }
-            },
-            'Test Course 2': {
-                '2': {
-                    "name": "Assignment 2",
-                    "points": 10.0,
-                    "description": 'Assignment 2 description',
-                    "due": "November 25, 2029 9:00 PM",
-                    "due_today": False
-                }
-            }
-        }
+        assignments = copy.deepcopy(test_const.ASSIGNMENTS_3)
+        assignments['Course Name 1']['Assignment ID 1']['due_today'] = False
+        assignments['Course Name 2']['Assignment ID 2']['due_today'] = False
         actual = cf.get_all_due_today(assignments=assignments)
         expected = {}
         self.assertEqual(expected, actual)
 
     def test_multiple_true_multiple_course(self):
-        assignments = {
-            'Test Course': {
-                '452465': {
-                    "name": "Assignment 1",
-                    "points": 50.0,
-                    "description": 'Assignment 1 description',
-                    "due": "November 04, 2023 03:59 PM",
-                    "due_today": True
-                }
-            },
-            'Test Course 2': {
-                '2': {
-                    "name": "Assignment 2",
-                    "points": 10.0,
-                    "description": 'Assignment 2 description',
-                    "due": "November 25, 2029 9:00 PM",
-                    "due_today": True
-                }
-            }
-        }
+        assignments = test_const.ASSIGNMENTS_3
         actual = cf.get_all_due_today(assignments=assignments)
-        expected = {
-            '452465': {
-                "name": "Assignment 1",
-                "points": 50.0,
-                "description": 'Assignment 1 description',
-                "due": "November 04, 2023 03:59 PM",
-                "due_today": True
-            },
-            '2': {
-                "name": "Assignment 2",
-                "points": 10.0,
-                "description": 'Assignment 2 description',
-                "due": "November 25, 2029 9:00 PM",
-                "due_today": True
-            }
-        }
+        expected = {'Assignment ID 1': test_const.ASSIGNMENT_1,
+                    'Assignment ID 2': test_const.ASSIGNMENT_2}
         self.assertEqual(expected, actual)
 
 
@@ -278,138 +155,90 @@ class TestGetAllCoursesNames(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_get_one_course(self):
-        courses = {
-            'test': {
-                'course_name': 'Course 1'
-            },
-        }
+        courses = test_const.COURSES_3
         actual = cf.get_all_course_names(courses=courses)
-        expected = ['Course 1']
+        expected = ['Course Name 1']
         self.assertEqual(expected, actual)
 
-    def test_empty_value(self):
-        courses = {
-            'test_course_code': {}
-        }
+    def test_empty_course_value(self):
+        courses = test_const.COURSES_1
         actual = cf.get_all_course_names(courses=courses)
         expected = []
         self.assertEqual(expected, actual)
 
     def test_multiple(self):
-        courses = {
-            'Test': {
-                'course_name': 'Course 1'
-            },
-            'Test1': {
-                'course_name': 'Course 2'
-            },
-            'Test 3': {
-                'course_name': 'Course 3'
-            }
-        }
+        courses = test_const.COURSES_4
         actual = cf.get_all_course_names(courses=courses)
-        expected = ['Course 1', 'Course 2', 'Course 3']
+        expected = ['Course Name 1', 'Course Name 2']
         self.assertEqual(expected, actual)
 
 
 class TestGetAnnouncement(unittest.TestCase):
+    course_key = 'COURSE KEY 1'
+
     def test_null_courses(self):
         courses = {}
-        course_key = 'Test Key'
-        actual = cf.get_announcement(courses=courses, course_key=course_key)
+        actual = cf.get_announcement(courses=courses, course_key=self.course_key)
         expected = None
         self.assertEqual(expected, actual)
 
     def test_null_course_key(self):
-        courses = {
-            'Test': {
-                'latest_announcement': 'Test Announcement'
-            }
-        }
+        courses = test_const.COURSES_3
         course_key = None
         actual = cf.get_announcement(courses=courses, course_key=course_key)
         expected = None
         self.assertEqual(expected, actual)
 
     def test_get_announcement(self):
-        courses = {
-            'Test Key': {
-                'latest_announcement': 'Test Announcement'
-            }
-        }
-        course_key = "Test Key"
-        actual = cf.get_announcement(courses=courses, course_key=course_key)
-        expected = 'Test Announcement'
+        courses = test_const.COURSES_3
+        actual = cf.get_announcement(courses=courses, course_key=self.course_key)
+        expected = 'Latest Announcement 1'
         self.assertEqual(expected, actual)
 
-    def test_empty_value(self):
-        courses = {
-            'Test Key': {}
-        }
-        course_key = "Test Key"
-        actual = cf.get_announcement(courses=courses, course_key=course_key)
+    def test_empty_course_value(self):
+        courses = test_const.COURSES_0
+        actual = cf.get_announcement(courses=courses, course_key=self.course_key)
         expected = None
         self.assertEqual(expected, actual)
 
     def test_empty_announcement_value(self):
-        courses = {
-            'Test Key': {
-                'latest_announcement': None
-            }
-        }
-        course_key = 'Test Key'
-        actual = cf.get_announcement(courses=courses, course_key=course_key)
+        courses = test_const.COURSES_1
+        actual = cf.get_announcement(courses=courses, course_key=self.course_key)
         expected = None
         self.assertEqual(expected, actual)
 
 
 class TestGetTeacher(unittest.TestCase):
+    course_key = 'COURSE KEY 1'
+
     def test_null_courses(self):
         courses = {}
-        course_key = 'Test Key'
-        actual = cf.get_teacher(courses=courses, course_key=course_key)
+        actual = cf.get_teacher(courses=courses, course_key=self.course_key)
         expected = None
         self.assertEqual(expected, actual)
 
     def test_null_course_key(self):
-        courses = {
-            'Test': {
-                'teacher': 'Mr. Test'
-            }
-        }
+        courses = test_const.COURSES_3
         course_key = None
         actual = cf.get_teacher(courses=courses, course_key=course_key)
         expected = None
         self.assertEqual(expected, actual)
 
     def test_get_teacher(self):
-        courses = {
-            'Test Key': {
-                'teacher': 'Mr. Test'
-            }
-        }
-        course_key = "Test Key"
-        actual = cf.get_teacher(courses=courses, course_key=course_key)
-        expected = 'Mr. Test'
+        courses = test_const.COURSES_3
+        actual = cf.get_teacher(courses=courses, course_key=self.course_key)
+        expected = 'Teacher 1'
         self.assertEqual(expected, actual)
 
-    def test_empty_value(self):
-        courses = {
-            'Test Key': {}
-        }
-        course_key = "Test Key"
-        actual = cf.get_teacher(courses=courses, course_key=course_key)
+    def test_empty_course_value(self):
+        courses = test_const.COURSES_0
+        actual = cf.get_teacher(courses=courses, course_key=self.course_key)
         expected = None
         self.assertEqual(expected, actual)
 
     def test_empty_teacher_value(self):
-        courses = {
-            'Test Key': {
-                'teacher': None
-            }
-        }
-        course_key = 'Test Key'
-        actual = cf.get_teacher(courses=courses, course_key=course_key)
+        courses = test_const.COURSES_1
+        actual = cf.get_teacher(courses=courses, course_key=self.course_key)
         expected = None
         self.assertEqual(expected, actual)
 
@@ -422,78 +251,88 @@ class TestGetCourseCode(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_get_course_code(self):
-        orig_course_code = 'orig | Test Subject'
+        orig_course_code = 'COURSE CODE | COURSE SECTION'
         actual = cf.get_course_code(orig_course_code)
-        expected = 'ORIG'
+        expected = 'COURSE CODE'
         self.assertEqual(expected, actual)
 
     def test_get_course_code_2(self):
-        orig_course_code = 'orig | Test Subject | HAHAH'
+        orig_course_code = 'COURSE CODE | COURSE SECTION | COURSE NAME'
         actual = cf.get_course_code(orig_course_code)
-        expected = 'ORIG'
+        expected = 'COURSE CODE'
         self.assertEqual(expected, actual)
 
 
 class TestGetSection(unittest.TestCase):
+    course_key = 'COURSE KEY 1'
+
     def test_null_courses(self):
         courses = {}
-        course_key = 'Test Key'
-        actual = cf.get_section(courses=courses, course_key=course_key)
+        actual = cf.get_section(courses=courses, course_key=self.course_key)
         expected = None
         self.assertEqual(expected, actual)
 
     def test_null_course_key(self):
-        courses = {
-            'Test': {
-                'original_name': 'Code | Section | Subject'
-            }
-        }
+        courses = test_const.COURSES_3
         course_key = None
         actual = cf.get_section(courses=courses, course_key=course_key)
         expected = None
         self.assertEqual(expected, actual)
 
     def test_get_section(self):
-        courses = {
-            'Test Key': {
-                'original_name': 'Code | Section | Subject'
-            }
-        }
-        course_key = 'Test Key'
-        actual = cf.get_section(courses=courses, course_key=course_key)
-        expected = 'Section'
+        courses = test_const.COURSES_3
+        actual = cf.get_section(courses=courses, course_key=self.course_key)
+        expected = 'Section 1'
         self.assertEqual(expected, actual)
 
     def test_get_section_with_space(self):
-        courses = {
-            'Test Key': {
-                'original_name': 'Code | Section 2A | Subject'
-            }
-        }
-        course_key = 'Test Key'
-        actual = cf.get_section(courses=courses, course_key=course_key)
-        expected = 'Section 2A'
+        courses = test_const.COURSES_3
+        actual = cf.get_section(courses=courses, course_key=self.course_key)
+        expected = 'Section 1'
         self.assertEqual(expected, actual)
 
     def test_empty_value(self):
-        courses = {
-            'Test Key': {}
-        }
-        course_key = 'Test Key'
-        actual = cf.get_section(courses=courses, course_key=course_key)
+        courses = test_const.COURSES_0
+        actual = cf.get_section(courses=courses, course_key=self.course_key)
         expected = None
         self.assertEqual(expected, actual)
 
     def test_empty_name_value(self):
-        courses = {
-            'Test Key': {
-                'original_name': None
-            }
-        }
-        course_key = 'Test Key'
-        actual = cf.get_section(courses=courses, course_key=course_key)
+        courses = test_const.COURSES_1
+        actual = cf.get_section(courses=courses, course_key=self.course_key)
         expected = None
         self.assertEqual(expected, actual)
+
+
+class TestGetModules(unittest.TestCase):
+    course_key = 'COURSE KEY 1'
+
+    def test_null_course(self):
+        courses = {}
+        actual = cf.get_all_modules_from_course_key(courses=courses, course_key=self.course_key)
+        expected = None
+        self.assertEqual(expected, actual)
+
+    def test_null_course_key(self):
+        courses = test_const.COURSES_3
+        course_key = None
+        actual = cf.get_all_modules_from_course_key(courses=courses, course_key=course_key)
+        expected = None
+        self.assertEqual(expected, actual)
+
+    def test_get_modules_(self):
+        courses = test_const.COURSES_3
+        actual = cf.get_all_modules_from_course_key(courses=courses, course_key=self.course_key)
+        expected = test_const.MODULES_1
+        self.assertEqual(expected, actual)
+
+    def test_get_multiple_modules(self):
+        courses = test_const.COURSES_5
+        actual = cf.get_all_modules_from_course_key(courses=courses, course_key=self.course_key)
+        expected = test_const.MODULES_2
+        self.assertEqual(expected, actual)
+
+    #add test cases
 
 
 if __name__ == '__main__':

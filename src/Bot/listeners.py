@@ -135,6 +135,10 @@ async def listen_to_due_today(message, cache, courses):
     return cache
 
 
+async def listen_to_modules(message,courses):
+    pass
+
+
 async def send_assignments_messages(message, pending_assignments):
     for course, assignments in pending_assignments.items():
         await message.channel.typing()

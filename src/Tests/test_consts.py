@@ -130,7 +130,7 @@ COURSES_5 = {
         'latest_announcement': 'Latest Announcement 1',
         'modules': {
             'Module ID 1': {
-                'name': ' Module Name 1',
+                'name': 'Module Name 1',
                 'items': ['Item 1', 'Item 2', 'Item 3']
             },
             'Module ID 2': {
@@ -229,6 +229,7 @@ ASSIGNMENTS_1 = {
         'Assignment ID 1': {}
     }
 }
+
 
 ASSIGNMENTS_2 = {
     'Course Name 1': {
@@ -389,6 +390,12 @@ ASSIGNMENT_4 = {
     'due': 'October 20, 2023',
     'due_today': True
 }
+
+# MODULES CONSTS
+
+MODULES_1 = {'Module ID 1': 'Module Name 1'}
+MODULES_2 = {'Module ID 1': 'Module Name 1',
+             'Module ID 2': 'Module Name 2'}
 
 # expected messages consts
 EXPECTED_SENT_COURSES_1 = [f'• **Course Name 1**', f'• **Course Name 2**']
