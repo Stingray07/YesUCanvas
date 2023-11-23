@@ -25,6 +25,7 @@ def initialize_courses():
         course['pending_assignments'] = get_pending_assignments(courses, course_key)
         course['teacher'] = get_teacher(courses, course_key)
         course['module'] = get_module(courses, course_key)
+        print(f'✔  {course['course_name']}')
 
     return courses
 

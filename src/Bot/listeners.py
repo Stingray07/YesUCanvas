@@ -3,6 +3,7 @@ import discord
 from src.Canvas import consts as const
 from src.Canvas import course_functions as cf
 from html2text import html2text
+from src.helper import format_data
 
 
 async def listen_to_help(message):
@@ -45,11 +46,13 @@ async def listen_to_assignments(message, courses, cache):
 
 async def listen_to_assignment(message, courses, cache):
     if message.content.startswith(const.ASSIGNMENT_COMMAND_PREFIX):
+        format_data(cache)
         await message.channel.typing()
         if not cache:
             cache = cf.get_all_pending_assignments(courses=courses)
 
         assignment_id = message.content[5:].strip()
+        format_data(f"*{assignment_id}*")
         assignment = cf.get_assignment(assignments=cache, assignment_id=assignment_id)
         description = None
 

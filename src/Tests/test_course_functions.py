@@ -307,7 +307,7 @@ class TestGetSection(unittest.TestCase):
 class TestGetModules(unittest.TestCase):
     course_key = 'COURSE KEY 1'
 
-    def test_null_course(self):
+    def test_null_courses(self):
         courses = {}
         actual = cf.get_all_modules_from_course_key(courses=courses, course_key=self.course_key)
         expected = None
@@ -332,7 +332,17 @@ class TestGetModules(unittest.TestCase):
         expected = test_const.MODULES_2
         self.assertEqual(expected, actual)
 
-    #add test cases
+    def test_empty_modules_value(self):
+        courses = test_const.COURSES_1
+        actual = cf.get_all_modules_from_course_key(courses=courses, course_key=self.course_key)
+        expected = {}
+        self.assertEqual(expected, actual)
+
+    def test_empty_course_value(self):
+        courses = test_const.COURSES_0
+        actual = cf.get_all_modules_from_course_key(courses=courses, course_key=self.course_key)
+        expected = {}
+        self.assertEqual(expected, actual)
 
 
 if __name__ == '__main__':

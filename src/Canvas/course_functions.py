@@ -1,5 +1,6 @@
 from src.helper import format_data
 
+
 def get_all_pending_assignments(courses):
     if not courses:
         return None
@@ -24,6 +25,9 @@ def get_all_modules_from_course_key(courses, course_key):
     if not course_key:
         return None
 
+    if not courses[course_key]:
+        return {}
+
     modules = {}
     for module_id in courses[course_key]['modules']:
         modules[module_id] = courses[course_key]['modules'][module_id]['name']
@@ -36,10 +40,8 @@ def get_assignment(assignments, assignment_id):
     assignment = None
 
     for subject in assignments:
-        if not assignments[subject].get(assignment_id):
-            continue
-
-        assignment = assignments[subject].get(assignment_id)
+        if assignments[subject].get(assignment_id):
+            assignment = assignments[subject].get(assignment_id)
 
     return assignment
 
