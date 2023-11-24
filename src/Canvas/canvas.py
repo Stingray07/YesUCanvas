@@ -108,7 +108,7 @@ def get_pending_assignments(courses, course_key):
         description = assignment['description']
         points = assignment['points_possible']
         name = assignment['name']
-        assignment_id = assignment['id']
+        assignment_id = str(assignment['id'])
         graded = assignment['submission']['grade']
         status = assignment['submission']['submitted_at']
         if not graded and not status:

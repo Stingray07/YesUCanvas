@@ -19,10 +19,10 @@ def get_all_pending_assignments(courses):
 
 
 def get_all_modules_from_course_key(courses, course_key):
-    if not courses:
+    if not courses or not course_key:
         return None
 
-    if not course_key:
+    if course_key not in courses:
         return None
 
     if not courses[course_key]:
@@ -32,7 +32,6 @@ def get_all_modules_from_course_key(courses, course_key):
     for module_id in courses[course_key]['modules']:
         modules[module_id] = courses[course_key]['modules'][module_id]['name']
 
-    format_data(modules)
     return modules
 
 

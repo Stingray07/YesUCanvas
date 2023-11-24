@@ -10,7 +10,8 @@ HELP_MESSAGE = '''**Available Commands:**
 `!teacher <section>`: Gives the name of the teacher for the given section.\n
 `!anm <section>`: Gives the latest announcement for the given section.\n
 `!section <subject>`: Gives the section of the given subject.\n
-`!due_today`: Gives all assignments currently due today.'''
+`!due_today`: Gives all assignments currently due today.\n
+`!all_mod`: Gives all modules for the given course.'''
 
 HELP_COMMAND_PREFIX = '!help'
 COURSES_COMMAND_PREFIX = '!courses'
@@ -20,4 +21,5 @@ TEACHER_COMMAND_PREFIX = '!teacher '
 ANNOUNCEMENT_COMMAND_PREFIX = '!anm '
 SECTION_COMMAND_PREFIX = '!section '
 DUE_TODAY_COMMAND_PREFIX = '!due_today'
+MODULES_COMMAND_PREFIX = '!all_mod '
 

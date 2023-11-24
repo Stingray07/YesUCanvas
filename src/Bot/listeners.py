@@ -138,8 +138,19 @@ async def listen_to_due_today(message, cache, courses):
     return cache
 
 
-async def listen_to_modules(message,courses):
-    pass
+async def listen_to_modules(message, courses):
+    if message.content.startswith(const.MODULES_COMMAND_PREFIX):
+        await message.channel.typing()
+        course_key = message.content[9:].upper().strip()
+        modules = cf.get_all_modules_from_course_key(courses=courses, course_key=course_key)
+
+        if not modules:
+            await message.channel.send("COURSE NOT FOUND")
+            return
+
+        for module_id, module_name in modules.items():
+            message_str = f"• **{module_name}** \nID = {module_id}"
+            await message.channel.send(message_str)
 
 
 async def send_assignments_messages(message, pending_assignments):

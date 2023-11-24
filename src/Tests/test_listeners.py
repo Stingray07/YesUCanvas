@@ -704,38 +704,69 @@ class TestListenToAllModules(unittest.IsolatedAsyncioTestCase):
     async def test_listen_to_all_modules_never(self):
         message = initialize_message("!")
         courses = {}
-        assignments_cache = {}
 
-        actual_cache = await listeners.listen_to_due_today(message=message, courses=courses, cache=assignments_cache)
-        expected_cache = {}
+        await listeners.listen_to_modules(message=message, courses=courses)
 
         message.channel.typing.assert_not_awaited()
         message.channel.send.assert_not_awaited()
-        self.assertEqual(expected_cache, actual_cache)
 
-    async def test_listen_to_modules_null_cache(self):
-        pass
+    async def test_listen_to_all_modules_bad_id(self):
+        course_id = "?"
+        message = initialize_message(const.MODULES_COMMAND_PREFIX + course_id)
+        courses = {}
 
-    async def test_listen_to_modules_with_cache(self):
-        pass
+        await listeners.listen_to_modules(message=message, courses=courses)
 
-    async def test_listen_to_modules_null_cache_multiple_course(self):
-        pass
+        message.channel.typing.assert_awaited_once()
+        message.channel.send.assert_awaited_once_with('COURSE NOT FOUND')
 
-    async def test_listen_to_modules_with_cache_multiple_course(self):
-        pass
+    async def test_listen_to_modules_one_course(self):
+        course_id = 'COURSE KEY 1'
+        message = initialize_message(const.MODULES_COMMAND_PREFIX + course_id)
+        courses = test_const.COURSES_3
 
-    async def test_listen_to_modules_null_cache_multiple_assignments_one_course(self):
-        pass
+        await listeners.listen_to_modules(message=message, courses=courses)
+        expected_sent_messages = test_const.EXPECTED_SENT_MODULES_0
+        actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
 
-    async def test_listen_to_modules_with_cache_multiple_assignments_one_course(self):
-        pass
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_sent_messages, actual_sent_messages)
 
-    async def test_listen_to_modules_null_cache_multiple_assignments_multiple_course(self):
-        pass
+    async def test_listen_to_modules_multiple_course(self):
+        course_id = 'COURSE KEY 1'
+        message = initialize_message(const.MODULES_COMMAND_PREFIX + course_id)
+        courses = test_const.COURSES_4
 
-    async def test_listen_to_modules_with_cache_multiple_assignments_multiple_course(self):
-        pass
+        await listeners.listen_to_modules(message=message, courses=courses)
+        expected_sent_messages = test_const.EXPECTED_SENT_MODULES_0
+        actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_sent_messages, actual_sent_messages)
+
+    async def test_listen_to_modules_multiple_modules_one_course(self):
+        course_id = 'COURSE KEY 1'
+        message = initialize_message(const.MODULES_COMMAND_PREFIX + course_id)
+        courses = test_const.COURSES_5
+
+        await listeners.listen_to_modules(message=message, courses=courses)
+        expected_sent_messages = test_const.EXPECTED_SENT_MODULES_1
+        actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_sent_messages, actual_sent_messages)
+
+    async def test_listen_to_modules_multiple_modules_multiple_course(self):
+        course_id = 'COURSE KEY 1'
+        message = initialize_message(const.MODULES_COMMAND_PREFIX + course_id)
+        courses = test_const.COURSES_5
+
+        await listeners.listen_to_modules(message=message, courses=courses)
+        expected_sent_messages = test_const.EXPECTED_SENT_MODULES_1
+        actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_sent_messages, actual_sent_messages)
 
 
 if __name__ == '__main__':
