@@ -22,10 +22,9 @@ class TestEquality(unittest.TestCase):
 
 def run_bot():
     print("REQUESTING COURSES FROM CANVAS...")
-    courses = initialize_courses()
+    # courses = initialize_courses()
+    courses = mock
     print('REQUEST SUCCESSFUL')
-    mock_courses = mock
-    print(courses == mock_courses)
     intents = discord.Intents.default()
     intents.message_content = True
     bot = discord.Client(intents=intents)

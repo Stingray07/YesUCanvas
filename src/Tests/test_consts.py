@@ -1,7 +1,7 @@
-# courses cache consts
+# COURSES CACHE CONSTS
 COURSES_CACHE_1 = ['Course Name 1', 'Course Name 2']
 
-# course consts
+# COURSE CONSTS
 
 COURSES_0 = {
     'COURSE KEY 1': {},
@@ -209,7 +209,7 @@ COURSES_6 = {
 }
 
 
-# assignments consts
+# ASSIGNMENTS CONSTS
 
 
 ASSIGNMENTS_0 = {
@@ -397,7 +397,19 @@ MODULES_1 = {'Module ID 1': 'Module Name 1'}
 MODULES_2 = {'Module ID 1': 'Module Name 1',
              'Module ID 2': 'Module Name 2'}
 
-# expected messages consts
+# MODULE CONSTS
+
+MODULE_1 = {
+    "name": "Module Name 1",
+    "items": ['Item 1', 'Item 2', 'Item 3']
+}
+
+MODULE_2 = {
+    "name": "Module Name 2",
+    "items": ['Item 4', 'Item 5', 'Item 6']
+}
+
+# EXPECTED MESSAGES CONSTS
 EXPECTED_SENT_COURSES_1 = [f'• **Course Name 1**', f'• **Course Name 2**']
 
 EXPECTED_SENT_ASSIGNMENTS_0 = [f"• **Assignment Name 1** \n(Course Name 1). \nID = Assignment ID 1"]

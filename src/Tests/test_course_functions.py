@@ -304,7 +304,7 @@ class TestGetSection(unittest.TestCase):
         self.assertEqual(expected, actual)
 
 
-class TestGetModules(unittest.TestCase):
+class TestGetModulesFromCourseKey(unittest.TestCase):
     course_key = 'COURSE KEY 1'
 
     def test_null_courses(self):
@@ -342,6 +342,61 @@ class TestGetModules(unittest.TestCase):
         courses = test_const.COURSES_0
         actual = cf.get_all_modules_from_course_key(courses=courses, course_key=self.course_key)
         expected = {}
+        self.assertEqual(expected, actual)
+
+
+class TestGetModuleFromModuleId(unittest.TestCase):
+    module_id = 'Module ID 1'
+
+    def test_null_courses(self):
+        courses = {}
+        actual = cf.get_module_from_module_id(courses=courses, module_id=self.module_id)
+        expected = None
+        self.assertEqual(expected, actual)
+
+    def test_null_id(self):
+        courses = test_const.COURSES_3
+        module_id = None
+        actual = cf.get_module_from_module_id(courses=courses, module_id=module_id)
+        expected = None
+        self.assertEqual(expected, actual)
+
+    def test_bad_id(self):
+        courses = test_const.COURSES_3
+        module_id = '?'
+        actual = cf.get_module_from_module_id(courses=courses, module_id=module_id)
+        expected = None
+        self.assertEqual(expected, actual)
+
+    def test_get_module(self):
+        courses = test_const.COURSES_3
+        actual = cf.get_module_from_module_id(courses=courses, module_id=self.module_id)
+        expected = test_const.MODULE_1
+        self.assertEqual(expected, actual)
+
+    def test_get_module_multiple_course(self):
+        courses = test_const.COURSES_4
+        module_id = 'Module ID 2'
+        actual = cf.get_module_from_module_id(courses=courses, module_id=module_id)
+        expected = test_const.MODULE_2
+        self.assertEqual(expected, actual)
+
+    def test_get_multiple_module_one_course(self):
+        courses = test_const.COURSES_5
+        actual = cf.get_module_from_module_id(courses=courses, module_id=self.module_id)
+        expected = test_const.MODULE_1
+        self.assertEqual(expected, actual)
+
+    def test_null_module_value(self):
+        courses = test_const.COURSES_1
+        actual = cf.get_module_from_module_id(courses=courses, module_id=self.module_id)
+        expected = None
+        self.assertEqual(expected, actual)
+
+    def test_null_course_value(self):
+        courses = test_const.COURSES_0
+        actual = cf.get_module_from_module_id(courses=courses, module_id=self.module_id)
+        expected = None
         self.assertEqual(expected, actual)
 
 
