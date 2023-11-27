@@ -34,7 +34,7 @@ mock = {
             }
         },
         "teacher": "Ibrahim Hanbal",
-        "module": {
+        "modules": {
             "245606": {
                 "name": "CCS5 Examinations",
                 "items": [
@@ -151,7 +151,7 @@ mock = {
             }
         },
         "teacher": "Ibrahim Hanbal",
-        "module": {
+        "modules": {
             "245632": {
                 "name": "CCS2 - Examinations",
                 "items": [
@@ -251,7 +251,7 @@ mock = {
             }
         },
         "teacher": "Brylle Garnet Daniel",
-        "module": {
+        "modules": {
             "223069": {
                 "name": "Module 0. Course Overview",
                 "items": [
@@ -379,7 +379,7 @@ mock = {
             }
         },
         "teacher": "Lovely Jenn Reformado",
-        "module": {
+        "modules": {
             "223389": {
                 "name": "Module 0 - Course Introduction and Overview",
                 "items": [
@@ -522,7 +522,7 @@ mock = {
             }
         },
         "teacher": "Charity Chinalpan",
-        "module": {
+        "modules": {
             "228808": {
                 "name": "Module 0 - Course Introduction",
                 "items": [
@@ -641,7 +641,7 @@ mock = {
             }
         },
         "teacher": "Hector Cajigan",
-        "module": {
+        "modules": {
             "229002": {
                 "name": "Module 0/Preliminaries: Course Information / Orientation",
                 "items": [
@@ -747,6 +747,6 @@ mock = {
         "latest_announcement": "For our class,<br>You may go to the gym to watch the openning of the Intramurals and support CITCS.<br><br>\ud83e\udd16 \ud83d\udc7d \ud83d\udda5\ufe0f GO CITCS \ud83d\udda5\ufe0f \ud83d\udc7d \ud83e\udd16",
         "pending_assignments": {},
         "teacher": "Zen Lee Foryasen",
-        "module": {}
+        "modules": {}
     }
 }

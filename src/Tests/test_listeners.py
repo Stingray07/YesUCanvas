@@ -769,5 +769,50 @@ class TestListenToAllModules(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(expected_sent_messages, actual_sent_messages)
 
 
+class TestListenToModule(unittest.IsolatedAsyncioTestCase):
+    module_id = 'Module ID 1'
+
+    async def test_listen_to_module_never(self):
+        message = initialize_message("!")
+        courses = {}
+
+        await listeners.listen_to_module(message=message, courses=courses)
+
+        message.channel.typing.assert_not_awaited()
+        message.channel.send.assert_not_awaited()
+
+    async def test_listen_to_all_module_bad_id(self):
+        module_id = '?'
+        message = initialize_message(const.MODULE_COMMAND_PREFIX + module_id)
+        courses = test_const.COURSES_3
+
+        format_data(courses)
+
+        await listeners.listen_to_module(message=message, courses=courses)
+
+        message.channel.typing.assert_awaited()
+        message.channel.send.assert_awaited_once_with('MODULE NOT FOUND')
+
+    async def test_listen_to_module_one_course(self):
+        message = initialize_message(const.MODULE_COMMAND_PREFIX + self.module_id)
+        courses = test_const.COURSES_3
+
+        await listeners.listen_to_module(message=message, courses=courses)
+        actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+        expected_sent_messages = test_const.EXPECTED_SENT_MODULE_0
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_sent_messages, actual_sent_messages)
+
+    async def test_listen_to_module_multiple_course(self):
+        pass
+
+    async def test_listen_to_module_multiple_modules_one_course(self):
+        pass
+
+    async def test_listen_to_module_multiple_modules_multiple_course(self):
+        pass
+
+
 if __name__ == '__main__':
     unittest.main()

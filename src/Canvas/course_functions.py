@@ -45,7 +45,7 @@ def get_module_from_module_id(courses, module_id):
             continue
 
         if module_id in course_value.get('modules'):
-            return course_value['modules'][module_id]
+            return course_value['modules'][module_id] if course_value['modules'][module_id] != {} else {}
 
     return None
 

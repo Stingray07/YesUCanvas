@@ -435,3 +435,5 @@ EXPECTED_SENT_SECTION_2 = f'**Section 2**'
 EXPECTED_SENT_MODULES_0 = [f"• **Module Name 1** \nID = Module ID 1"]
 EXPECTED_SENT_MODULES_1 = [f"• **Module Name 1** \nID = Module ID 1",
                            f"• **Module Name 2** \nID = Module ID 2"]
+
+EXPECTED_SENT_MODULE_0 = [f"**Module Name 1**", 'Item 1', 'Item 2', 'Item 3']

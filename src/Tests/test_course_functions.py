@@ -393,6 +393,13 @@ class TestGetModuleFromModuleId(unittest.TestCase):
         expected = None
         self.assertEqual(expected, actual)
 
+    def test_null_module_id_value(self):
+        courses = copy.deepcopy(test_const.COURSES_3)
+        courses['COURSE KEY 1']['modules']['Module ID 1'] = {}
+        actual = cf.get_module_from_module_id(courses=courses, module_id=self.module_id)
+        expected = {}
+        self.assertEqual(expected, actual)
+
     def test_null_course_value(self):
         courses = test_const.COURSES_0
         actual = cf.get_module_from_module_id(courses=courses, module_id=self.module_id)

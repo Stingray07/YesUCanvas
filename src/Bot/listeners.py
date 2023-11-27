@@ -45,13 +45,15 @@ async def listen_to_assignments(message, courses, cache):
 
 
 async def listen_to_assignment(message, courses, cache):
+    command_prefix_length = len(const.ASSIGNMENT_COMMAND_PREFIX)
+
     if message.content.startswith(const.ASSIGNMENT_COMMAND_PREFIX):
-        format_data(cache)
         await message.channel.typing()
+
         if not cache:
             cache = cf.get_all_pending_assignments(courses=courses)
 
-        assignment_id = message.content[5:].strip()
+        assignment_id = message.content[command_prefix_length:].strip()
         assignment = cf.get_assignment(assignments=cache, assignment_id=assignment_id)
         description = None
 
@@ -61,6 +63,7 @@ async def listen_to_assignment(message, courses, cache):
 
         for key, value in assignment.items():
             await message.channel.typing()
+
             if key not in ['description', 'due_today']:
                 await message.channel.send(f"**{key.upper()}**: {value}")
             else:
@@ -75,9 +78,12 @@ async def listen_to_assignment(message, courses, cache):
 
 
 async def listen_to_teacher(message, courses):
+    command_prefix_length = len(const.TEACHER_COMMAND_PREFIX)
+
     if message.content.startswith(const.TEACHER_COMMAND_PREFIX):
         await message.channel.typing()
-        course_key = message.content[9:].upper().strip()
+
+        course_key = message.content[command_prefix_length:].upper().strip()
         teacher = cf.get_teacher(courses=courses, course_key=course_key)
 
         if not teacher:
@@ -89,9 +95,12 @@ async def listen_to_teacher(message, courses):
 
 
 async def listen_to_announcement(message, courses):
+    command_prefix_length = len(const.ANNOUNCEMENT_COMMAND_PREFIX)
+
     if message.content.startswith(const.ANNOUNCEMENT_COMMAND_PREFIX):
         await message.channel.typing()
-        course_key = message.content[5:].upper().strip()
+
+        course_key = message.content[command_prefix_length:].upper().strip()
         announcement = cf.get_announcement(courses=courses, course_key=course_key)
 
         if not announcement:
@@ -108,9 +117,12 @@ async def listen_to_announcement(message, courses):
 
 
 async def listen_to_section(message, courses):
+    command_prefix_length = len(const.SECTION_COMMAND_PREFIX)
+
     if message.content.startswith(const.SECTION_COMMAND_PREFIX):
         await message.channel.typing()
-        course_key = message.content[9:].upper().strip()
+
+        course_key = message.content[command_prefix_length:].upper().strip()
         section = cf.get_section(courses=courses, course_key=course_key)
 
         if not section:
@@ -138,23 +150,52 @@ async def listen_to_due_today(message, cache, courses):
 
 
 async def listen_to_modules(message, courses):
+    command_prefix_length = len(const.MODULES_COMMAND_PREFIX)
+
     if message.content.startswith(const.MODULES_COMMAND_PREFIX):
         await message.channel.typing()
-        course_key = message.content[9:].upper().strip()
+
+        course_key = message.content[command_prefix_length:].upper().strip()
         modules = cf.get_all_modules_from_course_key(courses=courses, course_key=course_key)
 
-        if not modules:
-            await message.channel.send("COURSE NOT FOUND")
+        if modules is None:
+            await message.channel.send('COURSE NOT FOUND')
             return
+        elif not modules:
+            await message.channel.send('MODULE IS EMPTY')
+            return
+        else:
+            for module_id, module_name in modules.items():
+                await message.channel.typing()
+                message_str = f"• **{module_name}** \nID = {module_id}"
+                await message.channel.send(message_str)
 
-        for module_id, module_name in modules.items():
-            message_str = f"• **{module_name}** \nID = {module_id}"
-            await message.channel.send(message_str)
+
+async def listen_to_module(message, courses):
+    command_prefix_length = len(const.MODULE_COMMAND_PREFIX)
+
+    if message.content.startswith(const.MODULE_COMMAND_PREFIX):
+        await message.channel.typing()
+
+        module_id = message.content[command_prefix_length:].upper().strip()
+        module = cf.get_module_from_module_id(courses=courses, module_id=module_id)
+
+        if module is None:
+            await message.channel.send('MODULE NOT FOUND')
+            return
+        elif not module:
+            await message.channel.send('ITEMS EMPTY')
+            return
+        else:
+            await message.channel.send(f"**{module.get('name')}**")
+            for item in module['items']:
+                await message.channel.send(f"{item}")
 
 
 async def send_assignments_messages(message, pending_assignments):
     for course, assignments in pending_assignments.items():
         await message.channel.typing()
+
         for assignment_id, assignment_info in assignments.items():
             message_str = f"• **{assignment_info['name']}** \n({course}). \nID = {assignment_id}"
             await message.channel.send(message_str)
@@ -165,6 +206,7 @@ async def send_assignments_messages_due_today(message, pending_assignments):
 
     for course, assignments in pending_assignments.items():
         await message.channel.typing()
+
         for assignment_id, assignment_info in assignments.items():
             if assignment_info.get('due_today'):
                 no_due_today = False
