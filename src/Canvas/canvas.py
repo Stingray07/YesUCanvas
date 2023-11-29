@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 from src.Canvas.consts import COURSES_URL, ANNOUNCEMENTS_URL, ACTIVE_ENROLLMENT_STATE
 from datetime import datetime
 from src.Canvas.course_functions import get_course_code
-from src.helper import format_data
 
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
@@ -165,7 +164,7 @@ def get_module(courses, course_key):
 
     for module in data:
         name = module['name']
-        module_id = module['id']
+        module_id = str(module['id'])
         items = module['items']
 
         for item in items:

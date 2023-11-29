@@ -3,7 +3,6 @@ import discord
 from src.Canvas import consts as const
 from src.Canvas import course_functions as cf
 from html2text import html2text
-from src.helper import format_data
 
 
 async def listen_to_help(message):
@@ -47,6 +46,10 @@ async def listen_to_assignments(message, courses, cache):
 async def listen_to_assignment(message, courses, cache):
     command_prefix_length = len(const.ASSIGNMENT_COMMAND_PREFIX)
 
+    if message.content == const.ASSIGNMENT_COMMAND_PREFIX.strip():
+        await message.channel.send('Please input Assignment ID')
+        return
+
     if message.content.startswith(const.ASSIGNMENT_COMMAND_PREFIX):
         await message.channel.typing()
 
@@ -80,6 +83,10 @@ async def listen_to_assignment(message, courses, cache):
 async def listen_to_teacher(message, courses):
     command_prefix_length = len(const.TEACHER_COMMAND_PREFIX)
 
+    if message.content == const.TEACHER_COMMAND_PREFIX.strip():
+        await message.channel.send('Please input Course Code')
+        return
+
     if message.content.startswith(const.TEACHER_COMMAND_PREFIX):
         await message.channel.typing()
 
@@ -96,6 +103,10 @@ async def listen_to_teacher(message, courses):
 
 async def listen_to_announcement(message, courses):
     command_prefix_length = len(const.ANNOUNCEMENT_COMMAND_PREFIX)
+
+    if message.content == const.ANNOUNCEMENT_COMMAND_PREFIX.strip():
+        await message.channel.send('Please input Course Code')
+        return
 
     if message.content.startswith(const.ANNOUNCEMENT_COMMAND_PREFIX):
         await message.channel.typing()
@@ -118,6 +129,10 @@ async def listen_to_announcement(message, courses):
 
 async def listen_to_section(message, courses):
     command_prefix_length = len(const.SECTION_COMMAND_PREFIX)
+
+    if message.content == const.SECTION_COMMAND_PREFIX.strip():
+        await message.channel.send('Please input Course Code')
+        return
 
     if message.content.startswith(const.SECTION_COMMAND_PREFIX):
         await message.channel.typing()
@@ -174,10 +189,14 @@ async def listen_to_modules(message, courses):
 async def listen_to_module(message, courses):
     command_prefix_length = len(const.MODULE_COMMAND_PREFIX)
 
+    if message.content == const.MODULE_COMMAND_PREFIX.strip():
+        await message.channel.send('Please input Module ID')
+        return
+
     if message.content.startswith(const.MODULE_COMMAND_PREFIX):
         await message.channel.typing()
 
-        module_id = message.content[command_prefix_length:].upper().strip()
+        module_id = message.content[command_prefix_length:].strip()
         module = cf.get_module_from_module_id(courses=courses, module_id=module_id)
 
         if module is None:

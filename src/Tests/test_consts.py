@@ -437,3 +437,5 @@ EXPECTED_SENT_MODULES_1 = [f"• **Module Name 1** \nID = Module ID 1",
                            f"• **Module Name 2** \nID = Module ID 2"]
 
 EXPECTED_SENT_MODULE_0 = [f"**Module Name 1**", 'Item 1', 'Item 2', 'Item 3']
+EXPECTED_SENT_MODULE_1 = [f"**Module Name 2**", 'Item 4', 'Item 5', 'Item 6']
+EXPECTED_SENT_MODULE_2 = [f"**Module Name 4**", 'Item 4', 'Item 5', 'Item 6']

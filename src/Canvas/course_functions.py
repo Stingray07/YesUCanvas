@@ -19,7 +19,6 @@ def get_all_pending_assignments(courses):
 
 
 def get_all_modules_from_course_key(courses, course_key):
-    print(f"*{course_key}*")
     if not courses or not course_key:
         return None
 
@@ -45,7 +44,7 @@ def get_module_from_module_id(courses, module_id):
             continue
 
         if module_id in course_value.get('modules'):
-            return course_value['modules'][module_id] if course_value['modules'][module_id] != {} else {}
+            return course_value['modules'][module_id]
 
     return None
 

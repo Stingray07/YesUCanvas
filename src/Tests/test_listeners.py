@@ -6,7 +6,6 @@ from unittest.mock import AsyncMock, Mock, patch
 from src.Canvas import consts as const
 from src.Tests import test_consts as test_const
 from src.Bot import listeners
-from src.helper import format_data
 
 # For some functions, I made it so that if the cache is not null, then I made its courses null.
 # This is to check if the data that is being sent is actually from the cache itself, not from courses
@@ -72,7 +71,7 @@ class TestListenToCourses(unittest.IsolatedAsyncioTestCase):
 
     async def test_listen_to_courses_with_cache(self):
         message = initialize_message(const.COURSES_COMMAND_PREFIX)
-        courses = {"TEST COURSES"}  # This is to test data movement. I can't have it null. (read comment at line 9)
+        courses = {"TEST COURSES"}  # This is to test data movement. I can't have it null. (read comment at line 10)
         cache = test_const.COURSES_CACHE_1
 
         actual_cache = await listeners.listen_to_courses(message=message, courses=courses, cache=cache)
@@ -786,8 +785,6 @@ class TestListenToModule(unittest.IsolatedAsyncioTestCase):
         message = initialize_message(const.MODULE_COMMAND_PREFIX + module_id)
         courses = test_const.COURSES_3
 
-        format_data(courses)
-
         await listeners.listen_to_module(message=message, courses=courses)
 
         message.channel.typing.assert_awaited()
@@ -798,20 +795,46 @@ class TestListenToModule(unittest.IsolatedAsyncioTestCase):
         courses = test_const.COURSES_3
 
         await listeners.listen_to_module(message=message, courses=courses)
-        actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
         expected_sent_messages = test_const.EXPECTED_SENT_MODULE_0
+        actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
 
         message.channel.typing.assert_awaited()
         self.assertEqual(expected_sent_messages, actual_sent_messages)
 
     async def test_listen_to_module_multiple_course(self):
-        pass
+        module_id = 'Module ID 2'
+        message = initialize_message(const.MODULE_COMMAND_PREFIX + module_id)
+        courses = test_const.COURSES_4
+
+        await listeners.listen_to_module(message=message, courses=courses)
+        expected_sent_messages = test_const.EXPECTED_SENT_MODULE_1
+        actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_sent_messages, actual_sent_messages)
 
     async def test_listen_to_module_multiple_modules_one_course(self):
-        pass
+        message = initialize_message(const.MODULE_COMMAND_PREFIX + self.module_id)
+        courses = test_const.COURSES_5
+
+        await listeners.listen_to_module(message=message, courses=courses)
+        expected_sent_messages = test_const.EXPECTED_SENT_MODULE_0
+        actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_sent_messages, actual_sent_messages)
 
     async def test_listen_to_module_multiple_modules_multiple_course(self):
-        pass
+        module_id = 'Module ID 4'
+        message = initialize_message(const.MODULE_COMMAND_PREFIX + module_id)
+        courses = test_const.COURSES_6
+
+        await listeners.listen_to_module(message=message, courses=courses)
+        expected_sent_messages = test_const.EXPECTED_SENT_MODULE_2
+        actual_sent_messages = [call[0][0] for call in message.channel.send.call_args_list]
+
+        message.channel.typing.assert_awaited()
+        self.assertEqual(expected_sent_messages, actual_sent_messages)
 
 
 if __name__ == '__main__':
