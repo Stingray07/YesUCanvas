@@ -1,6 +1,3 @@
-from src.helper import format_data
-
-
 def get_all_pending_assignments(courses):
     if not courses:
         return None
