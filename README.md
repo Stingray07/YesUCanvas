@@ -1,10 +1,10 @@
-# YesUCan't
+# YesUCanvas
 
-YesUCan't is a versatile Discord bot designed to interact with the Canvas learning management system's API, providing users with valuable information and functionality right within their Discord server. This integration allows for a seamless experience for students who use Canvas.
+YesUCanvas is a versatile Discord bot designed to interact with the Canvas learning management system's API, providing users with valuable information and functionality right within their Discord server. This integration allows for a seamless experience for students who use Canvas.
 
 ## Getting Started
 
-Follow these steps to set up and run the YesUCan't Discord bot on your server.
+Follow these steps to set up and run the YesUCanvas Discord bot on your server.
 
 ### Prerequisites
 
@@ -18,7 +18,7 @@ Follow these steps to set up and run the YesUCan't Discord bot on your server.
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/Stingray07/YesUCant
+   git clone https://github.com/Stingray07/YesUCanvas
 
 2. Create a .env file in the project root and add your Discord bot token and Canvas API key:
 
